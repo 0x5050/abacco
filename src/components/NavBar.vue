@@ -1,6 +1,5 @@
-
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="dark" sticky="true">
+  <b-navbar toggleable="lg" type="dark" variant="dark" :sticky='true'>
     <img src="../assets/logo.png" width="50px" height="50px">
     <b-navbar-brand href="/">Abacco</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -22,7 +21,7 @@
 
 <script>
 export default {
-  name: 'NavBar',
+  name: 'nav-bar',
   data: () => ({
     buttons: [
       {
@@ -31,7 +30,7 @@ export default {
       },
       {
         name: 'Informacje',
-        href: '#info'
+        href: '#Information'
       },
       {
         name: 'Usługi',
