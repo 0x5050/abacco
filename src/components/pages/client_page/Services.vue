@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import test from '@/components/CollapsedServices'
+import test from '@/components/molecules/CollapsedServices'
 export default {
   name: 'services',
   components: {

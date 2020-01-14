@@ -26,7 +26,7 @@ export default {
 
 <style scoped>
 #Information {
-  background-image: url('../assets/info.jpg');
+  background-image: url('../../../assets/info.jpg');
   height: 1080px;
   background-position: center;
   background-repeat: no-repeat;

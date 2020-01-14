@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ImageSlider from '@/components/ImageSlider'
+import ImageSlider from '@/components/molecules/ImageSlider'
 import img1 from '@/assets/img_1.jpg'
 // import img2 from '@/assets/img_2.jpg'
 // import img3 from '@/assets/img_3.jpg'

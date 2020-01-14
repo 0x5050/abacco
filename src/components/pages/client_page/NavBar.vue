@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="dark" :sticky='true'>
-    <img src="../assets/logo.png" width="50px" height="50px">
+    <img :src="logo" width="50px" height="50px">
     <b-navbar-brand href="/">Abacco</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
@@ -20,9 +20,12 @@
 </template>
 
 <script>
+import logo from '@/assets/logo.png'
+
 export default {
   name: 'nav-bar',
   data: () => ({
+    logo: logo,
     buttons: [
       {
         name: 'Galeria',
