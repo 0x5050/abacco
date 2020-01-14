@@ -25,6 +25,30 @@
           </b-jumbotron>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col class="text-light mt-5">
+         <h1>Zapraszamy do kontaktu </h1>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md class="d-flex justify-content-center">
+          <b-form-input type="email" placeholder="Email" class="w-50 mb-2" />
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md class="d-flex justify-content-center">
+          <b-form-textarea placeholder="text" rows="5" class="w-50 mb-2" />
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col md class="d-flex justify-content-center" >
+          <b-form-file
+            placeholder="Wybierz plik lub przeciągnij go tutaj"
+            drop-placeholder="Przeciągnij plik tutaj"
+            class="w-50 mb-2"
+          />
+        </b-col>
+      </b-row>
     </b-container>
 </template>
 
