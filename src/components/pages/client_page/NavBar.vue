@@ -20,30 +20,12 @@
 </template>
 
 <script>
-import logo from '@/assets/logo.png'
 
 export default {
   name: 'nav-bar',
-  data: () => ({
-    logo: logo,
-    buttons: [
-      {
-        name: 'Galeria',
-        href: '#gallery'
-      },
-      {
-        name: 'Informacje',
-        href: '#Information'
-      },
-      {
-        name: 'Usługi',
-        href: '#services'
-      },
-      {
-        name: 'Kontakt',
-        href: '#contact'
-      }
-    ]
-  })
+  props: {
+    logo: { type: Image, default: '' },
+    buttons: { type: Array, default: () => [] }
+  }
 }
 </script>

@@ -55,29 +55,8 @@
 <script>
 export default {
   name: 'contact',
-  data: () => ({
-    companies: [
-      {
-        company: 'PPUH Agat Krystyna Cierlicka',
-        nip: '1234 1234 1234 1234',
-        street: 'Warneńska 12c/2',
-        zip: '80-288',
-        city: 'Gdańsk',
-        phone: '123 345 789',
-        email: 'uslugibudowlane@gmail.com',
-        services: 'Usługi budowlane'
-      },
-      {
-        company: 'PPUH Abacco Krzysztof Żurek',
-        nip: '1234 1234 1234 1244',
-        street: 'Aleja Grunwaldzka 238d',
-        zip: '80-266',
-        city: 'Gdańsk',
-        phone: '123 345 789',
-        email: 'usługislusarskie@gmail.com',
-        services: 'Usługi ślusarskie'
-      }
-    ]
-  })
+  props: {
+    companies: { type: Array, default: () => [] }
+  }
 }
 </script>
