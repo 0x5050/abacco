@@ -21,12 +21,12 @@
 <script>
 import ImageSlider from '@/components/ImageSlider'
 import img1 from '@/assets/img_1.jpg'
-import img2 from '@/assets/img_2.jpg'
-import img3 from '@/assets/img_3.jpg'
-import img4 from '@/assets/img_4.jpg'
-import img6 from '@/assets/img_6.jpg'
-import img7 from '@/assets/img_7.jpg'
-import img8 from '@/assets/img_8.jpg'
+// import img2 from '@/assets/img_2.jpg'
+// import img3 from '@/assets/img_3.jpg'
+// import img4 from '@/assets/img_4.jpg'
+// import img6 from '@/assets/img_6.jpg'
+// import img7 from '@/assets/img_7.jpg'
+// import img8 from '@/assets/img_8.jpg'
 export default {
   name: 'gallery',
   components: {
@@ -34,15 +34,10 @@ export default {
   },
   data: () => ({
     budowa_img: [
-      img1,
-      img2,
-      img3,
-      img4
+      img1
     ],
     slusarka_img: [
-      img6,
-      img7,
-      img8
+      img1
     ]
   })
 }
