@@ -24,7 +24,7 @@
 export default {
   name: 'nav-bar',
   props: {
-    logo: { type: Image, default: '' },
+    logo: { type: String, default: '' },
     buttons: { type: Array, default: () => [] }
   }
 }

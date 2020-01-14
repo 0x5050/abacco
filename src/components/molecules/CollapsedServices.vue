@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'test',
+  name: 'collapsed-services',
   props: {
     categorie: { type: Object, default: () => {} }
   }

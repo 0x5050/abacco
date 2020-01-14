@@ -3,7 +3,7 @@
         <b-row>
             <b-col md>
                 <h2 class="text-light mt-4">Usługi Budowlane </h2>
-                <test
+                <collapsed-services
                     v-for="service in firstServices"
                     :key="service.service"
                     :categorie="service"
@@ -12,7 +12,7 @@
 
             <b-col md>
                 <h2 class="text-light mt-4">Usługi Ślusarskie</h2>
-                <test
+                <collapsed-services
                     v-for="service in secondServices"
                     :key="service.service"
                     :categorie="service"
@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import test from '@/components/molecules/CollapsedServices'
+import CollapsedServices from '@/components/molecules/CollapsedServices'
 export default {
   name: 'services',
   components: {
-    test
+    CollapsedServices
   },
   props: {
     firstServices: { type: Array, default: () => [] },

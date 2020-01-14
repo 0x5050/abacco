@@ -15,7 +15,7 @@
             <p>
               Nip: {{ company.nip }} <br>
               {{ company.street }} <br>
-              {{ company.zip + ' ' + company.city }}
+              {{ `${company.zip} ${company.city} `}}
             </p>
             <hr class="my-4">
             <p>

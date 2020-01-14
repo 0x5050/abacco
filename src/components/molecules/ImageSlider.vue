@@ -8,7 +8,7 @@
         :no-touch="true"
         controls
         indicators
-        background="#ababab"
+        background="#343a40"
         img-width="1024"
         img-height="480"
         @sliding-start="onSlideStart"
