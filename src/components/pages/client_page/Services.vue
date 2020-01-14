@@ -2,7 +2,7 @@
     <b-container fluid id="services" class="bg-dark">
         <b-row>
             <b-col md>
-                <h2 class="text-light">Usługi Budowlane </h2>
+                <h2 class="text-light mt-4">Usługi Budowlane </h2>
                 <test
                     v-for="service in firstServices"
                     :key="service.service"
@@ -11,7 +11,7 @@
             </b-col>
 
             <b-col md>
-                <h2 class="text-light">Usługi Ślusarskie</h2>
+                <h2 class="text-light mt-4">Usługi Ślusarskie</h2>
                 <test
                     v-for="service in secondServices"
                     :key="service.service"
