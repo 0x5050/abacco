@@ -4,8 +4,13 @@ import Main from '@/components/pages/Main'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
+    {
+      path: '*',
+      name: 'Main',
+      component: Main
+    },
     {
       path: '/',
       name: 'Main',
@@ -13,3 +18,5 @@ export default new Router({
     }
   ]
 })
+
+export default router
