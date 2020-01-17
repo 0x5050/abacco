@@ -1,9 +1,18 @@
 <template>
-    <div>
-        Email <b-form-input type="email" v-model="email" /> <br>
-        Password <b-form-input type="password" v-model="password" /> <br>
-        <b-button @click="login">Login</b-button>
-        <b-button @click="register">Register</b-button>
+    <div class="bg-dark h-100 w-100 position-fixed">
+      <b-container class=" text-left text-light center">
+          <b-form @submit="LoginUser">
+            Email
+            <b-input-group md="w-100" prepend="✉️" class="mb-3 mt-1">
+              <b-form-input type="email" v-model="login_form.email"/>
+            </b-input-group>
+            Hasło
+            <b-input-group prepend="🔑" class="mt-1">
+              <b-form-input type="password" v-model="login_form.password"/>
+            </b-input-group>
+            <b-button class="w-25 mt-3" type="submit">Login</b-button>
+          </b-form>
+        </b-container>
     </div>
 </template>
 
@@ -13,35 +22,36 @@ import firebase from 'firebase'
 export default {
   name: 'login',
   data: () => ({
-    email: '',
-    password: ''
+    login_form: {
+      email: '',
+      password: ''
+    }
   }),
   created () {
     firebase.auth().onAuthStateChanged(userAuth => {
       if (userAuth) {
         firebase.auth().currentUser.getIdTokenResult()
           .then(tokenResult => {
-            console.log(tokenResult.claims)
+            console.log('Zalogowano:', tokenResult.claims.email)
           })
       }
     })
   },
   methods: {
-    login () {
-      console.log('login', this.email, this.password)
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-    },
-
-    register () {
-      console.log('register', this.email, this.password)
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then(data => {
-          data.user.updateProfile({ displayName: this.email })
-        }).catch(err => {
-          alert(err.message)
-        })
+    LoginUser () {
+      firebase.auth()
+        .signInWithEmailAndPassword(this.login_form.email, this.login_form.password)
+        .then(this.$router.push('/admin'))
     }
-
   }
 }
 </script>
+
+<style scoped>
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
