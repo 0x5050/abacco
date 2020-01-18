@@ -1,5 +1,5 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="dark">
+  <b-navbar toggleable="lg" type="dark" variant="dark" class="text-light">
       <b-button class="hide" variant="primary" aria-hidden="true" size="lg">
           <b-icon @click="set_sidebar()" icon="list"/>
       </b-button>

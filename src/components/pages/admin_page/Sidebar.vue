@@ -1,7 +1,15 @@
 <template>
     <div>
         <div class="sidebar bg-dark text-light" :class="{sidebar_hidden: sidebar}" >
-            {{ sidebar }}
+            <b-nav vertical>
+              <b-nav-item
+                v-for="route in routes"
+                :key="route.path"
+                :to="'/admin' + route.path"
+              >
+                <b-icon :icon="route.icon" /> {{ route.name }}
+              </b-nav-item>
+            </b-nav>
         </div>
         <div class="content p-0" :class="{content_extended: sidebar}" >
             <router-view/>
@@ -15,8 +23,23 @@ import {mapGetters, mapMutations} from 'vuex'
 export default {
   name: 'sidebar',
   data: () => ({
-    window_width: null
+    window_width: null,
+    routes: [
+      {
+        name: 'Użytkownicy',
+        path: '/user-menagment',
+        icon: 'person-fill'
+      }
+    ],
+    transitionName: 'slide-right'
   }),
+  watch: {
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+    }
+  },
   computed: {
     ...mapGetters(['sidebar'])
   },

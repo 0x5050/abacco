@@ -1,19 +1,22 @@
 <template>
     <b-container fluid>
+      <div class="w-100">
       <b-row>
         <list-renderer
+          class="mt-5"
           :data="data"
           :users-list="usersList"
         />
       </b-row>
       <b-row class="mt-5">
-        <b-col class=" float-right">
-          <b-button @click="Save" class="w-25 mr-1">Zapisz</b-button>
-        </b-col>
-        <b-col>
-          <b-button class="w-25 ml-1">Resetuj</b-button>
+        <b-col class="text-right mr-4">
+          <b-button-group size="lg">
+            <b-button variant="danger" class="mr-3" @click="Reset()">Resetuj</b-button>
+            <b-button variant="success" @click="Save()">Zapisz</b-button>
+          </b-button-group>
         </b-col>
       </b-row>
+      </div>
     </b-container>
 </template>
 
@@ -57,6 +60,10 @@ export default {
         else permission = 'error'
         this.ChangeRole(user.id, permission)
       })
+    },
+
+    Reset () {
+      window.location.reload(true)
     },
 
     ChangeRole (uid, event) {
