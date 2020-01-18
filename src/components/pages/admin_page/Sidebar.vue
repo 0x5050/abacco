@@ -6,8 +6,9 @@
                 v-for="route in routes"
                 :key="route.path"
                 :to="'/admin' + route.path"
+                class="nav-link h4 mt-2 text-decoration-none"
               >
-                <b-icon :icon="route.icon" /> {{ route.name }}
+                <b-icon :icon="route.icon" class=" float-left"/> {{ route.name }}
               </b-nav-item>
             </b-nav>
         </div>
@@ -26,20 +27,23 @@ export default {
     window_width: null,
     routes: [
       {
+        name: 'Panel',
+        path: '/',
+        icon: 'graph-up'
+      },
+      {
         name: 'Użytkownicy',
         path: '/user-menagment',
         icon: 'person-fill'
+      },
+      {
+        name: 'Faktury',
+        path: '/invoices',
+        icon: 'document-text'
       }
     ],
     transitionName: 'slide-right'
   }),
-  watch: {
-    '$route' (to, from) {
-      const toDepth = to.path.split('/').length
-      const fromDepth = from.path.split('/').length
-      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-    }
-  },
   computed: {
     ...mapGetters(['sidebar'])
   },
@@ -50,6 +54,19 @@ export default {
 </script>
 
 <style scoped>
+.nav-link {
+  color: white
+}
+
+.nav-link:hover {
+  transition: ease-in-out .5s;
+  background-color: black
+}
+
+.nav-active {
+  background-color: black
+}
+
 .sidebar {
     min-height: 100vh;
     width: 250px;
