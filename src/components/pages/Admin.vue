@@ -1,16 +1,19 @@
 <template>
-  <b-container>
-      <user-menagment/>
+  <b-container fluid class="m-0 p-0">
+      <navbar />
+      <sidebar />
   </b-container>
 </template>
 <script>
-import UserMenagment from '@/components/pages/admin_page/UserMenagment'
+import Navbar from '@/components/pages/admin_page/Navbar'
+import Sidebar from '@/components/pages/admin_page/Sidebar'
 
 export default {
   data: () => ({
   }),
   components: {
-    UserMenagment
+    Navbar,
+    Sidebar
   },
   methods: {
   }

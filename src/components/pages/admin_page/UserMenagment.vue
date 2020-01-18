@@ -14,7 +14,6 @@
           <b-button class="w-25 ml-1">Resetuj</b-button>
         </b-col>
       </b-row>
-      <!-- <b-button @click="Signout">Wyloguj</b-button> -->
     </b-container>
 </template>
 
@@ -50,13 +49,6 @@ export default {
       })
   },
   methods: {
-    Signout () {
-      firebase.auth().signOut()
-        .then(user => {
-          this.$router.push('/login')
-        })
-    },
-
     Save () {
       this.data.forEach(user => {
         let permission
