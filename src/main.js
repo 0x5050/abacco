@@ -16,7 +16,7 @@ const config = {
   apiKey: 'AIzaSyDFen9TsWKSAucNav52E7scL0WYV557pFU',
   authDomain: 'abacco-e9fd3.firebaseapp.com',
   databaseURL: 'https://abacco-e9fd3.firebaseio.com',
-  projectID: 'abacco-e9fd3',
+  projectId: 'abacco-e9fd3',
   storageBucket: 'abacco-e9fd3.appspot.com',
   messagingSenderId: '482185164298'
 }
