@@ -13,6 +13,7 @@
             <b-button class="w-25 mt-3" type="submit">Login</b-button>
           </b-form>
         </b-container>
+        <b-button @click="RegisterUser">Register</b-button>
     </div>
 </template>
 
@@ -42,6 +43,11 @@ export default {
       firebase.auth()
         .signInWithEmailAndPassword(this.login_form.email, this.login_form.password)
         .then(this.$router.push('/admin'))
+    },
+    RegisterUser () {
+      firebase.auth()
+        .createUserWithEmailAndPassword(this.login_form.email, this.login_form.password)
+        .then(console.log('Created User'))
     }
   }
 }

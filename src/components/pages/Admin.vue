@@ -1,21 +1,18 @@
 <template>
-    <div>
-        Admin
-        <button @click="signout">SignOut</button>
-    </div>
+  <b-container>
+      <user-menagment/>
+  </b-container>
 </template>
-
 <script>
-import firebase from 'firebase'
+import UserMenagment from '@/components/pages/admin_page/UserMenagment'
 
 export default {
-  name: 'admin',
+  data: () => ({
+  }),
+  components: {
+    UserMenagment
+  },
   methods: {
-    signout () {
-      firebase.auth().signOut().then(user => {
-        this.$router.replace('/login')
-      })
-    }
   }
 }
 </script>
