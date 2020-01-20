@@ -1,19 +1,15 @@
 <template>
-    <div>
-      <navbar />
-      <sidebar/>
-    </div>
+  <div>
+    <control-panel/>
+  </div>
 </template>
-
 <script>
-import Navbar from '@/components/pages/admin_page/Navbar'
-import Sidebar from '@/components/pages/panel'
+import ControlPanel from '@/components/templates/ControlPanel'
 
 export default {
-  name: 'employee',
+  name: 'p-employee',
   components: {
-    Navbar,
-    Sidebar
+    ControlPanel
   }
 }
 </script>

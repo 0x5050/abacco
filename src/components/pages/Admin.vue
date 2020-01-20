@@ -1,17 +1,19 @@
 <template>
-  <b-container fluid class="m-0 p-0">
-      <navbar />
-      <sidebar
-        root-path="admin"
-        :routes="routes"
-      />
-  </b-container>
+  <div>
+    <control-panel
+      :links="routes"
+      root-path="admin"
+    />
+  </div>
 </template>
 <script>
-import Navbar from '@/components/pages/admin_page/Navbar'
-import Sidebar from '@/components/pages/Panel'
+import ControlPanel from '@/components/templates/ControlPanel'
 
 export default {
+  name: 'p-admin',
+    components: {
+    ControlPanel
+  },
   data: () => ({
     routes: [
       {
@@ -30,10 +32,6 @@ export default {
         icon: 'document-text'
       }
     ]
-  }),
-  components: {
-    Navbar,
-    Sidebar
-  }
+  })
 }
 </script>
