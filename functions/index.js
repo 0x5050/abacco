@@ -19,7 +19,7 @@ exports.AddUserRole = functions.auth.user().onCreate(async (authUser) => {
     } catch (error) {
       console.log(error)
     }
-  } else console.log('Error AddUserRole')
+  }
 })
 
 exports.setUserRole = functions.https.onCall(async (data, context) => {
