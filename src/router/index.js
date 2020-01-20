@@ -3,10 +3,9 @@ import Router from 'vue-router'
 import Main from '@/components/pages/Main'
 import Login from '@/components/pages/Login'
 import Admin from '@/components/pages/Admin'
-import Employee from '@/components/pages/Worker'
+import Employee from '@/components/pages/Employee'
 
 import UserMenagment from '@/components/pages/admin_page/UserMenagment'
-
 // import firebase from 'firebase'
 
 Vue.use(Router)

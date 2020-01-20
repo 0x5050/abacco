@@ -5,7 +5,7 @@
               <b-nav-item
                 v-for="route in routes"
                 :key="route.path"
-                :to="'/admin' + route.path"
+                :to="'/'+ rootPath + route.path"
                 class="nav-link h4 mt-2 text-decoration-none"
               >
                 <b-icon :icon="route.icon" class=" float-left"/> {{ route.name }}
@@ -23,26 +23,11 @@ import {mapGetters, mapMutations} from 'vuex'
 
 export default {
   name: 'sidebar',
+  props: {
+    rootPath: {type: String, default: 'employee'},
+    routes: { type: Array, default: () => [] }
+  },
   data: () => ({
-    window_width: null,
-    routes: [
-      {
-        name: 'Panel',
-        path: '/',
-        icon: 'graph-up'
-      },
-      {
-        name: 'Użytkownicy',
-        path: '/user-menagment',
-        icon: 'person-fill'
-      },
-      {
-        name: 'Faktury',
-        path: '/invoices',
-        icon: 'document-text'
-      }
-    ],
-    transitionName: 'slide-right'
   }),
   computed: {
     ...mapGetters(['sidebar'])
