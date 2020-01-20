@@ -21,7 +21,7 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'login',
+  name: 'P-Login',
   data: () => ({
     login_form: {
       email: '',

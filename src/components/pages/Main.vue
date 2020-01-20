@@ -30,7 +30,7 @@ import Logo from '@/assets/logo.png'
 import img1 from '@/assets/img_2.jpg'
 import img2 from '@/assets/img_3.jpg'
 export default {
-  name: 'Main',
+  name: 'P-Main',
   components: {
     NavBar,
     Information,

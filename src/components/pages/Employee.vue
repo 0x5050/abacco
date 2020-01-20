@@ -7,7 +7,7 @@
 import ControlPanel from '@/components/templates/ControlPanel'
 
 export default {
-  name: 'p-employee',
+  name: 'P-Employee',
   components: {
     ControlPanel
   }

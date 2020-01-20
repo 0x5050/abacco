@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ImageSlider from '@/components/molecules/ImageSlider'
+import ImageSlider from '@/components/client_page/ImageSlider'
 export default {
   name: 'gallery',
   components: {

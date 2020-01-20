@@ -12,7 +12,7 @@ import ONavbar from '@/components/organisms/Navbar'
 import OPanel from '@/components/organisms/Panel'
 
 export default {
-  name: 't-control-panel',
+  name: 'T-Control-Panel',
   props: {
     links: { type: Array, default: () => [] },
     rootPath: { type: String, default: 'employee' }

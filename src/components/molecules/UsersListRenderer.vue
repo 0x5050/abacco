@@ -31,7 +31,7 @@
 <script>
 
 export default {
-  name: 'list-renderer',
+  name: 'M-Users-List-Renderer',
   props: {
     data: { type: Array, default: () => [] },
     usersList: { type: Array, default: () => [] }

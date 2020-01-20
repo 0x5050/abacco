@@ -10,7 +10,7 @@
 import ControlPanel from '@/components/templates/ControlPanel'
 
 export default {
-  name: 'p-admin',
+  name: 'P-Admin',
   components: {
     ControlPanel
   },

@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import ListRenderer from '@/components/pages/admin_page/users/ListRenderer'
+import ListRenderer from '@/components/molecules/UsersListRenderer'
 import firebase from 'firebase'
 
 export default {
-  name: 'user-menagment',
+  name: 'P-A-User-Menagment',
   components: {
     ListRenderer
   },
