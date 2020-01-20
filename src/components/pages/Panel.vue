@@ -27,8 +27,6 @@ export default {
     rootPath: {type: String, default: 'employee'},
     routes: { type: Array, default: () => [] }
   },
-  data: () => ({
-  }),
   computed: {
     ...mapGetters(['sidebar'])
   },

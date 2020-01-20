@@ -4,7 +4,7 @@
           <b-icon @click="set_sidebar()" icon="list"/>
       </b-button>
       <b-navbar-nav class="ml-auto">
-        <b-button @click="LogOut" variant="danger" size="md" class="">
+        <b-button @click="LogOut" variant="danger" size="md">
           <b-icon icon="power" /> Wyloguj
         </b-button>
       </b-navbar-nav>

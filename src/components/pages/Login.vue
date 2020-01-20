@@ -42,7 +42,7 @@ export default {
     LoginUser () {
       firebase.auth()
         .signInWithEmailAndPassword(this.login_form.email, this.login_form.password)
-        .then(this.$router.push('/admin'))
+        .then(this.$router.push('/employee'))
     },
     RegisterUser () {
       firebase.auth()
