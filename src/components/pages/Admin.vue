@@ -11,7 +11,7 @@ import ControlPanel from '@/components/templates/ControlPanel'
 
 export default {
   name: 'p-admin',
-    components: {
+  components: {
     ControlPanel
   },
   data: () => ({

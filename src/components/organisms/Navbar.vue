@@ -16,7 +16,7 @@ import firebase from 'firebase'
 import { mapMutations } from 'vuex'
 
 export default {
-  name: 'navbar',
+  name: 'o-navbar',
   methods: {
     ...mapMutations(['set_sidebar']),
     LogOut () {
