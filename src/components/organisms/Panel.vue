@@ -24,7 +24,10 @@ export default {
   props: {
     rootPath: {type: String, default: 'employee'},
     routes: { type: Array, default: () => [] }
-  }
+  },
+  data: () => ({
+    sidebar: true // TODO Repair this
+  })
 }
 </script>
 
