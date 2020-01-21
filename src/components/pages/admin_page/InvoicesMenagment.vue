@@ -5,7 +5,7 @@
             <b-row>
                 <b-col md>
                 <b-input-group prepend="Data">
-                    <b-input />
+                    <Datetime />
                 </b-input-group>
                 </b-col>
                 <b-col md>
@@ -41,13 +41,15 @@
 
 <script>
 import MInvoicesItemAdd from '@/components/molecules/InvoiceItemAdd'
+import { Datetime } from 'vue-datetime'
 
 import firebase from 'firebase'
 
 export default {
   name: 'P-A-Invoices-Menagment',
   components: {
-    MInvoicesItemAdd
+    MInvoicesItemAdd,
+    Datetime
   },
   data: () => ({
     invoice: {
