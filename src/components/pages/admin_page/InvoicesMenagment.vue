@@ -1,23 +1,54 @@
 <template>
     <div>
-        data: <b-input v-model="invoice.date"/> <br>
-        Wartość: <b-input v-model="invoice.worth"/> <br>
-        Nr Faktury: <b-input v-model="invoice.number"/> <br>
-        Przedmioty <button @click="addItem">Dodaj</button><br>
-        <div v-for="item in invoice.items_count" :key="item">
-            Nazwa: <b-input v-model="invoice.items[item - 1].name"/> <br>
-            Ilość: <b-input v-model="invoice.items[item - 1].count"/> <br>
-            Cena: <b-input v-model="invoice.items[item - 1].price"/> <br>
-        </div>
-        <b-button @click="saveInvoice">Zapisz</b-button>
+        <b-container class="pt-5">
+            <h1 class="text-left">Dodaj fakturę</h1>
+            <b-row>
+                <b-col md>
+                <b-input-group prepend="Data">
+                    <b-input />
+                </b-input-group>
+                </b-col>
+                <b-col md>
+                    <b-input-group prepend="Numer Faktury">
+                        <b-input />
+                    </b-input-group>
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col>
+                  <h3 class="text-left mt-2">Towary/Usługi</h3>
+                </b-col>
+            </b-row>
+            <m-invoices-item-add
+             v-for="item in invoice.items_count"
+             :key="item"
+             :value="invoice"
+             :iterator="item"
+             />
+            <b-button variant="success">
+                <b-icon icon="plus" font-scale="2" class="mt-1" @click="addItem"/>
+            </b-button>
+            <b-row>
+                <b-col md>
+                    <b-input-group prepend="Wartość">
+                        <b-input />
+                    </b-input-group>
+                </b-col>
+            </b-row>
+        </b-container>
     </div>
 </template>
 
 <script>
+import MInvoicesItemAdd from '@/components/molecules/InvoiceItemAdd'
+
 import firebase from 'firebase'
 
 export default {
   name: 'P-A-Invoices-Menagment',
+  components: {
+    MInvoicesItemAdd
+  },
   data: () => ({
     invoice: {
       date: '',
