@@ -19,19 +19,11 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations} from 'vuex'
-
 export default {
   name: 'O-Panel',
   props: {
     rootPath: {type: String, default: 'employee'},
     routes: { type: Array, default: () => [] }
-  },
-  computed: {
-    ...mapGetters(['sidebar'])
-  },
-  methods: {
-    ...mapMutations(['set_sidebar'])
   }
 }
 </script>
