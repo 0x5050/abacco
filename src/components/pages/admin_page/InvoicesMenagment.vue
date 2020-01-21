@@ -5,7 +5,7 @@
             <b-row>
                 <b-col md>
                 <b-input-group prepend="Data">
-                    <Datetime />
+                    <Datetime input-class="form-control"/>
                 </b-input-group>
                 </b-col>
                 <b-col md>
