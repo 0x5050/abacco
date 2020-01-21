@@ -6,6 +6,8 @@ import Admin from '@/components/pages/Admin'
 import Employee from '@/components/pages/Employee'
 
 import UserMenagment from '@/components/pages/admin_page/UserMenagment'
+import Invoices from '@/components/pages/admin_page/InvoicesMenagment'
+
 // import firebase from 'firebase'
 
 Vue.use(Router)
@@ -50,6 +52,10 @@ const router = new Router({
         {
           path: 'user-menagment',
           component: UserMenagment
+        },
+        {
+          path: 'invoices-menagment',
+          component: Invoices
         }
       ]
     }
