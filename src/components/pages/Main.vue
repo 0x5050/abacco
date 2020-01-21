@@ -20,17 +20,17 @@
 </template>
 
 <script>
-import NavBar from '@/components/pages/client_page/NavBar'
-import Information from '@/components/pages/client_page/Information'
-import Gallery from '@/components/pages/client_page/Gallery'
-import Services from '@/components/pages/client_page/Services'
-import Contact from '@/components/pages/client_page/Contact'
+import NavBar from '@/components/client_page/NavBar'
+import Information from '@/components/client_page/Information'
+import Gallery from '@/components/client_page/Gallery'
+import Services from '@/components/client_page/Services'
+import Contact from '@/components/client_page/Contact'
 
 import Logo from '@/assets/logo.png'
 import img1 from '@/assets/img_2.jpg'
 import img2 from '@/assets/img_3.jpg'
 export default {
-  name: 'Main',
+  name: 'P-Main',
   components: {
     NavBar,
     Information,

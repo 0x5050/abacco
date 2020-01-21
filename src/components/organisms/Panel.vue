@@ -22,7 +22,7 @@
 import {mapGetters, mapMutations} from 'vuex'
 
 export default {
-  name: 'sidebar',
+  name: 'O-Panel',
   props: {
     rootPath: {type: String, default: 'employee'},
     routes: { type: Array, default: () => [] }

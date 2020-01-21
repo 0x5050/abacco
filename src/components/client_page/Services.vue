@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import CollapsedServices from '@/components/molecules/CollapsedServices'
+import CollapsedServices from '@/components/client_page/CollapsedServices'
 export default {
   name: 'services',
   components: {
