@@ -1,42 +1,39 @@
 <template>
-    <div>
-        <b-container class="pt-5">
-            <h1 class="text-left">Dodaj fakturę</h1>
-            <b-row>
-                <b-col md>
-                <b-input-group prepend="Data">
-                    <Datetime input-class="form-control"/>
+    <b-container class="pt-5">
+        <b-row>
+            <b-col md>
+            <b-input-group prepend="Data">
+                <Datetime input-class="form-control"/>
+            </b-input-group>
+            </b-col>
+            <b-col md>
+                <b-input-group prepend="Numer Faktury">
+                    <b-input />
                 </b-input-group>
-                </b-col>
-                <b-col md>
-                    <b-input-group prepend="Numer Faktury">
-                        <b-input />
-                    </b-input-group>
-                </b-col>
-            </b-row>
-            <b-row>
-                <b-col>
-                  <h3 class="text-left mt-2">Towary/Usługi</h3>
-                </b-col>
-            </b-row>
+            </b-col>
+        </b-row>
+        <b-card class="mt-3 mb-3 text-left" title="Towary/Usługi">
             <m-invoices-item-add
-             v-for="item in invoice.items_count"
-             :key="item"
-             :value="invoice"
-             :iterator="item"
-             />
-            <b-button variant="success">
-                <b-icon icon="plus" font-scale="2" class="mt-1" @click="addItem"/>
-            </b-button>
-            <b-row>
-                <b-col md>
-                    <b-input-group prepend="Wartość">
-                        <b-input />
-                    </b-input-group>
-                </b-col>
-            </b-row>
-        </b-container>
-    </div>
+                v-for="item in invoice.items_count"
+                :key="item"
+                :value="invoice"
+                :iterator="item"
+                class="mt-4 mb-4"
+                />
+                <b-row class="ml-auto">
+                    <b-button @click="addItem" size="lg" variant="success" class="ml-auto mr-4">
+                        +
+                    </b-button>
+                </b-row>
+        </b-card>
+        <b-row>
+            <b-col md>
+                <b-input-group prepend="Wartość">
+                    <b-input />
+                </b-input-group>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
