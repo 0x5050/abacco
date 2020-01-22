@@ -56,7 +56,7 @@ const router = new Router({
         },
         {
           name: 'Faktury',
-          path: 'invoices-menagment',
+          path: 'invoices',
           component: Invoices
         }
       ]
