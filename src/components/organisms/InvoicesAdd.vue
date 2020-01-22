@@ -57,7 +57,7 @@ import { required } from 'vuelidate/lib/validators'
 import firebase from 'firebase'
 
 export default {
-  name: 'P-A-Invoices-Menagment',
+  name: 'O-Invoices-Add',
   components: {
     MInvoicesItemAdd,
     Datetime

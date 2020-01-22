@@ -47,7 +47,7 @@ import { DateTime } from 'luxon'
 import firebase from 'firebase'
 
 export default {
-  name: 'P-A-Invoices-Display',
+  name: 'O-Invoices-Display',
   components: {
   },
   data: () => ({

@@ -6,8 +6,7 @@ import Admin from '@/components/pages/Admin'
 import Employee from '@/components/pages/Employee'
 
 import UserMenagment from '@/components/pages/admin_page/UserMenagment'
-import Invoices from '@/components/pages/admin_page/InvoicesMenagment'
-import InvoicesDisplay from '@/components/pages/admin_page/InvoicesDisplay'
+import Invoices from '@/components/pages/admin_page/Invoices'
 
 // import firebase from 'firebase'
 
@@ -59,10 +58,6 @@ const router = new Router({
           name: 'Faktury',
           path: 'invoices-menagment',
           component: Invoices
-        },
-        {
-          path: 'invoices-display',
-          component: InvoicesDisplay
         }
       ]
     }
