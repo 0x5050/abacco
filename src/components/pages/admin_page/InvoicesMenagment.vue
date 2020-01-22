@@ -34,6 +34,7 @@
                 </b-input-group>
             </b-col>
         </b-row>
+        <b-button @click="saveInvoice">Zapisz</b-button>
     </b-container>
 </template>
 
@@ -66,9 +67,11 @@ export default {
     },
 
     saveInvoice () {
+      const regex = new RegExp('/', 'g')
+      const _ivoiceNumber = this.invoice.number.replace(regex, '_')
       firebase.firestore()
         .collection('invoices')
-        .doc(`${Date.now()}-${this.invoice.number}`)
+        .doc(`${Date.now()}-${_ivoiceNumber}`)
         .set(this.invoice)
     }
   }
