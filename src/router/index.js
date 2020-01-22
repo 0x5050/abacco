@@ -43,7 +43,7 @@ const router = new Router({
     },
     {
       path: '/admin',
-      name: 'admin',
+      name: 'Panel',
       component: Admin,
       meta: {
         requiresAuth: true,
@@ -51,10 +51,12 @@ const router = new Router({
       },
       children: [
         {
+          name: 'Użytkownicy',
           path: 'user-menagment',
           component: UserMenagment
         },
         {
+          name: 'Faktury',
           path: 'invoices-menagment',
           component: Invoices
         },
