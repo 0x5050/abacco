@@ -18,7 +18,7 @@ export default {
     invoice: state => state
   },
   mutations: {
-    set_invoice_value: (state, {param, value}) => { state[param] = value },
+    set_invoice_value: (state, {fieldName, value}) => { state[fieldName] = value },
     set_invoice_item_value: (state, {fieldName, index, value}) => { state.items[index - 1][fieldName] = value }
   },
   actions: {

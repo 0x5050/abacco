@@ -1,14 +1,15 @@
 <template>
     <b-container class="pt-5">
+        {{ invoice }}
         <b-row>
             <b-col md>
             <b-input-group prepend="Data">
-                <Datetime input-class="form-control"/>
+                <Datetime @input="setDate($event)" input-class="form-control"/>
             </b-input-group>
             </b-col>
             <b-col md>
                 <b-input-group prepend="Numer Faktury">
-                    <b-input />
+                    <b-input @input="set_invoice_value({fieldName: 'number', value: $event})"/>
                 </b-input-group>
             </b-col>
         </b-row>
@@ -29,7 +30,7 @@
         <b-row>
             <b-col md>
                 <b-input-group prepend="Wartość">
-                    <b-input />
+                    <b-input @input="set_invoice_value({fieldName: 'worth', value: $event})"/>
                 </b-input-group>
             </b-col>
         </b-row>
@@ -39,6 +40,8 @@
 <script>
 import MInvoicesItemAdd from '@/components/molecules/InvoiceItemAdd'
 import { Datetime } from 'vue-datetime'
+import { DateTime } from 'luxon'
+import { mapGetters, mapMutations } from 'vuex'
 
 import firebase from 'firebase'
 
@@ -48,23 +51,15 @@ export default {
     MInvoicesItemAdd,
     Datetime
   },
-  data: () => ({
-    invoice: {
-      date: '',
-      worth: 0,
-      number: '',
-      items_count: 1,
-      items: [
-        {
-          name: '',
-          count: 1,
-          price: 0,
-          vat_rate: 23
-        }
-      ]
-    }
-  }),
+  computed: {
+    ...mapGetters('invoices', ['invoice'])
+  },
   methods: {
+    ...mapMutations('invoices', ['set_invoice_value']),
+    setDate (event) {
+      const date = DateTime.fromISO(event).toFormat('D')
+      this.set_invoice_value({fieldName: 'date', value: date})
+    },
     addItem () {
       this.invoice.items_count++
       this.invoice.items.push({name: '', count: 1, price: 0, vat_rate: 23})
