@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import { store } from './store/index'
 import firebase from 'firebase'
+import Vuelidate from 'vuelidate'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -23,6 +24,8 @@ const config = {
 }
 
 firebase.initializeApp(config)
+
+Vue.use(Vuelidate)
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)

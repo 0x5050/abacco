@@ -9,7 +9,8 @@
             </b-col>
             <b-col md>
                 <b-input-group prepend="Numer Faktury">
-                    <b-input @input="set_invoice_value({fieldName: 'number', value: $event})"/>
+                    <b-input  v-model="$v.invoice.number.$model" :state="validation('number')"/>
+                    <b-form-invalid-feedback>Pole nie może być puste</b-form-invalid-feedback>
                 </b-input-group>
             </b-col>
         </b-row>
@@ -43,6 +44,7 @@ import MInvoicesItemAdd from '@/components/molecules/InvoiceItemAdd'
 import { Datetime } from 'vue-datetime'
 import { DateTime } from 'luxon'
 import { mapGetters, mapMutations } from 'vuex'
+import { required } from 'vuelidate/lib/validators'
 
 import firebase from 'firebase'
 
@@ -55,6 +57,13 @@ export default {
   computed: {
     ...mapGetters('invoices', ['invoice'])
   },
+  validations: {
+    invoice: {
+      number: {
+        required
+      }
+    }
+  },
   methods: {
     ...mapMutations('invoices', ['set_invoice_value']),
     setDate (event) {
@@ -64,6 +73,11 @@ export default {
     addItem () {
       this.invoice.items_count++
       this.invoice.items.push({name: '', count: 1, price: 0, vat_rate: 23})
+    },
+
+    validation (name) {
+      const { $dirty, $error } = this.$v.invoice[name]
+      return $dirty ? !$error : null
     },
 
     saveInvoice () {

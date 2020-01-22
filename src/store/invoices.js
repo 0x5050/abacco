@@ -3,7 +3,7 @@ export default {
   state: {
     date: '',
     worth: 0,
-    number: '',
+    number: null,
     items_count: 1,
     items: [
       {
