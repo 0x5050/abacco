@@ -1,10 +1,9 @@
 <template>
     <b-container class="pt-5">
-        {{ invoice }}
         <b-row>
             <b-col md>
             <b-input-group prepend="Data">
-                <Datetime @input="setDate($event)" input-class="form-control"/>
+                <Datetime v-model="invoice.date" :max-datetime="maxDate"  input-class="form-control"/>
             </b-input-group>
             </b-col>
             <b-col md>
@@ -41,9 +40,9 @@
 
 <script>
 import MInvoicesItemAdd from '@/components/molecules/InvoiceItemAdd'
-import { Datetime } from 'vue-datetime'
 import { DateTime } from 'luxon'
-import { mapGetters, mapMutations } from 'vuex'
+import { Datetime } from 'vue-datetime'
+import { mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 
 import firebase from 'firebase'
@@ -55,7 +54,10 @@ export default {
     Datetime
   },
   computed: {
-    ...mapGetters('invoices', ['invoice'])
+    ...mapGetters('invoices', ['invoice']),
+    maxDate () {
+      return DateTime.local().toString()
+    }
   },
   validations: {
     invoice: {
@@ -65,11 +67,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('invoices', ['set_invoice_value']),
-    setDate (event) {
-      const date = DateTime.fromISO(event).toFormat('D')
-      this.set_invoice_value({fieldName: 'date', value: date})
-    },
     addItem () {
       this.invoice.items_count++
       this.invoice.items.push({name: '', count: 1, price: 0, vat_rate: 23})

@@ -1,7 +1,9 @@
+import { DateTime } from 'luxon'
+
 export default {
   namespaced: true,
   state: {
-    date: '',
+    date: DateTime.local().toString(),
     worth: 0,
     number: null,
     items_count: 1,
@@ -15,7 +17,8 @@ export default {
     ]
   },
   getters: {
-    invoice: state => state
+    invoice: state => state,
+    invoice_date: state => DateTime.fromISO(state.date).toFormat('D')
   },
   mutations: {
     set_invoice_value: (state, {fieldName, value}) => { state[fieldName] = value },
