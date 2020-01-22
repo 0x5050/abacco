@@ -4,15 +4,17 @@
       v-for="invoice in invoices"
       :key="invoice.id"
       :title="invoice.number"
-      :sub-title="invoice.date"
+      :sub-title="invoiceDate(invoice.date)"
       class="text-left"
     >
-    <b-button v-b-toggle="invoice.number">
-      Rozwiń
-    </b-button>
-    <b-button variant="danger" @click="deleteInvoice(invoice.id)">
-      Usuń
-    </b-button>
+    <div class="mt-2 mb-2">
+      <b-button variant="danger" @click="deleteInvoice(invoice.id)">
+        Usuń
+      </b-button>
+      <b-button class="float-right" v-b-toggle="invoice.number">
+        Rozwiń
+      </b-button>
+    </div>
     <b-collapse :id="invoice.number">
       <b-card>
         <b-row>
@@ -41,6 +43,7 @@
 </template>
 
 <script>
+import { DateTime } from 'luxon'
 import firebase from 'firebase'
 
 export default {
@@ -51,6 +54,9 @@ export default {
     invoices: []
   }),
   methods: {
+    invoiceDate (date) {
+      return DateTime.fromISO(date).toFormat('D').toString()
+    },
     deleteInvoice (id) {
       firebase.firestore().collection('invoices').doc(id).delete()
       this.getInvoices()
