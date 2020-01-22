@@ -14,11 +14,13 @@ export default {
         price: 0,
         vat_rate: 23
       }
-    ]
+    ],
+    invoices: []
   },
   getters: {
     invoice: state => state,
-    invoice_date: state => DateTime.fromISO(state.date).toFormat('D')
+    invoice_date: state => DateTime.fromISO(state.date).toFormat('D'),
+    invoices: state => state.invoices
   },
   mutations: {
     set_invoice_value: (state, {fieldName, value}) => { state[fieldName] = value },

@@ -8,7 +8,7 @@
             </b-col>
             <b-col md>
                 <b-input-group prepend="Numer Faktury">
-                    <b-input  v-model="$v.invoice.number.$model" :state="validation('number')"/>
+                    <b-input  v-model="$v.invoice.number.$model" :state="validation('number')" placeholder="Pole wymagane"/>
                     <b-form-invalid-feedback>
                       Pole nie może być puste
                     </b-form-invalid-feedback>
@@ -36,14 +36,23 @@
         </b-card>
         <b-row>
             <b-col md>
-                <b-input-group prepend="Wartość">
+                <b-input-group prepend="Wartość" append="ZŁ">
                     <b-input
                       @input="set_invoice_value({fieldName: 'worth', value: $event})"
+                      type="number"
                     />
                 </b-input-group>
             </b-col>
         </b-row>
-        <b-button @click="saveInvoice">Zapisz</b-button>
+        <b-row class="ml-auto mt-2 mb-2">
+          <b-button
+            @click="saveInvoice"
+            variant="success"
+            :disabled="invoice.number === '' ||  invoice.number === null"
+          >
+            Zapisz
+          </b-button>
+        </b-row>
     </b-container>
 </template>
 
@@ -57,7 +66,7 @@ import { required } from 'vuelidate/lib/validators'
 import firebase from 'firebase'
 
 export default {
-  name: 'P-A-Invoices-Menagment',
+  name: 'O-Invoices-Add',
   components: {
     MInvoicesItemAdd,
     Datetime

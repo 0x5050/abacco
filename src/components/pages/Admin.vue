@@ -28,7 +28,7 @@ export default {
       },
       {
         name: 'Faktury',
-        path: '/invoices-menagment',
+        path: '/invoices',
         icon: 'document-text'
       }
     ]

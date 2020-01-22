@@ -45,18 +45,20 @@
 <script>
 import { DateTime } from 'luxon'
 import firebase from 'firebase'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-  name: 'P-A-Invoices-Display',
+  name: 'O-Invoices-Display',
   components: {
   },
-  data: () => ({
-    invoices: []
-  }),
+  computed: {
+    ...mapGetters('invoices', ['invoices'])
+  },
   mounted () {
     this.getInvoices()
   },
   methods: {
+    ...mapMutations('invoices', ['set_invoice_value']),
     invoiceDate (date) {
       return DateTime.fromISO(date).toFormat('D').toString()
     },
@@ -81,9 +83,8 @@ export default {
       return arr
     },
     async getInvoices () {
-      this.invoices = []
       const snapshot = await firebase.firestore().collection('invoices').get()
-      this.invoices = snapshot.docs.map(doc => doc.data())
+      this.set_invoice_value({fieldName: 'invoices', value: snapshot.docs.map(doc => doc.data())})
     }
   }
 }
