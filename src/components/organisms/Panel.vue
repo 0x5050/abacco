@@ -13,7 +13,8 @@
             </b-nav>
         </div>
         <div class="content p-0" :class="{content_extended: getSidebarStatus}" >
-            <router-view/>
+            <router-view v-if="$route.path != '/'+ rootPath" />
+            <slot v-else/>
         </div>
     </div>
 </template>
