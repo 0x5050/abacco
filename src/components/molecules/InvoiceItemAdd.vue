@@ -25,7 +25,7 @@
             </b-input-group>
         </b-col>
         <b-col md="1" class="text-left mt-1">
-            <b-button @click="removeItem" variant="danger">X</b-button>
+            <b-button @click="remove_item(iterator - 1)" variant="danger">X</b-button>
         </b-col>
     </b-row>
 </template>
@@ -71,10 +71,7 @@ export default {
     ...mapGetters('invoices', ['invoice'])
   },
   methods: {
-    ...mapMutations('invoices', ['set_invoice_item_value']),
-    removeItem () {
-
-    }
+    ...mapMutations('invoices', ['set_invoice_item_value', 'remove_item'])
   }
 }
 </script>

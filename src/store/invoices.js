@@ -22,7 +22,11 @@ export default {
   },
   mutations: {
     set_invoice_value: (state, {fieldName, value}) => { state[fieldName] = value },
-    set_invoice_item_value: (state, {fieldName, index, value}) => { state.items[index - 1][fieldName] = value }
+    set_invoice_item_value: (state, {fieldName, index, value}) => { state.items[index - 1][fieldName] = value },
+    remove_item: (state, payload) => {
+      state.items_count--
+      state.items.splice(payload, 1)
+    }
   },
   actions: {
   }
