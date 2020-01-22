@@ -53,6 +53,9 @@ export default {
   data: () => ({
     invoices: []
   }),
+  mounted () {
+    this.getInvoices()
+  },
   methods: {
     invoiceDate (date) {
       return DateTime.fromISO(date).toFormat('D').toString()
@@ -82,9 +85,6 @@ export default {
       const snapshot = await firebase.firestore().collection('invoices').get()
       this.invoices = snapshot.docs.map(doc => doc.data())
     }
-  },
-  mounted () {
-    this.getInvoices()
   }
 }
 </script>
