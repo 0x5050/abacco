@@ -89,9 +89,11 @@ export default {
     saveInvoice () {
       const regex = new RegExp('/', 'g')
       const _ivoiceNumber = this.invoice.number.replace(regex, '_')
+      const id = `${Date.now()}-${_ivoiceNumber}`
+      this.invoice.id = id
       firebase.firestore()
         .collection('invoices')
-        .doc(`${Date.now()}-${_ivoiceNumber}`)
+        .doc(id)
         .set(this.invoice)
     }
   }

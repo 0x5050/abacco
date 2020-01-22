@@ -1,15 +1,17 @@
 <template>
-  <b-container>
+  <b-container class="pt-5">
     <b-card
       v-for="invoice in invoices"
-      :key="invoice.number"
+      :key="invoice.id"
       :title="invoice.number"
       :sub-title="invoice.date"
+      class="text-left"
     >
-    <b-button
-      v-b-toggle="invoice.number"
-    >
+    <b-button v-b-toggle="invoice.number">
       Rozwiń
+    </b-button>
+    <b-button variant="danger" @click="deleteInvoice(invoice.id)">
+      Usuń
     </b-button>
     <b-collapse :id="invoice.number">
       <b-card>
@@ -49,6 +51,10 @@ export default {
     invoices: []
   }),
   methods: {
+    deleteInvoice (id) {
+      firebase.firestore().collection('invoices').doc(id).delete()
+      this.getInvoices()
+    },
     ItemList (items) {
       const arr = []
       let iterator = 0
@@ -64,12 +70,15 @@ export default {
         })
       })
       return arr
+    },
+    async getInvoices () {
+      this.invoices = []
+      const snapshot = await firebase.firestore().collection('invoices').get()
+      this.invoices = snapshot.docs.map(doc => doc.data())
     }
   },
-  async created () {
-    {
-      const snapshot = await firebase.firestore().collection('invoices').get()
-      this.invoices = snapshot.docs.map(doc => doc.data()) }
+  mounted () {
+    this.getInvoices()
   }
 }
 </script>
