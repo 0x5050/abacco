@@ -7,6 +7,7 @@
                 :key="route.path"
                 :to="'/'+ rootPath + route.path"
                 class="nav-link h4 mt-2 text-decoration-none"
+                :class="[$route.name === route.name ? 'nav-active' : '']"
               >
                 <b-icon :icon="route.icon" class=" float-left"/> {{ route.name }}
               </b-nav-item>
