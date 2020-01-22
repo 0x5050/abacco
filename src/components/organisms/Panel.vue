@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="sidebar bg-dark text-light" :class="{sidebar_hidden: sidebar}" >
+        <div class="sidebar bg-dark text-light" :class="{sidebar_hidden: getSidebarStatus}" >
             <b-nav vertical>
               <b-nav-item
                 v-for="route in routes"
@@ -12,13 +12,14 @@
               </b-nav-item>
             </b-nav>
         </div>
-        <div class="content p-0" :class="{content_extended: sidebar}" >
+        <div class="content p-0" :class="{content_extended: getSidebarStatus}" >
             <router-view/>
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'O-Panel',
   props: {
@@ -27,7 +28,10 @@ export default {
   },
   data: () => ({
     sidebar: true // TODO Repair this
-  })
+  }),
+  computed: {
+    ...mapGetters('sidebar', ['getSidebarStatus'])
+  }
 }
 </script>
 

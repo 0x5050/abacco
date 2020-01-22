@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="dark" class="text-light">
-      <b-button class="hide" variant="primary" aria-hidden="true" size="lg">
+      <b-button @click="setSidebarStatus" class="hide" variant="primary" aria-hidden="true" size="lg">
           <b-icon icon="list"/>
       </b-button>
       <b-navbar-nav class="ml-auto">
@@ -18,7 +18,7 @@ import { mapMutations } from 'vuex'
 export default {
   name: 'O-Navbar',
   methods: {
-    ...mapMutations(['set_sidebar']),
+    ...mapMutations('sidebar', ['setSidebarStatus']),
     LogOut () {
       firebase.auth().signOut()
         .then(user => {
