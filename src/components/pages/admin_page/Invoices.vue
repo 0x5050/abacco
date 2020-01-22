@@ -1,8 +1,10 @@
 <template>
   <b-container fluid>
-      <h1>Faktury</h1>
+      <h1 class="text-left">Faktury</h1>
       <b-button
         v-b-toggle="'add'"
+        variant="success"
+        size="lg"
       >
         Dodaj Fakturę
       </b-button>

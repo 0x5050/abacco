@@ -4,7 +4,7 @@
           v-for="input in inputs"
           :key="input.fieldName"
           class="mt-1"
-          md
+          lg
         >
             <b-input-group
               :prepend="input.title"
@@ -17,7 +17,7 @@
               />
             </b-input-group>
         </b-col>
-        <b-col md class="mt-1">
+        <b-col lg class="mt-1">
             <b-input-group prepend="VAT">
               <b-form-select
                 @input="set_invoice_item_value({fieldName: 'vat_rate', index: iterator, value: $event})"
@@ -26,7 +26,7 @@
               />
             </b-input-group>
         </b-col>
-        <b-col md="1" class="text-left mt-1">
+        <b-col lg="1" class="text-left mt-1">
             <b-button
               @click="remove_item(iterator - 1)"
               variant="danger"

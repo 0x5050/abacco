@@ -44,7 +44,7 @@
                 </b-input-group>
             </b-col>
         </b-row>
-        <b-row class="mt-2 float-right">
+        <b-row class="ml-auto mt-2 mb-2">
           <b-button
             @click="saveInvoice"
             variant="success"
