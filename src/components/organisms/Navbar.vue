@@ -4,6 +4,9 @@
           <b-icon icon="list"/>
       </b-button>
       <b-navbar-nav class="ml-auto">
+        <div class="mr-2">
+          {{ user }}
+        </div>
         <b-button @click="LogOut" variant="danger" size="md">
           <b-icon icon="power" /> Wyloguj
         </b-button>
@@ -17,6 +20,15 @@ import { mapMutations } from 'vuex'
 
 export default {
   name: 'O-Navbar',
+  data: () => ({
+    user: ''
+  }),
+  created () {
+    firebase.auth().currentUser.getIdTokenResult()
+      .then(tokenResult => {
+        this.user = tokenResult.claims.email
+      })
+  },
   methods: {
     ...mapMutations('sidebar', ['setSidebarStatus']),
     LogOut () {
