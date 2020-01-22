@@ -10,22 +10,29 @@
               :prepend="input.title"
               :append="input.append"
             >
-            <b-form-input
-              @input="set_invoice_item_value({fieldName: input.fieldName, index: iterator, value: $event})" :type="input.type"
-              :value="invoice.items[iterator - 1][input.fieldName]"
+              <b-form-input
+                @input="set_invoice_item_value({fieldName: input.fieldName, index: iterator, value: $event})"
+                :type="input.type"
+                :value="invoice.items[iterator - 1][input.fieldName]"
               />
             </b-input-group>
         </b-col>
         <b-col md class="mt-1">
             <b-input-group prepend="VAT">
-            <b-form-select
-              @input="set_invoice_item_value({fieldName: 'vat_rate', index: iterator, value: $event})" :options="vatRates"
-              :value="invoice.items[iterator - 1].vat_rate"
-            />
+              <b-form-select
+                @input="set_invoice_item_value({fieldName: 'vat_rate', index: iterator, value: $event})"
+                :options="vatRates"
+                :value="invoice.items[iterator - 1].vat_rate"
+              />
             </b-input-group>
         </b-col>
         <b-col md="1" class="text-left mt-1">
-            <b-button @click="remove_item(iterator - 1)" variant="danger">X</b-button>
+            <b-button
+              @click="remove_item(iterator - 1)"
+              variant="danger"
+            >
+              X
+            </b-button>
         </b-col>
     </b-row>
 </template>

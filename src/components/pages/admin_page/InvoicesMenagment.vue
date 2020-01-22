@@ -2,14 +2,16 @@
     <b-container class="pt-5">
         <b-row>
             <b-col md>
-            <b-input-group prepend="Data">
-                <Datetime v-model="invoice.date" :max-datetime="maxDate"  input-class="form-control"/>
-            </b-input-group>
+              <b-input-group prepend="Data">
+                  <Datetime v-model="invoice.date" :max-datetime="localDate"  input-class="form-control"/>
+              </b-input-group>
             </b-col>
             <b-col md>
                 <b-input-group prepend="Numer Faktury">
                     <b-input  v-model="$v.invoice.number.$model" :state="validation('number')"/>
-                    <b-form-invalid-feedback>Pole nie może być puste</b-form-invalid-feedback>
+                    <b-form-invalid-feedback>
+                      Pole nie może być puste
+                    </b-form-invalid-feedback>
                 </b-input-group>
             </b-col>
         </b-row>
@@ -22,7 +24,12 @@
                 class="mt-4 mb-4"
                 />
                 <b-row class="ml-auto">
-                    <b-button @click="addItem" size="lg" variant="success" class="ml-auto mr-4">
+                    <b-button
+                      @click="addItem"
+                      size="lg"
+                      variant="success"
+                      class="ml-auto mr-4"
+                    >
                         +
                     </b-button>
                 </b-row>
@@ -30,7 +37,9 @@
         <b-row>
             <b-col md>
                 <b-input-group prepend="Wartość">
-                    <b-input @input="set_invoice_value({fieldName: 'worth', value: $event})"/>
+                    <b-input
+                      @input="set_invoice_value({fieldName: 'worth', value: $event})"
+                    />
                 </b-input-group>
             </b-col>
         </b-row>
@@ -55,7 +64,7 @@ export default {
   },
   computed: {
     ...mapGetters('invoices', ['invoice']),
-    maxDate () {
+    localDate () {
       return DateTime.local().toString()
     }
   },
