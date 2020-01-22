@@ -1,23 +1,27 @@
 <template>
     <b-row>
-        <b-col md>
-            <b-input-group prepend="Nazwa">
-            <b-form-input type="text" />
+        <b-col
+          v-for="input in inputs"
+          :key="input.fieldName"
+          class="mt-1"
+          md
+        >
+            <b-input-group
+              :prepend="input.title"
+              :append="input.append"
+            >
+            <b-form-input
+              @input="set_invoice_item_value({fieldName: input.fieldName, index: iterator, value: $event})" :type="input.type"
+              :value="invoice.items[iterator - 1][input.fieldName]"
+              />
             </b-input-group>
         </b-col>
-        <b-col md>
-            <b-input-group prepend="Ilość">
-            <b-form-input type="number" />
-            </b-input-group>
-        </b-col>
-        <b-col md>
-            <b-input-group prepend="Cena" append="ZŁ">
-            <b-form-input type="number" />
-            </b-input-group>
-        </b-col>
-        <b-col md>
+        <b-col md class="mt-1">
             <b-input-group prepend="VAT">
-            <b-form-select :options="vatRates"/>
+            <b-form-select
+              @input="set_invoice_item_value({fieldName: 'vat_rate', index: iterator, value: $event})" :options="vatRates"
+              :value="invoice.items[iterator - 1].vat_rate"
+            />
             </b-input-group>
         </b-col>
         <b-col md="1" class="text-left mt-1">
@@ -27,6 +31,8 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from 'vuex'
+
 export default {
   name: 'M-Invoices-Item-Add',
   props: {
@@ -34,17 +40,40 @@ export default {
     iterator: { type: Number, default: null }
   },
   data: () => ({
+    inputs: [
+      {
+        title: 'Nazwa',
+        append: '',
+        type: 'text',
+        fieldName: 'name'
+      },
+      {
+        title: 'Ilość',
+        append: '',
+        type: 'number',
+        fieldName: 'count'
+      },
+      {
+        title: 'Cena',
+        append: 'ZŁ',
+        type: 'number',
+        fieldName: 'price'
+      }
+    ],
     vatRates: [
       { value: 0, text: '0%' },
       { value: 8, text: '8%' },
       { value: 12, text: '12%' },
-      { value: 24, text: '24%' }
+      { value: 23, text: '23%' }
     ]
   }),
+  computed: {
+    ...mapGetters('invoices', ['invoice'])
+  },
   methods: {
+    ...mapMutations('invoices', ['set_invoice_item_value']),
     removeItem () {
-      console.log(this.iterator)
-    //   arr.splice(this.iterator - 1, 1)
+
     }
   }
 }
