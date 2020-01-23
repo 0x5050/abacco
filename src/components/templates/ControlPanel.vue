@@ -4,7 +4,9 @@
       <o-panel
         :root-path="rootPath"
         :routes="links"
-      />
+      >
+        <slot />
+      </o-panel>
   </b-container>
 </template>
 <script>
