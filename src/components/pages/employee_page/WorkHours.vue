@@ -23,6 +23,14 @@
             max-rows="6"
             @input="setField({fieldName: 'description', value: $event})"
           />
+          <b-button
+            class="mt-3"
+            variant="success"
+            size="md"
+            @click="sendData()"
+          >
+            Zapisz
+          </b-button>
         </b-form-group>
       </b-card>
   </b-container>
@@ -30,7 +38,9 @@
 
 <script>
 import { Datetime } from 'vue-datetime'
+import { DateTime } from 'luxon'
 import { mapGetters, mapMutations } from 'vuex'
+import firebase from 'firebase'
 
 export default {
   name: 'P-E-Work-Hours',
@@ -62,7 +72,26 @@ export default {
     ...mapGetters('employeehours', ['add'])
   },
   methods: {
-    ...mapMutations('employeehours', ['setField'])
+    ...mapMutations('employeehours', ['setField']),
+    async sendData () {
+      let uid
+      await firebase.auth().onAuthStateChanged((user) => {
+        uid = user.uid
+      })
+      const ISODate = DateTime.fromISO(this.add.date)
+      const year = ISODate.toFormat('yyyy')
+      const month = ISODate.toFormat('MM')
+      const fullDate = ISODate.toFormat('D')
+
+      const obj = {}
+
+      obj[fullDate] = this.add
+
+      firebase.firestore()
+        .collection('employee-hours')
+        .doc(`${uid}-${month}-${year}`)
+        .set(obj, {merge: true})
+    }
   }
 }
 </script>
