@@ -60,7 +60,7 @@
 import MInvoicesItemAdd from '@/components/molecules/InvoiceItemAdd'
 import { DateTime } from 'luxon'
 import { Datetime } from 'vue-datetime'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 
 import firebase from 'firebase'
@@ -85,6 +85,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('alert', ['setAlert']),
     addItem () {
       this.invoice.items_count++
       this.invoice.items.push({name: '', count: 1, price: 0, vat_rate: 23})
@@ -104,6 +105,11 @@ export default {
         .collection('invoices')
         .doc(id)
         .set(this.invoice)
+      this.setAlert({
+        message: 'Zapisano fakturę ' + this.invoice.number,
+        variant: 'success',
+        duration: 2
+      })
     }
   }
 }
