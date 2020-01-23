@@ -1,6 +1,5 @@
 <template>
   <b-container class="pt-5">
-    {{ add }}
       <b-card class="text-left font-weight-bolder ml-auto mr-auto">
         <b-form-group
           v-for="(input, index) in inputs"
@@ -15,6 +14,7 @@
             :title="input.title"
             :minute-step="10"
             @input="setField({fieldName: input.fieldName, value: $event})"
+            :value="addDate[input.fieldName].toString()"
           />
         </b-form-group >
         <b-form-group label="Opis" class="w-75 ml-auto mr-auto">
@@ -69,7 +69,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters('employeehours', ['add'])
+    ...mapGetters('employeehours', ['addDate'])
   },
   methods: {
     ...mapMutations('employeehours', ['setField']),
@@ -78,14 +78,14 @@ export default {
       await firebase.auth().onAuthStateChanged((user) => {
         uid = user.uid
       })
-      const ISODate = DateTime.fromISO(this.add.date)
-      const year = ISODate.toFormat('yyyy')
-      const month = ISODate.toFormat('MM')
-      const fullDate = ISODate.toFormat('D')
+      const date = DateTime.fromISO(this.addDate.date)
+      const year = date.toFormat('yyyy')
+      const month = date.toFormat('MM')
+      const fullDate = date.toFormat('D')
 
       const obj = {}
 
-      obj[fullDate] = this.add
+      obj[fullDate] = this.addDate
 
       firebase.firestore()
         .collection('employee-hours')
