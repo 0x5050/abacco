@@ -8,7 +8,7 @@
       class="text-left"
     >
     <div class="mt-2 mb-2">
-      <b-button variant="danger" @click="deleteInvoice(invoice.id)">
+      <b-button variant="danger" @click="deleteInvoice(invoice.id, invoice.number)">
         Usuń
       </b-button>
       <b-button class="float-right" v-b-toggle="invoice.number">
@@ -59,12 +59,18 @@ export default {
   },
   methods: {
     ...mapMutations('invoices', ['set_invoice_value']),
+    ...mapMutations('alert', ['setAlert']),
     invoiceDate (date) {
       return DateTime.fromISO(date).toFormat('D').toString()
     },
-    deleteInvoice (id) {
+    deleteInvoice (id, number) {
       firebase.firestore().collection('invoices').doc(id).delete()
       this.getInvoices()
+      this.setAlert({
+        message: 'Usunięto fakturę ' + number,
+        variant: 'danger',
+        duration: 2
+      })
     },
     ItemList (items) {
       const arr = []

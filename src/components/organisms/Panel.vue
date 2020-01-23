@@ -14,6 +14,14 @@
             </b-nav>
         </div>
         <div class="content p-0" :class="{content_extended: getSidebarStatus}" >
+            <b-alert
+              class="w-50 ml-auto mr-auto"
+              :show="getAlert.duration"
+              :variant="getAlert.variant"
+              fade
+            >
+              {{ getAlert.message }}
+            </b-alert>
             <router-view v-if="$route.path != '/'+ rootPath" />
             <slot v-else/>
         </div>
@@ -29,7 +37,8 @@ export default {
     routes: { type: Array, default: () => [] }
   },
   computed: {
-    ...mapGetters('sidebar', ['getSidebarStatus'])
+    ...mapGetters('sidebar', ['getSidebarStatus']),
+    ...mapGetters('alert', ['getAlert'])
   }
 }
 </script>
