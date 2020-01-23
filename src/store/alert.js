@@ -11,7 +11,16 @@ export default {
     getAlert: state => state.alert
   },
   mutations: {
-    setAlert: (state, payload) => { state.alert = payload }
+    setAlert: (state, payload) => {
+      state.alert = payload
+      setTimeout(() => {
+        state.alert = {
+          message: '',
+          variant: '',
+          duration: 0
+        }
+      }, 1000)
+    }
   },
   actions: {
   }
