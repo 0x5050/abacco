@@ -12,20 +12,25 @@ import firebase from 'firebase'
 export default {
   name: 'P-A-Employee-Hours',
   data: () => ({
-    users: [],
-    hours: [],
     result: []
   }),
   async created () {
-    const users = await firebase.firestore().collection('roles').get()
+    const firestore = firebase.firestore()
+    const users = await firestore.collection('roles').get()
+    const employeeHours = await firestore.collection('employee-hours').get()
+    const _usersArr = []
+    const _employeeHoursArr = []
+
     users.docs.map(doc => {
-      this.users.push({email: doc.data().email, uid: doc.id})
+      _usersArr.push({
+        email: doc.data().email,
+        uid: doc.id
+      })
     })
 
-    const hours = await firebase.firestore().collection('employee-hours').get()
-    hours.docs.map(doc => {
+    employeeHours.docs.map(doc => {
       const documentID = doc.id
-      this.hours.push({
+      _employeeHoursArr.push({
         uid: documentID.slice(0, 28),
         month: documentID.slice(29, 31),
         year: documentID.slice(32, 37),
@@ -33,9 +38,11 @@ export default {
         email: ''
       })
     })
-    let i = 0
-    this.users.forEach(user => {
-      this.hours.forEach(hour => {
+
+    let id = 0
+
+    _usersArr.forEach(user => {
+     _employeeHoursArr.forEach(hour => {
         if (hour.uid === user.uid) {
           this.result.push({
             email: user.email,
@@ -43,9 +50,9 @@ export default {
             month: hour.month,
             year: hour.year,
             data: hour.data,
-            id: i
+            id: id
           })
-          i++
+          id++
         }
       })
     })
