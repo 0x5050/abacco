@@ -22,8 +22,13 @@
             >
               {{ getAlert.message }}
             </b-alert>
+            <transition
+              name="fade"
+              mode="out-in"
+            >
             <router-view v-if="$route.path != '/'+ rootPath" />
             <slot v-else/>
+            </transition>
         </div>
     </div>
 </template>
