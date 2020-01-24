@@ -7,7 +7,8 @@ export default {
       date: DateTime.local(),
       start: DateTime.fromObject({hour: 7}),
       stop: DateTime.fromObject({hour: 15}),
-      description: ''
+      description: '',
+      verified: false
     }
   },
   getters: {

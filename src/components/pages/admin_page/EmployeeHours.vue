@@ -9,24 +9,30 @@
       v-b-toggle="month.id"
     >
     <b-collapse :id="month.id">
-      <span v-for="day in month.data" :key="day.value" class="mt-1">
-        <b-row class="mt-2">
-          <b-col
-            v-for="field in fields"
-            :key="field.prepend"
-            lg
-          >
-            <b-input-group :prepend="field.prepend">
-              <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
-            </b-input-group>
-          </b-col>
-          <b-col lg>
-            <b-input-group prepend="Opis">
-              <b-input disabled :value="day.description"/>
-            </b-input-group>
-          </b-col>
-        </b-row>
-      </span>
+      <b-card>
+        <span v-for="day in month.data" :key="day.value" class="mt-1">
+          <b-row class="mt-2">
+            <b-col
+              v-for="field in fields"
+              :key="field.prepend"
+              lg
+            >
+              <b-input-group :prepend="field.prepend">
+                <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
+              </b-input-group>
+            </b-col>
+            <b-col lg>
+              <b-input-group prepend="Opis">
+                <b-input disabled :value="day.description"/>
+              </b-input-group>
+            </b-col>
+            <b-col lg class="d-flex">
+              <span class="mt-1">Zweryfikowane:</span>
+              <b-checkbox class="ml-1" size="lg" @change="verifyHour(month, day)"/>
+            </b-col>
+          </b-row>
+        </span>
+      </b-card>
     </b-collapse>
     </b-card>
   </b-container>
@@ -34,7 +40,7 @@
 
 <script>
 import { DateTime } from 'luxon'
-import firebase from 'firebase'
+import firebase, { firestore } from 'firebase'
 
 export default {
   name: 'P-A-Employee-Hours',
@@ -56,9 +62,20 @@ export default {
         format: 'H',
         value: 'stop'
       }
-    ]
+    ],
+    status: ''
   }),
   methods: {
+    async verifyHour (month, day) {
+      const _fullDate = DateTime.fromISO(day.date).toFormat('yyyy-LL-dd')
+      const _obj = {}
+      day.verified = !day.verified
+      _obj[_fullDate] = day
+      await firebase.firestore()
+        .collection('employee-hours')
+        .doc(`${month.uid}-${month.month}-${month.year}`)
+        .set(_obj, {merge: true})
+    },
     dateFormat (value, type) {
       return DateTime.fromISO(value).toFormat(type)
     },
