@@ -6,6 +6,7 @@ import Admin from '@/components/pages/Admin'
 import Employee from '@/components/pages/Employee'
 
 import UserMenagment from '@/components/pages/admin_page/UserMenagment'
+import PAEmployeeHours from '@/components/pages/admin_page/EmployeeHours'
 import Invoices from '@/components/pages/admin_page/Invoices'
 
 import PECalendarDisplay from '@/components/pages/employee_page/CalendarDisplay'
@@ -73,6 +74,11 @@ const router = new Router({
           name: 'Faktury',
           path: 'invoices',
           component: Invoices
+        },
+        {
+          name: 'Godziny',
+          path: 'hours',
+          component: PAEmployeeHours
         }
       ]
     }

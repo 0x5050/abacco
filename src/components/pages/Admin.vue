@@ -30,6 +30,11 @@ export default {
         name: 'Faktury',
         path: '/invoices',
         icon: 'document-text'
+      },
+      {
+        name: 'Godziny',
+        path: '/hours',
+        icon: 'calendar'
       }
     ]
   })
