@@ -1,19 +1,110 @@
 <template>
-  <div>
-  <div v-for="hour in result" :key="hour.id">
-    {{ hour.email }} {{ hour.month }} {{ hour.year }} <br>
-  </div>
-  </div>
+  <b-container class="pt-5">
+    <b-card
+      v-for="month in years"
+      :key="month.id"
+      :title="month.email"
+      :sub-title="`${getMonth(Number(month.month))} ${month.year}`"
+      class="text-left mt-1"
+      v-b-toggle="month.id"
+    >
+    <b-collapse :id="month.id">
+      <span v-for="day in month.data" :key="day.value" class="mt-1">
+        <b-row class="mt-2">
+          <b-col
+            v-for="field in fields"
+            :key="field.prepend"
+            lg
+          >
+            <b-input-group :prepend="field.prepend">
+              <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
+            </b-input-group>
+          </b-col>
+          <b-col lg>
+            <b-input-group prepend="Opis">
+              <b-input disabled :value="day.description"/>
+            </b-input-group>
+          </b-col>
+        </b-row>
+      </span>
+    </b-collapse>
+    </b-card>
+  </b-container>
 </template>
 
 <script>
+import { DateTime } from 'luxon'
 import firebase from 'firebase'
 
 export default {
   name: 'P-A-Employee-Hours',
   data: () => ({
-    result: []
+    years: [],
+    fields: [
+      {
+        prepend: 'Data',
+        format: 'D',
+        value: 'date'
+      },
+      {
+        prepend: 'Początek',
+        format: 'H',
+        value: 'start'
+      },
+      {
+        prepend: 'Koniec',
+        format: 'H',
+        value: 'stop'
+      }
+    ]
   }),
+  methods: {
+    dateFormat (value, type) {
+      return DateTime.fromISO(value).toFormat(type)
+    },
+    getMonth (item) {
+      let month = ''
+      switch (item) {
+        case 1:
+          month = 'Styczeń'
+          break
+        case 2:
+          month = 'Luty'
+          break
+        case 3:
+          month = 'Marzec'
+          break
+        case 4:
+          month = 'Kwiecień'
+          break
+        case 5:
+          month = 'Maj'
+          break
+        case 6:
+          month = 'Czerwiec'
+          break
+        case 7:
+          month = 'Lipiec'
+          break
+        case 8:
+          month = 'Sierpień'
+          break
+        case 9:
+          month = 'Wrzesień'
+          break
+        case 10:
+          month = 'Październik'
+          break
+        case 11:
+          month = 'Listopad'
+          break
+        case 12:
+          month = 'Grudzień'
+          break
+      }
+      return `${month}`
+    }
+  },
   async created () {
     const firestore = firebase.firestore()
     const users = await firestore.collection('roles').get()
@@ -42,15 +133,15 @@ export default {
     let id = 0
 
     _usersArr.forEach(user => {
-     _employeeHoursArr.forEach(hour => {
+      _employeeHoursArr.forEach(hour => {
         if (hour.uid === user.uid) {
-          this.result.push({
+          this.years.push({
             email: user.email,
             uid: user.uid,
             month: hour.month,
             year: hour.year,
             data: hour.data,
-            id: id
+            id: id.toString()
           })
           id++
         }
