@@ -10,7 +10,7 @@
     >
     <b-collapse :id="month.id">
       <b-card>
-        <span v-for="(day, i) in month.data" :key="day.value" class="mt-1">
+        <span v-for="(day, date) in month.data" :key="day.value" class="mt-1">
           <b-row class="mt-2">
             <b-col
               v-for="field in fields"
@@ -34,7 +34,7 @@
                 @change="verifyHour(month, day)"
                 :value="true"
                 :unchecked-value="false"
-                v-model="employeeHoursArr[index].data[i].verified"
+                v-model="employeeHoursArr[index].data[date].verified"
               />
             </b-col>
           </b-row>
@@ -72,12 +72,11 @@ export default {
     ],
     employeeHoursArr: []
   }),
-    async created () {
+  async created () {
     const firestore = firebase.firestore()
     const users = await firestore.collection('roles').get()
     const employeeHours = await firestore.collection('employee-hours').get()
     const _usersArr = []
-    const _employeeHoursArr = []
 
     users.docs.map(doc => {
       _usersArr.push({
@@ -173,6 +172,6 @@ export default {
       }
       return `${month}`
     }
-  },
+  }
 }
 </script>
