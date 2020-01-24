@@ -28,7 +28,14 @@
             </b-col>
             <b-col lg class="d-flex">
               <span class="mt-1">Zweryfikowane:</span>
-              <b-checkbox class="ml-1" size="lg" @change="verifyHour(month, day)" :value="true" :unchecked-value="false" v-model="status[index].data[i].verified"/>
+              <b-checkbox
+                class="ml-1"
+                size="lg"
+                @change="verifyHour(month, day)"
+                :value="true"
+                :unchecked-value="false"
+                v-model="employeeHoursArr[index].data[i].verified"
+              />
             </b-col>
           </b-row>
         </span>
@@ -63,24 +70,63 @@ export default {
         value: 'stop'
       }
     ],
-    lol: true,
-    status: []
+    employeeHoursArr: []
   }),
+    async created () {
+    const firestore = firebase.firestore()
+    const users = await firestore.collection('roles').get()
+    const employeeHours = await firestore.collection('employee-hours').get()
+    const _usersArr = []
+    const _employeeHoursArr = []
+
+    users.docs.map(doc => {
+      _usersArr.push({
+        email: doc.data().email,
+        uid: doc.id
+      })
+    })
+
+    employeeHours.docs.map(doc => {
+      const documentID = doc.id
+      this.employeeHoursArr.push({
+        uid: documentID.slice(0, 28),
+        month: documentID.slice(29, 31),
+        year: documentID.slice(32, 37),
+        data: doc.data(),
+        email: ''
+      })
+    })
+
+    let id = 0
+
+    _usersArr.forEach(user => {
+      this.employeeHoursArr.forEach(hour => {
+        if (hour.uid === user.uid) {
+          this.years.push({
+            email: user.email,
+            uid: user.uid,
+            month: hour.month,
+            year: hour.year,
+            data: hour.data,
+            id: id.toString()
+          })
+          id++
+        }
+      })
+    })
+  },
   methods: {
     async verifyHour (month, day) {
       const _fullDate = DateTime.fromISO(day.date).toFormat('yyyy-LL-dd')
       const _obj = {}
+
       day.verified = !day.verified
       _obj[_fullDate] = day
+
       await firebase.firestore()
         .collection('employee-hours')
         .doc(`${month.uid}-${month.month}-${month.year}`)
         .set(_obj, {merge: true})
-    },
-    get (month, day) {
-      console.log('month', month)
-      console.log('day', day)
-      console.log('status', this.status)
     },
     dateFormat (value, type) {
       return DateTime.fromISO(value).toFormat(type)
@@ -128,57 +174,5 @@ export default {
       return `${month}`
     }
   },
-  async created () {
-    const firestore = firebase.firestore()
-    const users = await firestore.collection('roles').get()
-    const employeeHours = await firestore.collection('employee-hours').get()
-    const _usersArr = []
-    const _employeeHoursArr = []
-
-    users.docs.map(doc => {
-      _usersArr.push({
-        email: doc.data().email,
-        uid: doc.id
-      })
-    })
-
-    employeeHours.docs.map(doc => {
-      const documentID = doc.id
-      _employeeHoursArr.push({
-        uid: documentID.slice(0, 28),
-        month: documentID.slice(29, 31),
-        year: documentID.slice(32, 37),
-        data: doc.data(),
-        email: ''
-      })
-      this.status.push({
-        uid: documentID.slice(0, 28),
-        month: documentID.slice(29, 31),
-        year: documentID.slice(32, 37),
-        data: doc.data(),
-        email: ''
-      })
-    })
-
-    console.log(_employeeHoursArr)
-
-    let id = 0
-
-    _usersArr.forEach(user => {
-      _employeeHoursArr.forEach(hour => {
-        if (hour.uid === user.uid) {
-          this.years.push({
-            email: user.email,
-            uid: user.uid,
-            month: hour.month,
-            year: hour.year,
-            data: hour.data,
-            id: id.toString()
-          })
-          id++
-        }
-      })
-    })
-  }
 }
 </script>
