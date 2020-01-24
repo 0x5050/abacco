@@ -81,7 +81,7 @@ export default {
       const date = DateTime.fromISO(this.addDate.date)
       const year = date.toFormat('yyyy')
       const month = date.toFormat('MM')
-      const fullDate = date.toFormat('D')
+      const fullDate = date.toFormat('yyyy-LL-dd')
 
       const obj = {}
 
