@@ -1,8 +1,8 @@
 <template>
   <div>
-    <control-panel>
-      <p-e-work-hours />
-      <p-e-calendar-display />
+    <control-panel
+      :links="routes"
+    >
     </control-panel>
   </div>
 </template>
@@ -17,6 +17,20 @@ export default {
     ControlPanel,
     PEWorkHours,
     PECalendarDisplay
-  }
+  },
+  data: () => ({
+    routes: [
+      {
+        name: 'Praca',
+        path: '/work',
+        icon: 'wrench'
+      },
+      {
+        name: 'Kalendarz',
+        path: '/calendar',
+        icon: 'calendar'
+      }
+    ]
+  })
 }
 </script>
