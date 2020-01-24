@@ -19,7 +19,7 @@ export default {
           variant: '',
           duration: 0
         }
-      }, 1000)
+      }, 2000)
     }
   },
   actions: {

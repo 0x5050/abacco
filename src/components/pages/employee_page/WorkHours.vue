@@ -73,6 +73,7 @@ export default {
   },
   methods: {
     ...mapMutations('employeehours', ['setField']),
+    ...mapMutations('alert', ['setAlert']),
     async sendData () {
       let uid
       await firebase.auth().onAuthStateChanged((user) => {
@@ -87,10 +88,15 @@ export default {
 
       obj[fullDate] = this.addDate
 
-      firebase.firestore()
+      await firebase.firestore()
         .collection('employee-hours')
         .doc(`${uid}-${month}-${year}`)
         .set(obj, {merge: true})
+      this.setAlert({
+        message: 'Zapisano',
+        variant: 'success',
+        duration: 2
+      })
     }
   }
 }
