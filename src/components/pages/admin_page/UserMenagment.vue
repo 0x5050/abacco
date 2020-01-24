@@ -23,6 +23,7 @@
 <script>
 import ListRenderer from '@/components/molecules/UsersListRenderer'
 import firebase from 'firebase'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'P-A-User-Menagment',
@@ -52,6 +53,7 @@ export default {
       })
   },
   methods: {
+    ...mapMutations('alert', ['setAlert']),
     Save () {
       this.data.forEach(user => {
         let permission
@@ -71,13 +73,21 @@ export default {
       const data = { uid: uid, role: { [event]: true } }
       const userIndex = this.usersList.findIndex(user => user.id === uid)
       const _userName = this.usersList[userIndex].email
+      const self = this
       addMessage(data)
-        .then(function (result) {
-          console.log(result)
-          console.log('Zapisano', _userName)
+        .then(result => {
+          self.setAlert({
+            message: 'Zapisano ' + _userName,
+            variant: 'success',
+            duration: 2
+          })
         })
-        .catch(function (error) {
-          console.log(error)
+        .catch(error => {
+          self.setAlert({
+            message: 'Błąd: ' + error,
+            variant: 'danger',
+            duration: 2
+          })
         })
     }
 
