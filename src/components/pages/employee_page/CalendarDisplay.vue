@@ -1,32 +1,28 @@
 <template>
   <div>
-    <b-card v-for="item in data" :key="item.date" :title="getMonth(item)" class="text-left" v-b-toggle="item">
+    <b-card
+      v-for="item in data"
+      :key="item.date"
+      :title="getMonth(item)"
+      class="text-left mt-2"
+      v-b-toggle="item"
+    >
       <b-collapse :id="item">
-        <span v-for="i in item" :key="i.date">
+        <span
+          v-for="i in item"
+          :key="i.date"
+        >
           <b-row class="mt-2">
-            <b-col lg>
-              <b-input-group prepend="Data">
-                <b-input disabled :value="dateFormat(i.date, 'D')"/>
+            <b-col
+              v-for="field in fields"
+              :key="field.prepend"
+              lg
+            >
+              <b-input-group :prepend="field.prepend">
+                <b-input disabled :value="dateFormat(i[field.value], field.format)"/>
               </b-input-group>
             </b-col>
-            <b-col lg>
-              <b-input-group prepend="Start">
-                <b-input disabled :value="dateFormat(i.start, 'H')"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg>
-              <b-input-group prepend="Stop">
-                <b-input disabled :value="dateFormat(i.stop, 'H')"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg>
-              <b-input-group prepend="Opis">
-                <b-input disabled :value="i.description"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg>
-              Status
-            </b-col>
+
           </b-row>
         </span>
       </b-collapse>
@@ -42,7 +38,28 @@ export default {
   name: 'P-E-Calendar-Display',
   data: () => ({
     uid: '',
-    data: []
+    data: [],
+    fields: [
+      {
+        prepend: 'Data',
+        format: 'D',
+        value: 'date'
+      },
+      {
+        prepend: 'Start',
+        format: 'H',
+        value: 'start'
+      },
+      {
+        prepend: 'Stop',
+        format: 'H',
+        value: 'stop'
+      },
+      {
+        prepend: 'Opis',
+        value: 'description'
+      }
+    ]
   }),
   methods: {
     getMonth (item) {
