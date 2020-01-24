@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <b-container class="pt-5">
     <b-card
-      v-for="item in data"
-      :key="item.date"
-      :title="getMonth(item)"
-      class="text-left mt-2"
-      v-b-toggle="item"
+      v-for="month in data"
+      :key="month.date"
+      :title="getMonth(month)"
+      class="text-left mt-1"
+      v-b-toggle="Object.keys(month).join()"
     >
-      <b-collapse :id="item">
+      <b-collapse :id="Object.keys(month).join()">
         <span
-          v-for="i in item"
-          :key="i.date"
+          v-for="day in month"
+          :key="day.date"
         >
           <b-row class="mt-2">
             <b-col
@@ -19,7 +19,12 @@
               lg
             >
               <b-input-group :prepend="field.prepend">
-                <b-input disabled :value="dateFormat(i[field.value], field.format)"/>
+                <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
+              </b-input-group>
+            </b-col>
+            <b-col lg>
+              <b-input-group prepend="Opis">
+                <b-input disabled :value="day.description"/>
               </b-input-group>
             </b-col>
 
@@ -27,7 +32,7 @@
         </span>
       </b-collapse>
     </b-card >
-  </div>
+  </b-container>
 </template>
 
 <script>
@@ -46,18 +51,14 @@ export default {
         value: 'date'
       },
       {
-        prepend: 'Start',
+        prepend: 'Początek',
         format: 'H',
         value: 'start'
       },
       {
-        prepend: 'Stop',
+        prepend: 'Koniec',
         format: 'H',
         value: 'stop'
-      },
-      {
-        prepend: 'Opis',
-        value: 'description'
       }
     ]
   }),
@@ -65,7 +66,46 @@ export default {
     getMonth (item) {
       const firstDate = Object.keys(item)[0]
       const date = DateTime.fromISO(firstDate)
-      return `${date.month}.${date.year}`
+      let month = ''
+      switch (date.month) {
+        case 1:
+          month = 'Styczeń'
+          break
+        case 2:
+          month = 'Luty'
+          break
+        case 3:
+          month = 'Marzec'
+          break
+        case 4:
+          month = 'Kwiecień'
+          break
+        case 5:
+          month = 'Maj'
+          break
+        case 6:
+          month = 'Czerwiec'
+          break
+        case 7:
+          month = 'Lipiec'
+          break
+        case 8:
+          month = 'Sierpień'
+          break
+        case 9:
+          month = 'Wrzesień'
+          break
+        case 10:
+          month = 'Październik'
+          break
+        case 11:
+          month = 'Listopad'
+          break
+        case 12:
+          month = 'Grudzień'
+          break
+      }
+      return `${month} ${date.year}`
     },
     dateFormat (value, type) {
       return DateTime.fromISO(value).toFormat(type)
