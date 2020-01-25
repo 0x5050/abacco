@@ -1,6 +1,8 @@
 <template>
   <b-container fluid class="m-0 p-0">
-      <o-navbar />
+      <o-navbar
+        :root-path="rootPath"
+      />
       <o-panel
         :root-path="rootPath"
         :routes="links"

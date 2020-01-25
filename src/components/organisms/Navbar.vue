@@ -1,15 +1,34 @@
 <template>
   <b-navbar sticky toggleable="lg" type="dark" variant="dark" class="text-light">
-      <b-button @click="setSidebarStatus" class="hide" variant="primary" aria-hidden="true" size="lg">
-          <b-icon icon="list"/>
-      </b-button>
-      <b-navbar-nav class="ml-auto">
-        <div class="mr-2">
-          {{ user }}
-        </div>
-        <b-button @click="LogOut" variant="danger" size="md">
-          <b-icon icon="power" /> Wyloguj
-        </b-button>
+    <b-navbar-nav class="mr-auto align-middle">
+      <b-container>
+        <b-row>
+          <b-col>
+            <b-button @click="setSidebarStatus" class="hide" variant="primary" aria-hidden="true" size="lg">
+                <b-icon icon="list" scale="1.5" class="pt-1"/>
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-container>
+    </b-navbar-nav>
+      <b-navbar-nav class="ml-auto align-middle">
+        <b-container>
+          <b-row>
+            <b-col md class="d-flex">
+              <p class="m-auto align-middle font-weight-bolder align-self-center">{{ user }} </p>
+            </b-col>
+            <b-col md class="d-flex">
+              <b-button class="w-100 mr-auto ml-auto align-middle mr-5" variant="info" :to="`/${rootPath}/settings`">
+                <b-icon icon="gear" scale="2" class="pt-1 mr-1" /> Ustawienia
+              </b-button>
+            </b-col>
+            <b-col md class="d-flex">
+              <b-button class="w-100 mr-auto ml-auto align-middle mr-5" @click="LogOut" variant="danger" size="md">
+                <b-icon icon="power" scale="2" class="pt-1" /> Wyloguj
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-container>
       </b-navbar-nav>
   </b-navbar>
 </template>
@@ -20,6 +39,9 @@ import { mapMutations } from 'vuex'
 
 export default {
   name: 'O-Navbar',
+  props: {
+    rootPath: {type: String, default: 'employee'}
+  },
   data: () => ({
     user: ''
   }),
