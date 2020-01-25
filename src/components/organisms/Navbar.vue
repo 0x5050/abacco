@@ -18,7 +18,7 @@
               <p class="m-auto align-middle font-weight-bolder align-self-center">{{ user }} </p>
             </b-col>
             <b-col md class="d-flex">
-              <b-button class="w-100 mr-auto ml-auto align-middle mr-5" variant="info">
+              <b-button class="w-100 mr-auto ml-auto align-middle mr-5" variant="info" :to="`/${rootPath}/settings`">
                 <b-icon icon="gear" scale="2" class="pt-1 mr-1" /> Ustawienia
               </b-button>
             </b-col>
@@ -39,6 +39,9 @@ import { mapMutations } from 'vuex'
 
 export default {
   name: 'O-Navbar',
+  props: {
+    rootPath: {type: String, default: 'employee'}
+  },
   data: () => ({
     user: ''
   }),

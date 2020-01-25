@@ -5,6 +5,8 @@ import Login from '@/components/pages/Login'
 import Admin from '@/components/pages/Admin'
 import Employee from '@/components/pages/Employee'
 
+import Settings from '@/components/pages/Settings'
+
 import UserMenagment from '@/components/pages/admin_page/UserMenagment'
 import PAEmployeeHours from '@/components/pages/admin_page/EmployeeHours'
 import Invoices from '@/components/pages/admin_page/Invoices'
@@ -53,6 +55,11 @@ const router = new Router({
           name: 'Praca',
           path: 'work',
           component: PEWorkHours
+        },
+        {
+          name: 'Ustawienia',
+          path: 'settings',
+          component: Settings
         }
       ]
     },
@@ -79,6 +86,11 @@ const router = new Router({
           name: 'Godziny',
           path: 'hours',
           component: PAEmployeeHours
+        },
+        {
+          name: 'Ustawienia',
+          path: 'settings',
+          component: Settings
         }
       ]
     }
