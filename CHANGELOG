@@ -1,0 +1,10 @@
+# CHANGELOG
+All notable changes to this project will be documented in this file.
+
+## [0.0.2] - 1.26.2020
+### Added
+- Added router push when user is logged in
+
+## [0.1.0] - 1.26.2020
+### Deploy
+- First deploy
