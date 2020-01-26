@@ -13,6 +13,7 @@
             :type="input.type"
             :title="input.title"
             :minute-step="10"
+            :max-datetime="todayDate"
             @input="setField({fieldName: input.fieldName, value: $event})"
             :value="addDate[input.fieldName].toString()"
           />
@@ -69,7 +70,11 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters('employeehours', ['addDate'])
+    ...mapGetters('employeehours', ['addDate']),
+    todayDate () {
+      const date = new Date()
+      return date.toISOString()
+    }
   },
   methods: {
     ...mapMutations('employeehours', ['setField']),
