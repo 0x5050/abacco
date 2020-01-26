@@ -40,6 +40,7 @@
                     <b-input
                       @input="set_invoice_value({fieldName: 'worth', value: $event})"
                       type="number"
+                      :value="invoiceWorth()"
                     />
                 </b-input-group>
             </b-col>
@@ -86,6 +87,13 @@ export default {
   },
   methods: {
     ...mapMutations('alert', ['setAlert']),
+    invoiceWorth () {
+      let result = 0
+      this.invoice.items.forEach(item => {
+        result += (item.price * (1 + (item.vat_rate / 100))) * item.count
+      })
+      return result
+    },
     addItem () {
       this.invoice.items_count++
       this.invoice.items.push({name: '', count: 1, price: 0, vat_rate: 23})
