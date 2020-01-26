@@ -10,8 +10,8 @@
           :second-images="slusarka_img"
         />
         <services
-          :first-services="building_services"
-          :second-services="locksmith_services"
+          :first-services="locksmith_services"
+          :second-services="building_services"
         />
         <contact
           :companies="companies"
@@ -86,16 +86,6 @@ export default {
     ],
     companies: [
       {
-        company: 'PPUH Agat Krystyna Cierlicka',
-        nip: '1234 1234 1234 1234',
-        street: 'Warneńska 12c/2',
-        zip: '80-288',
-        city: 'Gdańsk',
-        phone: '123 345 789',
-        email: 'uslugibudowlane@gmail.com',
-        services: 'Usługi budowlane'
-      },
-      {
         company: 'PPUH Abacco Krzysztof Żurek',
         nip: '1234 1234 1234 1244',
         street: 'Aleja Grunwaldzka 238d',
@@ -104,6 +94,16 @@ export default {
         phone: '123 345 789',
         email: 'usługislusarskie@gmail.com',
         services: 'Usługi ślusarskie'
+      },
+      {
+        company: 'PPUH Agat Krystyna Cierlicka',
+        nip: '1234 1234 1234 1234',
+        street: 'Warneńska 12c/2',
+        zip: '80-288',
+        city: 'Gdańsk',
+        phone: '123 345 789',
+        email: 'uslugibudowlane@gmail.com',
+        services: 'Usługi budowlane'
       }
     ],
     budowa_img: [

@@ -3,14 +3,14 @@
         <b-row>
             <b-col md>
                 <image-slider
-                    title="Wykończenie Wnętrz"
+                    title=" Ślusarka budowlana"
                     :images="firstImages"
                 />
             </b-col>
 
             <b-col md>
                 <image-slider
-                    title="Ślusarka budowlana"
+                    title="Wykończenie Wnętrz"
                     :images="secondImages"
                 />
             </b-col>
