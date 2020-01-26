@@ -22,7 +22,6 @@
       <b-button
         class="mt-3 d-block mr-auto"
         variant="info"
-        size="lg"
         v-b-modal="'register-modal'"
       >
         Zarejestruj
@@ -31,7 +30,6 @@
         class="mt-3 d-block ml-auto"
         variant="success"
         type="submit"
-        size="lg"
       >
         Zaloguj
       </b-button>
@@ -43,7 +41,6 @@
       :key="input.name"
       :prepend="input.name"
       class="mt-3"
-      size="lg"
     >
       <b-input
         v-model="register_form[input.type]"
@@ -53,7 +50,6 @@
     <b-button
         class="mt-3 d-block ml-auto"
         variant="success"
-        size="lg"
         @click="RegisterUser"
     >
         Zarejestruj
@@ -93,6 +89,7 @@ export default {
         firebase.auth().currentUser.getIdTokenResult()
           .then(tokenResult => {
             console.log('Zalogowano:', tokenResult.claims.email)
+            this.$router.push('/employee')
           })
       }
     })
