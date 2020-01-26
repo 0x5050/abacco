@@ -1,14 +1,10 @@
-stages:
-  - test
-  - build
-  - deploy
+image: node:latest
 
-test:
-  stage: test
-  script:
-    - npm install && npm run dev
+cache:
+  paths:
+    - node_modules/
 
-build:
-  stage: build
+test_async:
   script:
-    -npm install && npm run build
+    - npm install
+    - node npm start
