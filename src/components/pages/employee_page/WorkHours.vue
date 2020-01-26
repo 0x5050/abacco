@@ -50,6 +50,7 @@ export default {
     Datetime
   },
   data: () => ({
+    todayDate: new Date().toISOString(),
     minDate: '2020-01-01T00:00:00.000Z',
     inputs: [
       {
@@ -72,11 +73,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters('employeehours', ['addDate']),
-    todayDate () {
-      const date = new Date()
-      return date.toISOString()
-    }
+    ...mapGetters('employeehours', ['addDate'])
   },
   methods: {
     ...mapMutations('employeehours', ['setField']),
