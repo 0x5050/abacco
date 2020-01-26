@@ -4,11 +4,11 @@ export default {
   namespaced: true,
   state: {
     add: {
-      date: DateTime.local(),
-      start: DateTime.fromObject({hour: 7}),
-      stop: DateTime.fromObject({hour: 15}),
-      description: '',
-      verified: false
+      data: DateTime.local(),
+      godzina_rozpoczęcia: DateTime.fromObject({hour: 7}),
+      godzina_zakończenia: DateTime.fromObject({hour: 15}),
+      opis: '',
+      zweryfikowane: false
     }
   },
   getters: {
