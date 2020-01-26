@@ -1,49 +1,28 @@
 <template>
   <b-container class="pt-5">
-
-    <div v-for="month in result" :key="Object.keys(month).toString()">
-      {{ Object.keys(month) }}
-      <div v-for="days in month" :key="Object.keys(days).toString()">
-        <b-table
-          :items="prepareData(days)"
-        />
-      </div>
-    </div>
-
+    <b-input-group prepend="Rok" size="lg">
+      <b-select :options="options" v-model="year"/>
+    </b-input-group>
     <b-card
-      v-for="month in data"
-      :key="month.date"
-      :title="getMonth(month)"
+      v-for="month in months"
+      :key="Object.keys(month).toString()"
+      :title="Object.keys(month).join()"
       class="text-left mt-1"
     >
     <b-button
       v-b-toggle="Object.keys(month).join()"
       variant="info"
-      @click="test"
     >
       Rozwiń
     </b-button>
       <b-collapse :id="Object.keys(month).join()">
         <span
-          v-for="day in month"
-          :key="day.date"
+          v-for="days in month"
+          :key="Object.keys(days).toString()"
         >
-          <b-row class="mt-2">
-            <b-col
-              v-for="field in fields"
-              :key="field.prepend"
-              lg
-            >
-              <b-input-group :prepend="field.prepend">
-                <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg>
-              <b-input-group prepend="Opis">
-                <b-input disabled :value="day.description"/>
-              </b-input-group>
-            </b-col>
-          </b-row>
+        <b-table
+          :items="prepareDate(days)"
+        />
         </span>
       </b-collapse>
     </b-card >
@@ -58,7 +37,14 @@ export default {
   name: 'P-E-Calendar-Display',
   data: () => ({
     uid: '',
-    data: [],
+    months: [],
+    year: '2020',
+    // TODO refresh on @change
+    options: [
+      {
+        value: '2020', text: '2020'
+      }
+    ],
     fields: [
       {
         prepend: 'Data',
@@ -75,23 +61,15 @@ export default {
         format: 'H:mm',
         value: 'stop'
       }
-    ],
-    result: [],
-    table: []
+    ]
   }),
-  mounted () {
-    console.log('result', this.result)
-  },
   methods: {
-    prepareData (obj) {
-      let arr = []
-      console.log(obj)
-      const o = Object.keys(obj)
-      for (let i of o) {
-        console.log(i)
-        arr.push(obj[i])
+    prepareDate (days) {
+      const arr = []
+      const _objectKeys = Object.keys(days)
+      for (let objectKey of _objectKeys) {
+        arr.push(days[objectKey])
       }
-      console.log(arr)
       return arr
     },
     getMonth (item) {
@@ -108,11 +86,10 @@ export default {
     await firebase.auth().onAuthStateChanged(user => {
       this.uid = user.uid
     })
-    await firebase.firestore().collection('employee-hours').doc(this.uid).collection('2020').get()
+    await firebase.firestore().collection('employee-hours').doc(this.uid).collection(this.year).get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          console.log(doc.id, ' => ', doc.data())
-          this.result.push({[doc.id]: doc.data()})
+          this.months.push({[doc.id]: doc.data()})
         })
       })
   }
