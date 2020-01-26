@@ -1,36 +1,36 @@
 <template>
-    <div>
-        <div class="sidebar bg-dark text-light" :class="{sidebar_hidden: getSidebarStatus}" >
-            <b-nav vertical>
-              <b-nav-item
-                v-for="route in routes"
-                :key="route.path"
-                :to="'/'+ rootPath + route.path"
-                class="nav-link h4 mt-2 text-decoration-none"
-                :class="[$route.name === route.name ? 'nav-active' : '']"
-              >
-                <b-icon :icon="route.icon" class=" float-left"/> {{ route.name }}
-              </b-nav-item>
-            </b-nav>
-        </div>
-        <div class="content p-0 lol" :class="{content_extended: getSidebarStatus}" >
-            <b-alert
-              class="w-50 ml-auto mr-auto"
-              :show="getAlert.duration"
-              :variant="getAlert.variant"
-              fade
-            >
-              {{ getAlert.message }}
-            </b-alert>
-            <transition
-              name="fade"
-              mode="out-in"
-            >
-            <router-view v-if="$route.path != '/'+ rootPath" />
-            <slot v-else/>
-            </transition>
-        </div>
+  <div>
+    <div class="sidebar bg-dark text-light" :class="{sidebar_hidden: getSidebarStatus}" >
+      <b-nav vertical>
+        <b-nav-item
+          v-for="route in routes"
+          :key="route.path"
+          :to="'/'+ rootPath + route.path"
+          class="nav-link h4 mt-2 text-decoration-none"
+          :class="[$route.name === route.name ? 'nav-active' : '']"
+        >
+          <b-icon :icon="route.icon" class="float-left"/> {{ route.name }}
+        </b-nav-item>
+      </b-nav>
     </div>
+    <div class="content p-0" :class="{content_extended: getSidebarStatus}" >
+      <b-alert
+        class="w-50 ml-auto mr-auto"
+        :show="getAlert.duration"
+        :variant="getAlert.variant"
+        fade
+      >
+        {{ getAlert.message }}
+      </b-alert>
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <router-view v-if="$route.path != '/'+ rootPath" />
+        <slot v-else/>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script>
