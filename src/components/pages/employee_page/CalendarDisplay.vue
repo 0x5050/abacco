@@ -5,8 +5,13 @@
       :key="month.date"
       :title="getMonth(month)"
       class="text-left mt-1"
-      v-b-toggle="Object.keys(month).join()"
     >
+    <b-button
+      v-b-toggle="Object.keys(month).join()"
+      variant="info"
+    >
+      Rozwiń
+    </b-button>
       <b-collapse :id="Object.keys(month).join()">
         <span
           v-for="day in month"
