@@ -1,7 +1,7 @@
 <template>
   <b-container class="pt-5">
     <b-input-group prepend="Rok" size="lg">
-      <b-select :options="options" v-model="year"/>
+      <b-select @change="fetchData" :options="options" v-model="year"/>
     </b-input-group>
     <b-card
       v-for="month in months"
@@ -31,67 +31,50 @@
 
 <script>
 import firebase from 'firebase'
-import { DateTime } from 'luxon'
 
 export default {
   name: 'P-E-Calendar-Display',
   data: () => ({
     uid: '',
     months: [],
-    year: '2020',
-    // TODO refresh on @change
-    options: [
-      {
-        value: '2020', text: '2020'
-      }
-    ],
-    fields: [
-      {
-        prepend: 'Data',
-        format: 'D',
-        value: 'date'
-      },
-      {
-        prepend: 'Początek',
-        format: 'H:mm',
-        value: 'start'
-      },
-      {
-        prepend: 'Koniec',
-        format: 'H:mm',
-        value: 'stop'
-      }
-    ]
+    year: new Date().getFullYear().toString(),
+    options: []
   }),
-  methods: {
-    prepareDate (days) {
-      const arr = []
-      const _objectKeys = Object.keys(days)
-      for (let objectKey of _objectKeys) {
-        arr.push(days[objectKey])
-      }
-      return arr
-    },
-    getMonth (item) {
-      const firstDate = Object.keys(item)[0]
-      const date = DateTime.fromISO(firstDate)
-      const result = `${date.monthLong.charAt(0).toUpperCase() + date.monthLong.slice(1)} ${date.year}`
-      return result
-    },
-    dateFormat (value, type) {
-      return DateTime.fromISO(value).toFormat(type)
-    }
-  },
   async created () {
     await firebase.auth().onAuthStateChanged(user => {
       this.uid = user.uid
     })
-    await firebase.firestore().collection('employee-hours').doc(this.uid).collection(this.year).get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          this.months.push({[doc.id]: doc.data()})
+    this.fetchData()
+  },
+  mounted () {
+    const minYear = 2020
+    let _year = new Date().getFullYear()
+    for (_year; _year >= minYear; _year--) {
+      this.options.push({value: _year.toString(), text: _year.toString()})
+    }
+  },
+  methods: {
+    prepareDate (days) {
+      const _arr = []
+      const _objectKeys = Object.keys(days)
+      for (let objectKey of _objectKeys) {
+        _arr.push(days[objectKey])
+      }
+      return _arr
+    },
+    async fetchData () {
+      this.months = []
+      await firebase.firestore()
+        .collection('employee-hours')
+        .doc(this.uid)
+        .collection(this.year.toString())
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.months.push({[doc.id]: doc.data()})
+          })
         })
-      })
+    }
   }
 }
 </script>
