@@ -13,7 +13,7 @@
               </b-nav-item>
             </b-nav>
         </div>
-        <div class="content p-0" :class="{content_extended: getSidebarStatus}" >
+        <div class="content p-0 lol" :class="{content_extended: getSidebarStatus}" >
             <b-alert
               class="w-50 ml-auto mr-auto"
               :show="getAlert.duration"
@@ -72,6 +72,8 @@ export default {
 .content {
     margin-left: 250px;
     transition: ease 1s;
+    min-height: 90vh;
+    background-color: #f5f5f5
 }
 @media only screen and (max-width: 750px) {
     .sidebar_hidden {
