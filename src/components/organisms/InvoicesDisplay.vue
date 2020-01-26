@@ -19,38 +19,40 @@
       <b-card>
         <b-row>
           <b-col>
-            <h1>Sprzedawca</h1>
+            <h1>
+              Sprzedawca
+            </h1>
           </b-col>
           <b-col>
-            <h1>Nabywca</h1>
+            <h1>
+              Nabywca
+            </h1>
           </b-col>
         </b-row>
-        <b-row>
+          <b-row>
             <b-card title="Towary/Usługi" class="w-100 text-left">
-                <b-table
-                  responsive
-                  striped
-                  hover
-                  stacked="md"
-                  :items="ItemList(invoice.items)"
-                />
+              <b-table
+                responsive
+                striped
+                hover
+                stacked="md"
+                :items="ItemList(invoice.items)"
+              />
             </b-card>
-        </b-row>
-      </b-card>
-    </b-collapse>
+          </b-row>
+        </b-card>
+      </b-collapse>
     </b-card>
   </b-container>
 </template>
 
 <script>
-import { DateTime } from 'luxon'
 import firebase from 'firebase'
+import { DateTime } from 'luxon'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'O-Invoices-Display',
-  components: {
-  },
   computed: {
     ...mapGetters('invoices', ['invoices'])
   },
