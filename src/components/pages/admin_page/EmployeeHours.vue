@@ -61,12 +61,12 @@ export default {
       },
       {
         prepend: 'Początek',
-        format: 'H',
+        format: 'H:mm',
         value: 'start'
       },
       {
         prepend: 'Koniec',
-        format: 'H',
+        format: 'H:mm',
         value: 'stop'
       }
     ],
