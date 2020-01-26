@@ -128,7 +128,6 @@ export default {
         .set(_obj, {merge: true})
     },
     dateFormat (value, type) {
-      console.log(value)
       return DateTime.fromISO(value).toFormat(type)
     },
     getMonth (item) {
