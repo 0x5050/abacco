@@ -83,7 +83,7 @@ export default {
           ilość: item.count,
           cena_netto: item.price + 'zł',
           vat: item.vat_rate + '%',
-          cena_brutto: item.price * (1 + (item.vat_rate / 100))
+          cena_brutto: (item.price * (1 + (item.vat_rate / 100))) * item.count
         })
       })
       return arr
