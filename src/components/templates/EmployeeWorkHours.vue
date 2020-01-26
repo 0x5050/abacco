@@ -6,8 +6,13 @@
       :title="month.email"
       :sub-title="`${getMonth(Number(month.month))} ${month.year}`"
       class="text-left mt-1"
-      v-b-toggle="month.id"
     >
+    <b-button
+      v-b-toggle="month.id"
+      variant="info"
+    >
+      Rozwiń
+    </b-button>
     <b-collapse :id="month.id">
       <b-card>
         <span v-for="(day, date) in month.data" :key="day.value" class="mt-1">
@@ -29,7 +34,7 @@
             <b-col lg class="d-flex">
               <span class="mt-1">Zweryfikowane:</span>
               <b-checkbox
-                class="ml-1"
+                class="ml-2"
                 size="lg"
                 @change="verifyHour(month, day)"
                 :value="true"
