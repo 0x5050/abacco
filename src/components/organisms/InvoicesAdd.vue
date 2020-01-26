@@ -1,70 +1,70 @@
 <template>
-    <b-container class="pt-5">
-        <b-row>
-            <b-col md>
-              <b-input-group prepend="Data">
-                  <Datetime v-model="invoice.date" :max-datetime="localDate"  input-class="form-control"/>
-              </b-input-group>
-            </b-col>
-            <b-col md>
-                <b-input-group prepend="Numer Faktury">
-                    <b-input  v-model="$v.invoice.number.$model" :state="validation('number')" placeholder="Pole wymagane"/>
-                    <b-form-invalid-feedback>
-                      Pole nie może być puste
-                    </b-form-invalid-feedback>
-                </b-input-group>
-            </b-col>
-        </b-row>
-        <b-card class="mt-3 mb-3 text-left" title="Towary/Usługi">
-            <m-invoices-item-add
-                v-for="item in invoice.items_count"
-                :key="item"
-                :value="invoice"
-                :iterator="item"
-                class="mt-4 mb-4"
-                />
-                <b-row class="ml-auto">
-                    <b-button
-                      @click="addItem"
-                      size="lg"
-                      variant="success"
-                      class="ml-auto mr-4"
-                    >
-                        +
-                    </b-button>
-                </b-row>
-        </b-card>
-        <b-row>
-            <b-col md>
-                <b-input-group prepend="Wartość" append="ZŁ">
-                    <b-input
-                      @input="set_invoice_value({fieldName: 'worth', value: $event})"
-                      type="number"
-                      :value="invoiceWorth()"
-                    />
-                </b-input-group>
-            </b-col>
-        </b-row>
-        <b-row class="ml-auto mt-2 mb-2">
-          <b-button
-            @click="saveInvoice"
-            variant="success"
-            :disabled="invoice.number === '' ||  invoice.number === null"
-          >
-            Zapisz
-          </b-button>
-        </b-row>
-    </b-container>
+  <b-container class="pt-5">
+    <b-row>
+      <b-col md>
+        <b-input-group prepend="Data">
+          <Datetime v-model="invoice.date" :max-datetime="todayDate"  input-class="form-control"/>
+        </b-input-group>
+      </b-col>
+      <b-col md>
+        <b-input-group prepend="Numer Faktury">
+          <b-input  v-model="$v.invoice.number.$model" :state="validation('number')" placeholder="Pole wymagane"/>
+          <b-form-invalid-feedback>
+            {{ validationMessage }}
+          </b-form-invalid-feedback>
+        </b-input-group>
+      </b-col>
+    </b-row>
+    <b-card class="mt-3 mb-3 text-left" title="Towary/Usługi">
+      <m-invoices-item-add
+        v-for="item in invoice.items_count"
+        :key="item"
+        :value="invoice"
+        :iterator="item"
+        class="mt-4 mb-4"
+      />
+      <b-row class="ml-auto">
+        <b-button
+          @click="addItem"
+          size="lg"
+          variant="success"
+          class="ml-auto mr-4"
+        >
+          +
+        </b-button>
+      </b-row>
+    </b-card>
+    <b-row>
+      <b-col md>
+        <b-input-group prepend="Wartość" append="ZŁ">
+          <b-input
+            @input="set_invoice_value({fieldName: 'worth', value: $event})"
+            type="number"
+            :value="invoiceWorth()"
+          />
+        </b-input-group>
+      </b-col>
+    </b-row>
+    <b-row class="ml-auto mt-2 mb-2">
+      <b-button
+        @click="saveInvoice"
+        variant="success"
+        :disabled="invoice.number === '' ||  invoice.number === null"
+      >
+        Zapisz
+      </b-button>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
 import MInvoicesItemAdd from '@/components/molecules/InvoiceItemAdd'
+
+import firebase from 'firebase'
 import { DateTime } from 'luxon'
 import { Datetime } from 'vue-datetime'
 import { mapGetters, mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
-
-import firebase from 'firebase'
 
 export default {
   name: 'O-Invoices-Add',
@@ -72,18 +72,12 @@ export default {
     MInvoicesItemAdd,
     Datetime
   },
+  data: () => ({
+    validationMessage: 'Pole nie może być puste',
+    todayDate: DateTime.local().toString()
+  }),
   computed: {
-    ...mapGetters('invoices', ['invoice']),
-    localDate () {
-      return DateTime.local().toString()
-    }
-  },
-  validations: {
-    invoice: {
-      number: {
-        required
-      }
-    }
+    ...mapGetters('invoices', ['invoice'])
   },
   methods: {
     ...mapMutations('alert', ['setAlert']),
@@ -118,6 +112,13 @@ export default {
         variant: 'success',
         duration: 2
       })
+    }
+  },
+  validations: {
+    invoice: {
+      number: {
+        required
+      }
     }
   }
 }

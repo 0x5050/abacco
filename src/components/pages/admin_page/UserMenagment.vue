@@ -1,96 +1,14 @@
 <template>
-    <b-container fluid>
-      <div class="w-100">
-      <b-row>
-        <list-renderer
-          class="mt-5"
-          :data="data"
-          :users-list="usersList"
-        />
-      </b-row>
-      <b-row class="mt-5">
-        <b-col class="text-right mr-4">
-          <b-button-group size="lg">
-            <b-button variant="danger" class="mr-3" @click="Reset()">Resetuj</b-button>
-            <b-button variant="success" @click="Save()">Zapisz</b-button>
-          </b-button-group>
-        </b-col>
-      </b-row>
-      </div>
-    </b-container>
+  <t-user-menagment />
 </template>
 
 <script>
-import ListRenderer from '@/components/molecules/UsersListRenderer'
-import firebase from 'firebase'
-import { mapMutations } from 'vuex'
+import TUserMenagment from '@/components/templates/UserMenagment'
 
 export default {
   name: 'P-A-User-Menagment',
   components: {
-    ListRenderer
-  },
-  data: () => ({
-    data: [],
-    usersList: []
-  }),
-  created () {
-    firebase.auth().onAuthStateChanged(user => {
-      this.user = user
-    })
-    firebase.firestore().collection('roles').get()
-      .then(snap => {
-        snap.forEach(doc => {
-          let user = doc.data()
-          user.id = doc.id
-          this.usersList.push(user)
-          let permission = Object.keys(user.role).toString()
-          if (permission === 'admin') permission = true
-          else if (permission === 'employee') permission = false
-          else permission = undefined
-          this.data.push({value: permission, id: user.id})
-        })
-      })
-  },
-  methods: {
-    ...mapMutations('alert', ['setAlert']),
-    Save () {
-      this.data.forEach(user => {
-        let permission
-        if (user.value === true) permission = 'admin'
-        else if (user.value === false) permission = 'employee'
-        else permission = 'error'
-        this.ChangeRole(user.id, permission)
-      })
-    },
-
-    Reset () {
-      window.location.reload(true)
-    },
-
-    ChangeRole (uid, event) {
-      const addMessage = firebase.functions().httpsCallable('setUserRole')
-      const data = { uid: uid, role: { [event]: true } }
-      const userIndex = this.usersList.findIndex(user => user.id === uid)
-      const _userName = this.usersList[userIndex].email
-      const self = this
-      addMessage(data)
-        .then(result => {
-          self.setAlert({
-            message: 'Zapisano ' + _userName,
-            variant: 'success',
-            duration: 2
-          })
-        })
-        .catch(error => {
-          self.setAlert({
-            message: 'Błąd: ' + error,
-            variant: 'danger',
-            duration: 2
-          })
-        })
-    }
-
+    TUserMenagment
   }
 }
 </script>
