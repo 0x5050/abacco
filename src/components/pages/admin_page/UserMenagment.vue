@@ -1,43 +1,51 @@
 <template>
-    <b-container fluid>
-      <div class="w-100">
+    <b-container>
       <b-row>
-        <list-renderer
-          class="mt-5"
-          :data="data"
-          :users-list="usersList"
-        />
+        <b-col>
+          <m-user-list-renderer
+            class="mt-5"
+            :data="data"
+            :users-list="usersList"
+          />
+        </b-col>
       </b-row>
-      <b-row class="mt-5">
+      <b-row class="mt-3">
         <b-col class="text-right mr-4">
           <b-button-group size="lg">
-            <b-button variant="danger" class="mr-3" @click="Reset()">Resetuj</b-button>
-            <b-button variant="success" @click="Save()">Zapisz</b-button>
+            <b-button
+              variant="danger"
+              class="mr-3"
+              @click="Reset()"
+            >
+              Resetuj
+            </b-button>
+            <b-button
+              variant="success"
+              @click="Save()"
+            >
+              Zapisz
+            </b-button>
           </b-button-group>
         </b-col>
       </b-row>
-      </div>
     </b-container>
 </template>
 
 <script>
-import ListRenderer from '@/components/molecules/UsersListRenderer'
+import MUserListRenderer from '@/components/molecules/UsersListRenderer'
 import firebase from 'firebase'
 import { mapMutations } from 'vuex'
 
 export default {
   name: 'P-A-User-Menagment',
   components: {
-    ListRenderer
+    MUserListRenderer
   },
   data: () => ({
     data: [],
     usersList: []
   }),
   created () {
-    firebase.auth().onAuthStateChanged(user => {
-      this.user = user
-    })
     firebase.firestore().collection('roles').get()
       .then(snap => {
         snap.forEach(doc => {
@@ -69,12 +77,12 @@ export default {
     },
 
     ChangeRole (uid, event) {
-      const addMessage = firebase.functions().httpsCallable('setUserRole')
+      const changeUserRole = firebase.functions().httpsCallable('setUserRole')
       const data = { uid: uid, role: { [event]: true } }
       const userIndex = this.usersList.findIndex(user => user.id === uid)
       const _userName = this.usersList[userIndex].email
       const self = this
-      addMessage(data)
+      changeUserRole(data)
         .then(result => {
           self.setAlert({
             message: 'Zapisano ' + _userName,
