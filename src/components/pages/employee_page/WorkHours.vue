@@ -13,7 +13,6 @@
           :type="input.type"
           :title="input.title"
           :minute-step="10"
-          :max-datetime="todayDate"
           :min-datetime="minDate"
           @input="setField({fieldName: input.fieldName, value: $event})"
           :value="addDate[input.fieldName].toString()"
@@ -84,8 +83,6 @@ export default {
         uid = user.uid
       })
       const date = DateTime.fromISO(this.addDate.date)
-      const year = date.toFormat('yyyy')
-      const month = date.toFormat('MM')
       const fullDate = date.toFormat('yyyy-LL-dd')
 
       const obj = {}
@@ -94,7 +91,9 @@ export default {
 
       await firebase.firestore()
         .collection('employee-hours')
-        .doc(`${uid}-${month}-${year}`)
+        .doc(uid)
+        .collection(date.year.toString())
+        .doc(date.monthLong)
         .set(obj, {merge: true})
       this.setAlert({
         message: 'Zapisano',

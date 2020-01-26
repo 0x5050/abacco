@@ -1,5 +1,15 @@
 <template>
   <b-container class="pt-5">
+
+    <div v-for="month in result" :key="Object.keys(month).toString()">
+      {{ Object.keys(month) }}
+      <div v-for="days in month" :key="Object.keys(days).toString()">
+        <b-table
+          :items="prepareData(days)"
+        />
+      </div>
+    </div>
+
     <b-card
       v-for="month in data"
       :key="month.date"
@@ -9,6 +19,7 @@
     <b-button
       v-b-toggle="Object.keys(month).join()"
       variant="info"
+      @click="test"
     >
       Rozwiń
     </b-button>
@@ -64,9 +75,25 @@ export default {
         format: 'H:mm',
         value: 'stop'
       }
-    ]
+    ],
+    result: [],
+    table: []
   }),
+  mounted () {
+    console.log('result', this.result)
+  },
   methods: {
+    prepareData (obj) {
+      let arr = []
+      console.log(obj)
+      const o = Object.keys(obj)
+      for (let i of o) {
+        console.log(i)
+        arr.push(obj[i])
+      }
+      console.log(arr)
+      return arr
+    },
     getMonth (item) {
       const firstDate = Object.keys(item)[0]
       const date = DateTime.fromISO(firstDate)
@@ -81,13 +108,13 @@ export default {
     await firebase.auth().onAuthStateChanged(user => {
       this.uid = user.uid
     })
-    const snapshot = await firebase.firestore().collection('employee-hours').get()
-    snapshot.docs.map(doc => {
-      const userUID = doc.id.slice(0, 28)
-      if (userUID === this.uid) {
-        this.data.push(doc.data())
-      }
-    })
+    await firebase.firestore().collection('employee-hours').doc(this.uid).collection('2020').get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          console.log(doc.id, ' => ', doc.data())
+          this.result.push({[doc.id]: doc.data()})
+        })
+      })
   }
 }
 </script>
