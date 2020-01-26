@@ -1,34 +1,34 @@
 <template>
-    <b-container>
-      <b-row>
-        <b-col>
-          <m-user-list-renderer
-            class="mt-5"
-            :data="data"
-            :users-list="usersList"
-          />
-        </b-col>
-      </b-row>
-      <b-row class="mt-3">
-        <b-col class="text-right mr-4">
-          <b-button-group size="lg">
-            <b-button
-              variant="danger"
-              class="mr-3"
-              @click="Reset()"
-            >
-              Resetuj
-            </b-button>
-            <b-button
-              variant="success"
-              @click="Save()"
-            >
-              Zapisz
-            </b-button>
-          </b-button-group>
-        </b-col>
-      </b-row>
-    </b-container>
+  <b-container>
+    <b-row>
+      <b-col>
+        <m-user-list-renderer
+          class="mt-5"
+          :data="data"
+          :users-list="usersList"
+        />
+      </b-col>
+    </b-row>
+    <b-row class="mt-3">
+      <b-col class="text-right mr-4">
+        <b-button-group size="lg">
+          <b-button
+            variant="danger"
+            class="mr-3"
+            @click="Reset()"
+          >
+            Resetuj
+          </b-button>
+          <b-button
+            variant="success"
+            @click="Save()"
+          >
+            Zapisz
+          </b-button>
+        </b-button-group>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
