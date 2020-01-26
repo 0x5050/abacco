@@ -21,6 +21,10 @@
           :key="Object.keys(days).toString()"
         >
         <b-table
+          responsive
+          striped
+          hover
+          :fields="fields"
           :items="prepareDate(days)"
         />
         </span>
@@ -38,7 +42,8 @@ export default {
     uid: '',
     months: [],
     year: new Date().getFullYear().toString(),
-    options: []
+    options: [],
+    fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'opis']
   }),
   async created () {
     await firebase.auth().onAuthStateChanged(user => {
