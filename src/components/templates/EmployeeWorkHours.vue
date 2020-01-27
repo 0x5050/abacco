@@ -1,86 +1,61 @@
 <template>
   <b-container class="pt-5">
+
+    <b-select
+      :options="userOptions"
+      v-model="user"
+      @change="fetchData()"
+    />
+    <b-input-group prepend="Rok" size="lg">
+      <b-select @change="fetchData()" :options="options" v-model="year"/>
+    </b-input-group>
+
     <b-card
-      v-for="(month, index) in years"
-      :key="month.id"
-      :title="month.email"
-      :sub-title="`${getMonth(Number(month.month))} ${month.year}`"
+      v-for="month in months"
+      :key="Object.keys(month).toString()"
+      :title="Object.keys(month).join()"
       class="text-left mt-1"
     >
     <b-button
-      v-b-toggle="month.id"
+      v-b-toggle="Object.keys(month).join()"
       variant="info"
     >
       Rozwiń
     </b-button>
-    <b-collapse :id="month.id">
-      <b-card>
-        <span v-for="(day, date) in month.data" :key="day.value" class="mt-1">
-          <b-row class="mt-2">
-            <b-col
-              v-for="field in fields"
-              :key="field.prepend"
-              lg
-            >
-              <b-input-group :prepend="field.prepend">
-                <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg>
-              <b-input-group prepend="Opis">
-                <b-input disabled :value="day.description"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg class="d-flex">
-              <span class="mt-1">Zweryfikowane:</span>
-              <b-checkbox
-                class="ml-2"
-                size="lg"
-                @change="verifyHour(month, day)"
-                :value="true"
-                :unchecked-value="false"
-                v-model="employeeHoursArr[index].data[date].verified"
-              />
-            </b-col>
-          </b-row>
+      <b-collapse :id="Object.keys(month).join()">
+        <span
+          v-for="days in month"
+          :key="Object.keys(days).toString()"
+        >
+        <b-table
+          responsive
+          striped
+          hover
+          :items="prepareDate(days)"
+        />
         </span>
-      </b-card>
-    </b-collapse>
-    </b-card>
+      </b-collapse>
+    </b-card >
   </b-container>
 </template>
 
 <script>
-import { DateTime } from 'luxon'
 import firebase from 'firebase'
 
 export default {
   name: 'T-Employee-Hours',
   data: () => ({
+    year: '2020',
     years: [],
-    fields: [
-      {
-        prepend: 'Data',
-        format: 'D',
-        value: 'date'
-      },
-      {
-        prepend: 'Początek',
-        format: 'H:mm',
-        value: 'start'
-      },
-      {
-        prepend: 'Koniec',
-        format: 'H:mm',
-        value: 'stop'
-      }
-    ],
-    employeeHoursArr: []
+    userOptions: [],
+    user: 'lFTHV5opiGYVgWDTLjyBALyFOtt1',
+    employeeHoursArr: [],
+    options: [],
+    months: []
   }),
   async created () {
     const firestore = firebase.firestore()
     const users = await firestore.collection('roles').get()
-    const employeeHours = await firestore.collection('employee-hours').get()
     const _usersArr = []
 
     users.docs.map(doc => {
@@ -90,54 +65,43 @@ export default {
       })
     })
 
-    employeeHours.docs.map(doc => {
-      const documentID = doc.id
-      this.employeeHoursArr.push({
-        uid: documentID.slice(0, 28),
-        month: documentID.slice(29, 31),
-        year: documentID.slice(32, 37),
-        data: doc.data(),
-        email: ''
-      })
-    })
-
-    let id = 0
-
     _usersArr.forEach(user => {
-      this.employeeHoursArr.forEach(hour => {
-        if (hour.uid === user.uid) {
-          this.years.push({
-            email: user.email,
-            uid: user.uid,
-            month: hour.month,
-            year: hour.year,
-            data: hour.data,
-            id: id.toString()
-          })
-          id++
-        }
+      this.userOptions.push({
+        value: user.uid,
+        text: user.email
       })
     })
+
+    this.fetchData()
+  },
+  mounted () {
+    const minYear = 2020
+    let _year = new Date().getFullYear()
+    for (_year; _year >= minYear; _year--) {
+      this.options.push({value: _year.toString(), text: _year.toString()})
+    }
   },
   methods: {
-    async verifyHour (month, day) {
-      const _fullDate = DateTime.fromISO(day.date).toFormat('yyyy-LL-dd')
-      const _obj = {}
-
-      day.verified = !day.verified
-      _obj[_fullDate] = day
-
+    async fetchData () {
+      this.months = []
       await firebase.firestore()
         .collection('employee-hours')
-        .doc(`${month.uid}-${month.month}-${month.year}`)
-        .set(_obj, {merge: true})
+        .doc(this.user)
+        .collection(this.year.toString())
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.months.push({[doc.id]: doc.data()})
+          })
+        })
     },
-    dateFormat (value, type) {
-      return DateTime.fromISO(value).toFormat(type)
-    },
-    getMonth (item) {
-      const date = DateTime.fromObject({month: item})
-      return date.monthLong.charAt(0).toUpperCase() + date.monthLong.slice(1)
+    prepareDate (days) {
+      const _arr = []
+      const _objectKeys = Object.keys(days)
+      for (let objectKey of _objectKeys) {
+        _arr.push(days[objectKey])
+      }
+      return _arr
     }
   }
 }
