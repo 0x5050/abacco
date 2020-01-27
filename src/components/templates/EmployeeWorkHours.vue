@@ -8,7 +8,7 @@
       />
     </b-input-group>
 
-    <b-input-group prepend="Rok" size="lg">
+    <b-input-group prepend="Rok" size="lg" class="mt-1">
       <b-select @change="fetchData()" :options="years" v-model="year"/>
     </b-input-group>
 

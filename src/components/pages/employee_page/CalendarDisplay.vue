@@ -24,6 +24,7 @@
           responsive
           striped
           hover
+          stacked="lg"
           :fields="fields"
           :items="prepareDate(days)"
         />
