@@ -62,29 +62,21 @@ export default {
     year: new Date().getFullYear().toString(),
     years: [],
     userOptions: [],
-    user: 'lFTHV5opiGYVgWDTLjyBALyFOtt1',
+    user: '',
     months: [],
-    fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'opis', 'zweryfikowane']
+    fields: [
+      'data',
+      'godzina_rozpoczęcia',
+      'godzina_zakończenia',
+      'opis',
+      'zweryfikowane'
+    ]
   }),
   async created () {
-    const firestore = firebase.firestore()
-    const users = await firestore.collection('roles').get()
-    const _usersArr = []
-
-    users.docs.map(doc => {
-      _usersArr.push({
-        email: doc.data().email,
-        uid: doc.id
-      })
+    await firebase.auth().onAuthStateChanged(user => {
+      this.user = user.uid
     })
-
-    _usersArr.forEach(user => {
-      this.userOptions.push({
-        value: user.uid,
-        text: user.email
-      })
-    })
-
+    this.mapUsers()
     this.fetchData()
   },
   mounted () {
@@ -134,6 +126,25 @@ export default {
         _arr.push(days[objectKey])
       }
       return _arr
+    },
+    async mapUsers () {
+      const firestore = firebase.firestore()
+      const users = await firestore.collection('roles').get()
+      const _usersArr = []
+
+      users.docs.map(doc => {
+        _usersArr.push({
+          email: doc.data().email,
+          uid: doc.id
+        })
+      })
+
+      _usersArr.forEach(user => {
+        this.userOptions.push({
+          value: user.uid,
+          text: user.email
+        })
+      })
     }
   }
 }
