@@ -1,13 +1,15 @@
 <template>
   <b-container class="pt-5">
+    <b-input-group prepend="Użytkownik" size="lg">
+      <b-select
+        :options="userOptions"
+        v-model="user"
+        @change="fetchData()"
+      />
+    </b-input-group>
 
-    <b-select
-      :options="userOptions"
-      v-model="user"
-      @change="fetchData()"
-    />
     <b-input-group prepend="Rok" size="lg">
-      <b-select @change="fetchData()" :options="options" v-model="year"/>
+      <b-select @change="fetchData()" :options="years" v-model="year"/>
     </b-input-group>
 
     <b-card
@@ -31,6 +33,7 @@
           responsive
           striped
           hover
+          stacked="lg"
           :items="prepareDate(days)"
         />
         </span>
@@ -45,12 +48,10 @@ import firebase from 'firebase'
 export default {
   name: 'T-Employee-Hours',
   data: () => ({
-    year: '2020',
+    year: new Date().getFullYear().toString(),
     years: [],
     userOptions: [],
     user: 'lFTHV5opiGYVgWDTLjyBALyFOtt1',
-    employeeHoursArr: [],
-    options: [],
     months: []
   }),
   async created () {
@@ -78,7 +79,7 @@ export default {
     const minYear = 2020
     let _year = new Date().getFullYear()
     for (_year; _year >= minYear; _year--) {
-      this.options.push({value: _year.toString(), text: _year.toString()})
+      this.years.push({value: _year.toString(), text: _year.toString()})
     }
   },
   methods: {
