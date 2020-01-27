@@ -1,138 +1,150 @@
 <template>
   <b-container class="pt-5">
+    <b-input-group prepend="Użytkownik" size="lg">
+      <b-select
+        :options="userOptions"
+        v-model="user"
+        @change="fetchData()"
+      />
+    </b-input-group>
+
+    <b-input-group prepend="Rok" size="lg" class="mt-1">
+      <b-select @change="fetchData()" :options="years" v-model="year"/>
+    </b-input-group>
+
     <b-card
-      v-for="(month, index) in years"
-      :key="month.id"
-      :title="month.email"
-      :sub-title="`${getMonth(Number(month.month))} ${month.year}`"
+      v-for="month in months"
+      :key="Object.keys(month).toString()"
+      :title="Object.keys(month).join()"
       class="text-left mt-1"
-      v-b-toggle="month.id"
     >
-    <b-collapse :id="month.id">
-      <b-card>
-        <span v-for="(day, date) in month.data" :key="day.value" class="mt-1">
-          <b-row class="mt-2">
-            <b-col
-              v-for="field in fields"
-              :key="field.prepend"
-              lg
-            >
-              <b-input-group :prepend="field.prepend">
-                <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg>
-              <b-input-group prepend="Opis">
-                <b-input disabled :value="day.description"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg class="d-flex">
-              <span class="mt-1">Zweryfikowane:</span>
+    <b-button
+      v-b-toggle="Object.keys(month).join()"
+      variant="info"
+    >
+      Rozwiń
+    </b-button>
+      <b-collapse :id="Object.keys(month).join()">
+        <span
+          v-for="days in month"
+          :key="Object.keys(days).toString()"
+        >
+          <b-table
+            responsive
+            striped
+            hover
+            stacked="lg"
+            :fields="fields"
+            :items="prepareDate(days)"
+          >
+            <template v-slot:cell(zweryfikowane)="row">
               <b-checkbox
-                class="ml-1"
                 size="lg"
-                @change="verifyHour(month, day)"
+                @change="verifiedHour(row.item, month)"
                 :value="true"
                 :unchecked-value="false"
-                v-model="employeeHoursArr[index].data[date].verified"
+                v-model="row.item.zweryfikowane"
               />
-            </b-col>
-          </b-row>
+            </template>
+          </b-table>
         </span>
-      </b-card>
-    </b-collapse>
-    </b-card>
+      </b-collapse>
+    </b-card >
   </b-container>
 </template>
 
 <script>
-import { DateTime } from 'luxon'
 import firebase from 'firebase'
 
 export default {
   name: 'T-Employee-Hours',
   data: () => ({
+    year: new Date().getFullYear().toString(),
     years: [],
+    userOptions: [],
+    user: '',
+    months: [],
     fields: [
-      {
-        prepend: 'Data',
-        format: 'D',
-        value: 'date'
-      },
-      {
-        prepend: 'Początek',
-        format: 'H:mm',
-        value: 'start'
-      },
-      {
-        prepend: 'Koniec',
-        format: 'H:mm',
-        value: 'stop'
-      }
-    ],
-    employeeHoursArr: []
+      'data',
+      'godzina_rozpoczęcia',
+      'godzina_zakończenia',
+      'opis',
+      'zweryfikowane'
+    ]
   }),
   async created () {
-    const firestore = firebase.firestore()
-    const users = await firestore.collection('roles').get()
-    const employeeHours = await firestore.collection('employee-hours').get()
-    const _usersArr = []
-
-    users.docs.map(doc => {
-      _usersArr.push({
-        email: doc.data().email,
-        uid: doc.id
-      })
+    await firebase.auth().onAuthStateChanged(user => {
+      this.user = user.uid
     })
-
-    employeeHours.docs.map(doc => {
-      const documentID = doc.id
-      this.employeeHoursArr.push({
-        uid: documentID.slice(0, 28),
-        month: documentID.slice(29, 31),
-        year: documentID.slice(32, 37),
-        data: doc.data(),
-        email: ''
-      })
-    })
-
-    let id = 0
-
-    _usersArr.forEach(user => {
-      this.employeeHoursArr.forEach(hour => {
-        if (hour.uid === user.uid) {
-          this.years.push({
-            email: user.email,
-            uid: user.uid,
-            month: hour.month,
-            year: hour.year,
-            data: hour.data,
-            id: id.toString()
-          })
-          id++
-        }
-      })
-    })
+    this.mapUsers()
+    this.fetchData()
+  },
+  mounted () {
+    const minYear = 2020
+    let _year = new Date().getFullYear()
+    for (_year; _year >= minYear; _year--) {
+      this.years.push({value: _year.toString(), text: _year.toString()})
+    }
   },
   methods: {
-    async verifyHour (month, day) {
-      const _fullDate = DateTime.fromISO(day.date).toFormat('yyyy-LL-dd')
-      const _obj = {}
+    verifiedHour (item, month) {
+      const date = item.data
+      const obj = {}
+      obj[this.dateConverter(date)] = item
+      obj[this.dateConverter(date)].zweryfikowane = !obj[this.dateConverter(date)].zweryfikowane
 
-      day.verified = !day.verified
-      _obj[_fullDate] = day
-
+      firebase.firestore()
+        .collection('employee-hours')
+        .doc(this.user)
+        .collection(this.year.toString())
+        .doc(Object.keys(month).toString())
+        .set(obj, {merge: true})
+    },
+    dateConverter (date) {
+      const _number = date.split('.')
+      const _date = new Date(parseInt(_number[2]), parseInt(_number[1]) - 1, parseInt(_number[0]))
+      _date.setHours(1)
+      return _date.toISOString()
+    },
+    async fetchData () {
+      this.months = []
       await firebase.firestore()
         .collection('employee-hours')
-        .doc(`${month.uid}-${month.month}-${month.year}`)
-        .set(_obj, {merge: true})
+        .doc(this.user)
+        .collection(this.year.toString())
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.months.push({[doc.id]: doc.data()})
+          })
+        })
     },
-    dateFormat (value, type) {
-      return DateTime.fromISO(value).toFormat(type)
+    prepareDate (days) {
+      const _arr = []
+      const _objectKeys = Object.keys(days)
+      for (let objectKey of _objectKeys) {
+        _arr.push(days[objectKey])
+      }
+      return _arr
     },
-    getMonth (item) {
-      const date = DateTime.fromObject({month: item})
-      return date.monthLong.charAt(0).toUpperCase() + date.monthLong.slice(1)
+    async mapUsers () {
+      const firestore = firebase.firestore()
+      const users = await firestore.collection('roles').get()
+      const _usersArr = []
+
+      users.docs.map(doc => {
+        _usersArr.push({
+          email: doc.data().email,
+          uid: doc.id
+        })
+      })
+
+      _usersArr.forEach(user => {
+        this.userOptions.push({
+          value: user.uid,
+          text: user.email
+        })
+      })
     }
   }
 }

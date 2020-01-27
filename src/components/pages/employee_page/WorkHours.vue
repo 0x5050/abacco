@@ -13,7 +13,6 @@
           :type="input.type"
           :title="input.title"
           :minute-step="10"
-          :max-datetime="todayDate"
           :min-datetime="minDate"
           @input="setField({fieldName: input.fieldName, value: $event})"
           :value="addDate[input.fieldName].toString()"
@@ -23,7 +22,7 @@
         <b-form-textarea
           rows="3"
           max-rows="6"
-          @input="setField({fieldName: 'description', value: $event})"
+          @input="setField({fieldName: 'opis', value: $event})"
         />
         <b-button
           class="mt-3"
@@ -56,19 +55,19 @@ export default {
       {
         type: 'date',
         prepend: 'Data',
-        fieldName: 'date'
+        fieldName: 'data'
       },
       {
         type: 'time',
         prepend: 'Godzna rozpoczęcia pracy',
         title: 'Godzina rozpoczęcia',
-        fieldName: 'start'
+        fieldName: 'godzina_rozpoczęcia'
       },
       {
         type: 'time',
         prepend: 'Godzina zakończenia pracy',
         title: 'Godzina zakończenia',
-        fieldName: 'stop'
+        fieldName: 'godzina_zakończenia'
       }
     ]
   }),
@@ -83,19 +82,24 @@ export default {
       await firebase.auth().onAuthStateChanged((user) => {
         uid = user.uid
       })
-      const date = DateTime.fromISO(this.addDate.date)
-      const year = date.toFormat('yyyy')
-      const month = date.toFormat('MM')
-      const fullDate = date.toFormat('yyyy-LL-dd')
 
-      const obj = {}
+      const fullDate = DateTime.fromISO(this.addDate.data)
+      const result = {}
 
-      obj[fullDate] = this.addDate
+      result[this.addDate.data] = {
+        data: DateTime.fromISO(this.addDate.data).toFormat('D'),
+        godzina_rozpoczęcia: DateTime.fromISO(this.addDate.godzina_rozpoczęcia).toFormat('T'),
+        godzina_zakończenia: DateTime.fromISO(this.addDate.godzina_zakończenia).toFormat('T'),
+        opis: this.addDate.opis,
+        zweryfikowane: false
+      }
 
       await firebase.firestore()
         .collection('employee-hours')
-        .doc(`${uid}-${month}-${year}`)
-        .set(obj, {merge: true})
+        .doc(uid)
+        .collection(fullDate.year.toString())
+        .doc(fullDate.monthLong)
+        .set(result, {merge: true})
       this.setAlert({
         message: 'Zapisano',
         variant: 'success',

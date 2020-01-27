@@ -1,33 +1,33 @@
 <template>
   <b-container class="pt-5">
+    <b-input-group prepend="Rok" size="lg">
+      <b-select @change="fetchData" :options="options" v-model="year"/>
+    </b-input-group>
     <b-card
-      v-for="month in data"
-      :key="month.date"
-      :title="getMonth(month)"
+      v-for="month in months"
+      :key="Object.keys(month).toString()"
+      :title="Object.keys(month).join()"
       class="text-left mt-1"
-      v-b-toggle="Object.keys(month).join()"
     >
+    <b-button
+      v-b-toggle="Object.keys(month).join()"
+      variant="info"
+    >
+      Rozwiń
+    </b-button>
       <b-collapse :id="Object.keys(month).join()">
         <span
-          v-for="day in month"
-          :key="day.date"
+          v-for="days in month"
+          :key="Object.keys(days).toString()"
         >
-          <b-row class="mt-2">
-            <b-col
-              v-for="field in fields"
-              :key="field.prepend"
-              lg
-            >
-              <b-input-group :prepend="field.prepend">
-                <b-input disabled :value="dateFormat(day[field.value], field.format)"/>
-              </b-input-group>
-            </b-col>
-            <b-col lg>
-              <b-input-group prepend="Opis">
-                <b-input disabled :value="day.description"/>
-              </b-input-group>
-            </b-col>
-          </b-row>
+        <b-table
+          responsive
+          striped
+          hover
+          stacked="lg"
+          :fields="fields"
+          :items="prepareDate(days)"
+        />
         </span>
       </b-collapse>
     </b-card >
@@ -36,53 +36,51 @@
 
 <script>
 import firebase from 'firebase'
-import { DateTime } from 'luxon'
 
 export default {
   name: 'P-E-Calendar-Display',
   data: () => ({
     uid: '',
-    data: [],
-    fields: [
-      {
-        prepend: 'Data',
-        format: 'D',
-        value: 'date'
-      },
-      {
-        prepend: 'Początek',
-        format: 'H:mm',
-        value: 'start'
-      },
-      {
-        prepend: 'Koniec',
-        format: 'H:mm',
-        value: 'stop'
-      }
-    ]
+    months: [],
+    year: new Date().getFullYear().toString(),
+    options: [],
+    fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'opis']
   }),
-  methods: {
-    getMonth (item) {
-      const firstDate = Object.keys(item)[0]
-      const date = DateTime.fromISO(firstDate)
-      const result = `${date.monthLong.charAt(0).toUpperCase() + date.monthLong.slice(1)} ${date.year}`
-      return result
-    },
-    dateFormat (value, type) {
-      return DateTime.fromISO(value).toFormat(type)
-    }
-  },
   async created () {
     await firebase.auth().onAuthStateChanged(user => {
       this.uid = user.uid
     })
-    const snapshot = await firebase.firestore().collection('employee-hours').get()
-    snapshot.docs.map(doc => {
-      const userUID = doc.id.slice(0, 28)
-      if (userUID === this.uid) {
-        this.data.push(doc.data())
+    this.fetchData()
+  },
+  mounted () {
+    const minYear = 2020
+    let _year = new Date().getFullYear()
+    for (_year; _year >= minYear; _year--) {
+      this.options.push({value: _year.toString(), text: _year.toString()})
+    }
+  },
+  methods: {
+    prepareDate (days) {
+      const _arr = []
+      const _objectKeys = Object.keys(days)
+      for (let objectKey of _objectKeys) {
+        _arr.push(days[objectKey])
       }
-    })
+      return _arr
+    },
+    async fetchData () {
+      this.months = []
+      await firebase.firestore()
+        .collection('employee-hours')
+        .doc(this.uid)
+        .collection(this.year.toString())
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            this.months.push({[doc.id]: doc.data()})
+          })
+        })
+    }
   }
 }
 </script>
