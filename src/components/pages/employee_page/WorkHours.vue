@@ -14,7 +14,7 @@
           :title="input.title"
           :minute-step="10"
           :min-datetime="minDate"
-          @input="setField({fieldName: input.fieldName, value: $event, format: input.format})"
+          @input="setField({fieldName: input.fieldName, value: $event})"
           :value="addDate[input.fieldName].toString()"
         />
       </b-form-group >
