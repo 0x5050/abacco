@@ -29,13 +29,24 @@
           v-for="days in month"
           :key="Object.keys(days).toString()"
         >
-        <b-table
-          responsive
-          striped
-          hover
-          stacked="lg"
-          :items="prepareDate(days)"
-        />
+          <b-table
+            responsive
+            striped
+            hover
+            stacked="lg"
+            :fields="fields"
+            :items="prepareDate(days)"
+          >
+            <template v-slot:cell(zweryfikowane)="row">
+              <b-checkbox
+                size="lg"
+                @change="verifiedHour(row.item, month)"
+                :value="true"
+                :unchecked-value="false"
+                v-model="row.item.zweryfikowane"
+              />
+            </template>
+          </b-table>
         </span>
       </b-collapse>
     </b-card >
@@ -52,7 +63,8 @@ export default {
     years: [],
     userOptions: [],
     user: 'lFTHV5opiGYVgWDTLjyBALyFOtt1',
-    months: []
+    months: [],
+    fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'opis', 'zweryfikowane']
   }),
   async created () {
     const firestore = firebase.firestore()
@@ -83,6 +95,25 @@ export default {
     }
   },
   methods: {
+    verifiedHour (item, month) {
+      const date = item.data
+      const obj = {}
+      obj[this.dateConverter(date)] = item
+      obj[this.dateConverter(date)].zweryfikowane = !obj[this.dateConverter(date)].zweryfikowane
+
+      firebase.firestore()
+        .collection('employee-hours')
+        .doc(this.user)
+        .collection(this.year.toString())
+        .doc(Object.keys(month).toString())
+        .set(obj, {merge: true})
+    },
+    dateConverter (date) {
+      const _number = date.split('.')
+      const _date = new Date(parseInt(_number[2]), parseInt(_number[1]) - 1, parseInt(_number[0]))
+      _date.setHours(1)
+      return _date.toISOString()
+    },
     async fetchData () {
       this.months = []
       await firebase.firestore()
