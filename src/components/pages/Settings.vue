@@ -1,43 +1,40 @@
 <template>
   <b-container class="pt-5">
-      <b-card title="Zmień hasło" class="text-left">
-        <b-row
-          v-for="field in fields"
-          :key="field.prepend"
+    <m-input-card
+      title="Dane osobowe"
+      :inputs="passwordFields"
+    >
+      <b-input-group
+        v-for="(input, iterator) in passwordFields"
+        :key="input.preprend"
+        :slot="`input-${iterator}`"
+        :prepend="input.prepend"
+        class="mt-2"
+      >
+        <b-input
+          :state="validation(input.value)"
+          type="password"
+          v-model="$v[input.value].$model"
+        />
+        <b-form-invalid-feedback>
+          {{ input.error }}
+        </b-form-invalid-feedback>
+      </b-input-group>
+
+      <b-button
+        slot="button"
+        :disabled="!validated"
+        variant="success"
+        @click="changePassword()"
         >
-          <b-col>
-            <b-input-group
-              :prepend="field.prepend"
-              class="mt-2"
-            >
-              <b-input
-                :state="validation(field.value)"
-                type="password"
-                v-model="$v[field.value].$model"
-              />
-              <b-form-invalid-feedback>
-                  {{ field.error }}
-              </b-form-invalid-feedback>
-            </b-input-group>
-          </b-col>
-        </b-row>
-        <b-row class="mt-2">
-          <b-col>
-            {{ old_password }}
-            <b-button
-              :disabled="!validated"
-              variant="success"
-              @click="changePassword()"
-              >
-              Zmień
-            </b-button>
-          </b-col>
-        </b-row>
-      </b-card>
+        Zmień
+      </b-button>
+    </m-input-card>
   </b-container>
 </template>
 
 <script>
+import MInputCard from '@/components/molecules/InputCard'
 import firebase from 'firebase'
 import { validationMixin } from 'vuelidate'
 import { required, minLength } from 'vuelidate/lib/validators'
@@ -45,9 +42,13 @@ import { mapMutations } from 'vuex'
 
 export default {
   name: 'P-Settings',
+  components: {
+    MInputCard
+  },
   mixins: [validationMixin],
   data: () => ({
-    fields: [
+    one: '',
+    passwordFields: [
       {
         prepend: 'Aktualne Hasło',
         value: 'old_password',
@@ -80,7 +81,7 @@ export default {
             resolve(typeof value === 'string' && value.length >= 6)
           } else {
             this.validated = false
-            reject(new Error())
+            reject(Error('Validation'))
           }
         })
       }
