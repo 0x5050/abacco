@@ -10,6 +10,7 @@ import Settings from '@/components/pages/Settings'
 import UserMenagment from '@/components/pages/admin_page/UserMenagment'
 import PAEmployeeHours from '@/components/pages/admin_page/EmployeeHours'
 import Invoices from '@/components/pages/admin_page/Invoices'
+import PAContacts from '@/components/pages/admin_page/Contacts'
 
 import PECalendarDisplay from '@/components/pages/employee_page/CalendarDisplay'
 import PEWorkHours from '@/components/pages/employee_page/WorkHours'
@@ -91,6 +92,11 @@ const router = new Router({
           name: 'Ustawienia',
           path: 'settings',
           component: Settings
+        },
+        {
+          name: 'Kontrahenci',
+          path: 'contacts',
+          component: PAContacts
         }
       ]
     }
