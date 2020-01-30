@@ -9,12 +9,24 @@ export default {
       zip: '',
       city: '',
       nip: null
-    }
+    },
+    listContact: []
   },
   getters: {
+    getAllContacts: state => state.listContact
   },
   mutations: {
-    setContact: (state, {fieldName, value}) => { state.addContact[fieldName] = value }
+    setContact: (state, {fieldName, value}) => { state.addContact[fieldName] = value },
+    getContacts: (state) => {
+      state.listContact = []
+      firebase.firestore().collection('contacts').get()
+        .then(docsArr => {
+          for (let doc of docsArr.docs) {
+            console.log(doc.data())
+            state.listContact.push(doc.data())
+          }
+        })
+    }
   },
   actions: {
     sendContact: ({commit, state}) => {

@@ -24,13 +24,24 @@
         Zapisz
       </b-button>
     </m-input-card>
-    {{ contact }}
+
+    <b-card
+      v-for="contact in getAllContacts"
+      :key="contact.nip"
+      :title="contact.name"
+      class="text-left mt-2"
+    >
+    <p>{{ contact.street }}</p>
+    <p>{{ contact.zip }} {{ contact.city }}</p>
+    <p>{{ contact.nip }}</p>
+
+    </b-card>
   </b-container>
 </template>
 
 <script>
 import MInputCard from '@/components/molecules/InputCard'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'P-A-Contacts',
@@ -66,8 +77,14 @@ export default {
       }
     ]
   }),
+  computed: {
+    ...mapGetters('contacts', ['getAllContacts'])
+  },
+  mounted () {
+    this.getContacts()
+  },
   methods: {
-    ...mapMutations('contacts', ['setContact']),
+    ...mapMutations('contacts', ['setContact', 'getContacts']),
     ...mapActions('contacts', ['sendContact'])
   }
 }
