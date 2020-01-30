@@ -5,6 +5,7 @@ import invoices from './invoices'
 import sidebar from './sidebar'
 import alert from './alert'
 import employeehours from './employeehours'
+import personaldata from './personaldata'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export const store = new Vuex.Store({
     invoices,
     sidebar,
     alert,
-    employeehours
+    employeehours,
+    personaldata
   }
 })
