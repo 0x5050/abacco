@@ -22,11 +22,11 @@ export default {
     }
   },
   actions: {
-    savePersonalDataDB: ({commit, root}, uid) => {
+    sendPersonalData: ({commit, root}, uid) => {
       commit('savePersonalData', uid)
       commit('alert/setAlert', {
         message: 'Zapisano',
-        vairant: 'success',
+        variant: 'success',
         duration: 2
       }, { root: true })
     }

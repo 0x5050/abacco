@@ -52,13 +52,11 @@
       <b-button
         slot="button"
         variant="success"
-        @click="savePersonalDataDB(uid)"
+        @click="sendPersonalData(uid)"
         >
         Zapisz
       </b-button>
     </m-input-card>
-          {{ getPersonalData }}
-          {{ uid }}
   </b-container>
 </template>
 
@@ -172,7 +170,7 @@ export default {
   methods: {
     ...mapMutations('alert', ['setAlert']),
     ...mapMutations('personaldata', ['setPersonalData', 'savePersonalData']),
-    ...mapActions('personaldata', ['savePersonalDataDB']),
+    ...mapActions('personaldata', ['sendPersonalData']),
     validation (name) {
       const { $dirty, $error } = this.$v[name]
       return $dirty ? !$error : null
