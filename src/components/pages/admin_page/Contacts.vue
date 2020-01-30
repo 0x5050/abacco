@@ -31,11 +31,24 @@
       :title="contact.name"
       class="text-left mt-2"
     >
-    <p>{{ contact.street }}</p>
-    <p>{{ contact.zip }} {{ contact.city }}</p>
-    <p>{{ contact.nip }}</p>
+      <p>Ulica {{ contact.street }}</p>
+      <p>{{ contact.zip }} {{ contact.city }}</p>
+      <p>Nip: {{ contact.nip }}</p>
 
+      <b-button
+        variant="warning"
+        @click="editContact(contact.nip)"
+      >
+        Edytuj
+      </b-button>
     </b-card>
+
+    <b-modal ref="editContactModal">
+      {{ $data._editContact }}
+    </b-modal>
+
+    {{ getContact('1234123123312') }}
+
   </b-container>
 </template>
 
@@ -75,17 +88,22 @@ export default {
         type: 'number',
         name: 'nip'
       }
-    ]
+    ],
+    _editContact: {}
   }),
   computed: {
-    ...mapGetters('contacts', ['getAllContacts'])
+    ...mapGetters('contacts', ['getAllContacts', 'getContact'])
   },
-  mounted () {
+  created () {
     this.getContacts()
   },
   methods: {
     ...mapMutations('contacts', ['setContact', 'getContacts']),
-    ...mapActions('contacts', ['sendContact'])
+    ...mapActions('contacts', ['sendContact']),
+    editContact (id) {
+      this.$data._editContact = this.getContact(id)
+      this.$refs['editContactModal'].show()
+    }
   }
 }
 </script>

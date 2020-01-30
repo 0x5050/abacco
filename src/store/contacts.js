@@ -13,7 +13,8 @@ export default {
     listContact: []
   },
   getters: {
-    getAllContacts: state => state.listContact
+    getAllContacts: state => state.listContact,
+    getContact: state => id => state.listContact.find(contact => contact.nip === id)
   },
   mutations: {
     setContact: (state, {fieldName, value}) => { state.addContact[fieldName] = value },
@@ -21,10 +22,9 @@ export default {
       state.listContact = []
       firebase.firestore().collection('contacts').get()
         .then(docsArr => {
-          for (let doc of docsArr.docs) {
-            console.log(doc.data())
+          docsArr.docs.forEach(doc => {
             state.listContact.push(doc.data())
-          }
+          })
         })
     }
   },
