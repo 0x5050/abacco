@@ -45,18 +45,20 @@
         <b-input
           :type="input.type"
           :value="getPersonalData[input.value]"
-          @input="savePersonalData({field: input.value, value: $event})"
+          @input="setPersonalData({fieldName: input.value, value: $event})"
         />
       </b-input-group>
 
       <b-button
         slot="button"
         variant="success"
-        @click="savePersonalData()"
+        @click="savePersonalDataDB(uid)"
         >
         Zapisz
       </b-button>
     </m-input-card>
+          {{ getPersonalData }}
+          {{ uid }}
   </b-container>
 </template>
 
@@ -65,7 +67,7 @@ import MInputCard from '@/components/molecules/InputCard'
 import firebase from 'firebase'
 import { validationMixin } from 'vuelidate'
 import { required, minLength } from 'vuelidate/lib/validators'
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'P-Settings',
@@ -74,6 +76,7 @@ export default {
   },
   mixins: [validationMixin],
   data: () => ({
+    uid: firebase.auth().currentUser.uid,
     passwordFields: [
       {
         prepend: 'Aktualne Hasło',
@@ -114,6 +117,19 @@ export default {
       }
     ]
   }),
+  mounted () {
+    firebase.firestore()
+      .collection('users')
+      .doc(this.uid)
+      .get()
+      .then(documentSnapshot => {
+        const data = documentSnapshot.data()
+        const fieldsNames = Object.keys(documentSnapshot.data())
+        for (const fieldName of fieldsNames) {
+          this.setPersonalData({fieldName: fieldName, value: data[fieldName]})
+        }
+      })
+  },
   computed: {
     ...mapGetters('personaldata', ['getPersonalData'])
   },
@@ -155,6 +171,8 @@ export default {
   },
   methods: {
     ...mapMutations('alert', ['setAlert']),
+    ...mapMutations('personaldata', ['setPersonalData', 'savePersonalData']),
+    ...mapActions('personaldata', ['savePersonalDataDB']),
     validation (name) {
       const { $dirty, $error } = this.$v[name]
       return $dirty ? !$error : null
@@ -187,9 +205,6 @@ export default {
           duration: 2
         })
       })
-    },
-    savePersonalData (e) {
-      console.log(e)
     }
   }
 }

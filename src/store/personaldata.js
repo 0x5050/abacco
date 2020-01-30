@@ -1,3 +1,5 @@
+import firebase from 'firebase'
+
 export default {
   namespaced: true,
   state: {
@@ -11,7 +13,22 @@ export default {
     getPersonalData: state => state.presonalData
   },
   mutations: {
+    setPersonalData: (state, {fieldName, value}) => { state.presonalData[fieldName] = value },
+    savePersonalData: (state, uid) => {
+      firebase.firestore()
+        .collection('users')
+        .doc(uid)
+        .set(state.presonalData, {merge: true})
+    }
   },
   actions: {
+    savePersonalDataDB: ({commit, root}, uid) => {
+      commit('savePersonalData', uid)
+      commit('alert/setAlert', {
+        message: 'Zapisano',
+        vairant: 'success',
+        duration: 2
+      }, { root: true })
+    }
   }
 }
