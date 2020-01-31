@@ -28,17 +28,30 @@
     </b-row>
 
     <b-row class="mt-2">
-      <b-col>
+      <b-col class="text-left mb-2">
+        <h2>{{ left.text }}</h2>
         <b-select
           :value="invoice.sender"
           :options="senders"
-          @input="set_invoice_value({fieldName: 'sender', value: $event})"
+          @input="set_invoice_value({fieldName: left.value, value: $event})"
         />
       </b-col>
-      <b-col>
+      <b-col class="d-flex" lg>
+        <b-button
+          class="m-auto"
+          @click="swap()"
+        >
+          <b-icon
+            icon="arrow-left-right"
+            class="pt-1"
+          />
+        </b-button>
+      </b-col>
+      <b-col class="text-left mb-2">
+        <h2>{{ right.text }}</h2>
         <b-select
           :options="recipients"
-           @input="set_invoice_value({fieldName: 'recipient', value: $event})"
+           @input="set_invoice_value({fieldName: right.value, value: $event})"
         />
       </b-col>
     </b-row>
@@ -128,7 +141,15 @@ export default {
         }
       }
     ],
-    recipients: []
+    recipients: [],
+    left: {
+      text: 'Sprzedawca',
+      value: 'sender'
+    },
+    right: {
+      text: 'Nabywca',
+      value: 'recipient'
+    }
   }),
   computed: {
     ...mapGetters('invoices', ['invoice'])
@@ -139,6 +160,26 @@ export default {
   methods: {
     ...mapActions('invoices', ['sendInvoice', 'getInvoices']),
     ...mapMutations('invoices', ['set_invoice_value']),
+    swap () {
+      const _recipients = this.recipients
+      const _senders = this.senders
+
+      this.recipients = _senders
+      this.senders = _recipients
+      this.set_invoice_value({fieldName: 'sender', value: {}})
+      this.set_invoice_value({fieldName: 'recipient', value: {}})
+      if (this.left.text === 'Sprzedawca') {
+        this.left.text = 'Nabywca'
+        this.left.value = 'recipient'
+        this.right.text = 'Sprzedawca'
+        this.right.value = 'sender'
+      } else {
+        this.left.text = 'Sprzedawca'
+        this.left.value = 'sender'
+        this.right.text = 'Nabywca'
+        this.right.value = 'recipient'
+      }
+    },
     getContacts () {
       firebase.firestore()
         .collection('contacts')
@@ -146,8 +187,11 @@ export default {
         .then(query => {
           query.docs.forEach(doc => {
             this.recipients.push({
-              text: `${doc.data().name} ${doc.data().street}`,
-              value: doc.data()
+              label: doc.data().name,
+              options: [{
+                text: doc.data().street,
+                value: doc.data()
+              }]
             })
           })
         })
