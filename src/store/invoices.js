@@ -5,7 +5,12 @@ export default {
   namespaced: true,
   state: {
     addInvoice: {
-      sender: {},
+      sender: {
+        name: 'PPHU ABACCO',
+        street: 'Aleja Grunwaldzka 238 d',
+        zip: '80-266',
+        city: 'Gdańsk'
+      },
       recipient: {},
       date: DateTime.local().toString(),
       worth: 0,
@@ -39,7 +44,9 @@ export default {
   },
   actions: {
     sendInvoice: ({state, commit}) => {
-      const id = `${Date.now()}-${state.addInvoice.number}`
+      const regex = new RegExp('/', 'g')
+      const _ivoiceNumber = state.addInvoice.number.replace(regex, '_')
+      const id = `${Date.now()}-${_ivoiceNumber}`
       state.addInvoice.id = id
       firebase.firestore()
         .collection('invoices')

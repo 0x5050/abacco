@@ -27,6 +27,22 @@
       </b-col>
     </b-row>
 
+    <b-row class="mt-2">
+      <b-col>
+        <b-select
+          :value="invoice.sender"
+          :options="senders"
+          @input="set_invoice_value({fieldName: 'sender', value: $event})"
+        />
+      </b-col>
+      <b-col>
+        <b-select
+          :options="recipients"
+           @input="set_invoice_value({fieldName: 'recipient', value: $event})"
+        />
+      </b-col>
+    </b-row>
+
     <b-card class="mt-3 mb-3 text-left" title="Towary/Usługi">
       <m-invoices-item-add
         v-for="item in invoice.items_count"
@@ -79,6 +95,8 @@ import { Datetime } from 'vue-datetime'
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 
+import firebase from 'firebase'
+
 export default {
   name: 'O-Invoices-Add',
   components: {
@@ -87,14 +105,53 @@ export default {
   },
   data: () => ({
     validationMessage: 'Pole nie może być puste',
-    todayDate: DateTime.local().toString()
+    todayDate: DateTime.local().toString(),
+    selectedSender: 'abacco',
+    // TODO load senders from firebase (config page)
+    senders: [
+      {
+        text: 'PPHU Abacco',
+        value: {
+          name: 'PPHU ABACCO',
+          street: 'Aleja Grunwaldzka 238 d',
+          zip: '80-266',
+          city: 'Gdańsk'
+        }
+      },
+      {
+        text: 'PPUH Krystyna Cierlicka',
+        value: {
+          name: 'PPHU Krystyna Cierlicka',
+          street: 'Warneńska 12c/2',
+          zip: '80-288',
+          city: 'Gdańsk'
+        }
+      }
+    ],
+    recipients: []
   }),
   computed: {
     ...mapGetters('invoices', ['invoice'])
   },
+  mounted () {
+    this.getContacts()
+  },
   methods: {
     ...mapActions('invoices', ['sendInvoice', 'getInvoices']),
     ...mapMutations('invoices', ['set_invoice_value']),
+    getContacts () {
+      firebase.firestore()
+        .collection('contacts')
+        .get()
+        .then(query => {
+          query.docs.forEach(doc => {
+            this.recipients.push({
+              text: `${doc.data().name} ${doc.data().street}`,
+              value: doc.data()
+            })
+          })
+        })
+    },
     invoiceWorth () {
       let result = 0
       this.invoice.items.forEach(item => {
