@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="pt-5">
     <m-input-card
       title="Dodaj kontrahenta"
       :inputs="contactInputs"
@@ -31,23 +31,27 @@
       :title="contact.name"
       class="text-left mt-2"
     >
-      <p>Ulica {{ contact.street }}</p>
-      <p>{{ contact.zip }} {{ contact.city }}</p>
-      <p>Nip: {{ contact.nip }}</p>
+      <b-card-text>
+        Adres: {{ contact.street }} <br>
+        {{ contact.zip }} {{ contact.city }} <br>
+        NIP: {{ contact.nip }}
+      </b-card-text>
 
-      <b-button
-        variant="warning"
-        @click="editContact(contact.nip)"
-      >
-        Edytuj
-      </b-button>
+      <template slot="footer">
+        <b-button
+          variant="warning"
+          @click="editContact(contact.nip)"
+        >
+          Edytuj
+        </b-button>
 
-      <b-button
-        variant="danger"
-        @click="deleteContat({id: contact.nip})"
-      >
-        Usuń
-      </b-button>
+        <b-button
+          variant="danger"
+          @click="deleteContat({id: contact.nip})"
+        >
+          Usuń
+        </b-button>
+      </template>
     </b-card>
 
     <b-modal
@@ -66,7 +70,6 @@
           Anuluj
         </b-button>
       </template>
-      {{ $data._editContact }}
     </b-modal>
   </b-container>
 </template>
