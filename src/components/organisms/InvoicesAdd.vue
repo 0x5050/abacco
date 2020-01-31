@@ -90,7 +90,7 @@ export default {
     todayDate: DateTime.local().toString()
   }),
   computed: {
-    ...mapGetters('invoices', ['invoice', 'invoices'])
+    ...mapGetters('invoices', ['invoice'])
   },
   methods: {
     ...mapActions('invoices', ['sendInvoice', 'getInvoices']),

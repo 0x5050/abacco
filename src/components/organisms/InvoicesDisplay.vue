@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     ...mapMutations('invoices', ['set_invoice_value']),
-    ...mapMutations('alert', ['setAlert']),
     ...mapActions('invoices', ['getInvoices', 'deleteInvoice']),
     invoiceDate (date) {
       return DateTime.fromISO(date).toFormat('D').toString()
