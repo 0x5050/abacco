@@ -63,10 +63,16 @@
       Kod pocztowy: <b-input v-model="$data._editContact.zip"/>
       Miasto: <b-input v-model="$data._editContact.city"/>
       <template slot="modal-footer">
-        <b-button @click="saveEditedContact($data._editContact)">
-          Zapsiz
+        <b-button
+          variant="success"
+          @click="saveEditedContact($data._editContact)"
+        >
+          Zapisz
         </b-button>
-        <b-button @click="cancelEdit()">
+        <b-button
+          variant="danger"
+          @click="cancelEdit()"
+        >
           Anuluj
         </b-button>
       </template>

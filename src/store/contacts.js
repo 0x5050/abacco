@@ -28,7 +28,6 @@ export default {
         })
     }
   },
-  // TODO add .catch after then and set Warning Alert
   actions: {
     sendContact: ({commit, state}) => {
       firebase.firestore()
@@ -39,7 +38,13 @@ export default {
             message: 'Zapisano',
             variant: 'success',
             duration: 2
-          }, {root: true})
+          }, {root: true}).catch(err => {
+            commit('alert/setAlert', {
+              message: err,
+              variant: 'danger',
+              duration: 2
+            }, {root: true})
+          })
         )
     },
     sendEditedContact: ({commit}, payload) => {
@@ -52,7 +57,13 @@ export default {
             message: 'Zapisano',
             variant: 'success',
             duration: 2
-          }, {root: true})
+          }, {root: true}).catch(err => {
+            commit('alert/setAlert', {
+              message: err,
+              variant: 'danger',
+              duration: 2
+            }, {root: true})
+          })
         )
     },
     deleteContat: ({commit}, {id}) => {
@@ -67,7 +78,13 @@ export default {
             variant: 'success',
             duration: 2
           }, {root: true})
-        )
+        ).catch(err => {
+          commit('alert/setAlert', {
+            message: err,
+            variant: 'danger',
+            duration: 2
+          }, {root: true})
+        })
     }
   }
 }
