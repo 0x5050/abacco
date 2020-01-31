@@ -1,7 +1,7 @@
 {
   "name": "abacco",
-  "version": "0.0.4",
-  "description": "A Vue.js project",
+  "version": "0.0.5",
+  "description": "Abacco control panel",
   "author": "damiancierlicki <damiancierlicki@gmail.com>",
   "private": true,
   "scripts": {

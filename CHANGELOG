@@ -1,8 +1,9 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
-## [0.0.3 - 0.0.4] - 1.31.2020
+## [0.0.3 - 0.0.5] - 1.31.2020
 ### Added
+- Sender and recipient data in invoice
 - Refactored communication with firebase in invoices
 - Added contacts
 
