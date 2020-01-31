@@ -41,6 +41,13 @@
       >
         Edytuj
       </b-button>
+
+      <b-button
+        variant="danger"
+        @click="deleteContat({id: contact.nip})"
+      >
+        Usuń
+      </b-button>
     </b-card>
 
     <b-modal
@@ -111,10 +118,14 @@ export default {
   },
   methods: {
     ...mapMutations('contacts', ['setContact', 'getContacts']),
-    ...mapActions('contacts', ['sendContact', 'saveEditedContact']),
+    ...mapActions('contacts', ['sendContact', 'sendEditedContact', 'deleteContat']),
     editContact (id) {
       this.$data._editContact = this.getContact(id)
       this.$refs['editContactModal'].show()
+    },
+    saveEditedContact (contact) {
+      this.sendEditedContact(contact)
+      this.$refs['editContactModal'].hide()
     }
   }
 }

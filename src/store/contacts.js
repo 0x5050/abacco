@@ -28,6 +28,7 @@ export default {
         })
     }
   },
+  // TODO add .catch after then and set Warning Alert
   actions: {
     sendContact: ({commit, state}) => {
       firebase.firestore()
@@ -41,7 +42,7 @@ export default {
           }, {root: true})
         )
     },
-    saveEditedContact: ({commit}, payload) => {
+    sendEditedContact: ({commit}, payload) => {
       firebase.firestore()
         .collection('contacts')
         .doc(payload.nip)
@@ -49,6 +50,20 @@ export default {
         .then(
           commit('alert/setAlert', {
             message: 'Zapisano',
+            variant: 'success',
+            duration: 2
+          }, {root: true})
+        )
+    },
+    deleteContat: ({commit}, {id}) => {
+      console.log(id)
+      firebase.firestore()
+        .collection('contacts')
+        .doc(id)
+        .delete()
+        .then(
+          commit('alert/setAlert', {
+            message: 'Usunięto pomyślnie',
             variant: 'success',
             duration: 2
           }, {root: true})
