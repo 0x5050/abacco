@@ -62,7 +62,7 @@
         <b-button @click="saveEditedContact($data._editContact)">
           Zapsiz
         </b-button>
-        <b-button @click="fetchData()">
+        <b-button @click="cancelEdit()">
           Anuluj
         </b-button>
       </template>
@@ -125,6 +125,10 @@ export default {
     },
     saveEditedContact (contact) {
       this.sendEditedContact(contact)
+      this.$refs['editContactModal'].hide()
+    },
+    cancelEdit () {
+      this.getContacts()
       this.$refs['editContactModal'].hide()
     }
   }
