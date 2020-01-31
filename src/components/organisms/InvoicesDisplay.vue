@@ -8,10 +8,16 @@
       class="text-left"
     >
     <div class="mt-2 mb-2">
-      <b-button variant="danger" @click="deleteInvoice(invoice.id, invoice.number)">
+      <b-button
+        variant="danger"
+        @click="deleteInvoice(invoice.id, invoice.number)"
+      >
         Usuń
       </b-button>
-      <b-button class="float-right" v-b-toggle="invoice.number">
+      <b-button
+        class="float-right"
+        v-b-toggle="invoice.number"
+      >
         Rozwiń
       </b-button>
     </div>
@@ -47,9 +53,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
 import { DateTime } from 'luxon'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'O-Invoices-Display',
@@ -62,22 +67,15 @@ export default {
   methods: {
     ...mapMutations('invoices', ['set_invoice_value']),
     ...mapMutations('alert', ['setAlert']),
+    ...mapActions('invoices', ['getInvoices', 'deleteInvoice']),
     invoiceDate (date) {
       return DateTime.fromISO(date).toFormat('D').toString()
-    },
-    deleteInvoice (id, number) {
-      firebase.firestore().collection('invoices').doc(id).delete()
-      this.getInvoices()
-      this.setAlert({
-        message: 'Usunięto fakturę ' + number,
-        variant: 'danger',
-        duration: 2
-      })
     },
     ItemList (items) {
       const arr = []
       let iterator = 0
       items.forEach((item) => {
+        if (item.name === '') return
         iterator++
         arr.push({
           lp: iterator,
@@ -89,10 +87,6 @@ export default {
         })
       })
       return arr
-    },
-    async getInvoices () {
-      const snapshot = await firebase.firestore().collection('invoices').get()
-      this.set_invoice_value({fieldName: 'invoices', value: snapshot.docs.map(doc => doc.data())})
     }
   }
 }
