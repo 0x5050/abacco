@@ -43,12 +43,24 @@
       </b-button>
     </b-card>
 
-    <b-modal ref="editContactModal">
+    <b-modal
+      ref="editContactModal"
+      title="Edytuj"
+    >
+      Nazwa: <b-input v-model="$data._editContact.name"/>
+      Ulica: <b-input v-model="$data._editContact.street"/>
+      Kod pocztowy: <b-input v-model="$data._editContact.zip"/>
+      Miasto: <b-input v-model="$data._editContact.city"/>
+      <template slot="modal-footer">
+        <b-button @click="saveEditedContact($data._editContact)">
+          Zapsiz
+        </b-button>
+        <b-button @click="fetchData()">
+          Anuluj
+        </b-button>
+      </template>
       {{ $data._editContact }}
     </b-modal>
-
-    {{ getContact('1234123123312') }}
-
   </b-container>
 </template>
 
@@ -99,7 +111,7 @@ export default {
   },
   methods: {
     ...mapMutations('contacts', ['setContact', 'getContacts']),
-    ...mapActions('contacts', ['sendContact']),
+    ...mapActions('contacts', ['sendContact', 'saveEditedContact']),
     editContact (id) {
       this.$data._editContact = this.getContact(id)
       this.$refs['editContactModal'].show()

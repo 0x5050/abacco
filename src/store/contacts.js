@@ -40,6 +40,19 @@ export default {
             duration: 2
           }, {root: true})
         )
+    },
+    saveEditedContact: ({commit}, payload) => {
+      firebase.firestore()
+        .collection('contacts')
+        .doc(payload.nip)
+        .set(payload, {merge: true})
+        .then(
+          commit('alert/setAlert', {
+            message: 'Zapisano',
+            variant: 'success',
+            duration: 2
+          }, {root: true})
+        )
     }
   }
 }
