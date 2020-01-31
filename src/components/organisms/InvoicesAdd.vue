@@ -38,12 +38,14 @@
       </b-col>
       <b-col class="d-flex" lg>
         <b-button
+          variant="info"
           class="m-auto"
-          @click="swap()"
+          @click="swapSenderRecipment()"
         >
           <b-icon
             icon="arrow-left-right"
             class="pt-1"
+            scale="1.7"
           />
         </b-button>
       </b-col>
@@ -154,20 +156,22 @@ export default {
   computed: {
     ...mapGetters('invoices', ['invoice'])
   },
-  mounted () {
+  created () {
     this.getContacts()
   },
   methods: {
     ...mapActions('invoices', ['sendInvoice', 'getInvoices']),
     ...mapMutations('invoices', ['set_invoice_value']),
-    swap () {
+    swapSenderRecipment () {
       const _recipients = this.recipients
       const _senders = this.senders
 
       this.recipients = _senders
       this.senders = _recipients
+
       this.set_invoice_value({fieldName: 'sender', value: {}})
       this.set_invoice_value({fieldName: 'recipient', value: {}})
+
       if (this.left.text === 'Sprzedawca') {
         this.left.text = 'Nabywca'
         this.left.value = 'recipient'
@@ -201,10 +205,11 @@ export default {
       this.invoice.items.forEach(item => {
         result += (item.price * (1 + (item.vat_rate / 100))) * item.count
       })
-      return this.set_invoice_value({
+      this.set_invoice_value({
         fieldName: 'worth',
         value: result
       })
+      return result
     },
 
     saveInvoice () {
