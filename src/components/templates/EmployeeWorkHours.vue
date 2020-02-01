@@ -38,12 +38,10 @@
             :items="prepareDate(days)"
           >
             <template v-slot:cell(zweryfikowane)="row">
-              <b-checkbox
-                size="lg"
-                @change="verifiedHour(row.item, month)"
-                :value="true"
-                :unchecked-value="false"
-                v-model="row.item.zweryfikowane"
+              <b-select
+                :options="options"
+                v-model="row.item._rowVariant"
+                @input="setStatus(row.item, month, $event)"
               />
             </template>
           </b-table>
@@ -70,6 +68,24 @@ export default {
       'godzina_zakończenia',
       'opis',
       'zweryfikowane'
+    ],
+    options: [
+      {
+        text: 'Brak',
+        value: ''
+      },
+      {
+        text: 'Zweryfikowane',
+        value: 'success'
+      },
+      {
+        text: 'Odrzucone',
+        value: 'danger'
+      },
+      {
+        text: 'Uwaga',
+        value: 'warning'
+      }
     ]
   }),
   async created () {
@@ -87,11 +103,11 @@ export default {
     }
   },
   methods: {
-    verifiedHour (item, month) {
+    setStatus (item, month, event) {
       const date = item.data
       const obj = {}
       obj[this.dateConverter(date)] = item
-      obj[this.dateConverter(date)].zweryfikowane = !obj[this.dateConverter(date)].zweryfikowane
+      obj[this.dateConverter(date)]._rowVariant = event
 
       firebase.firestore()
         .collection('employee-hours')
