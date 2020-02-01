@@ -20,6 +20,9 @@
       >
         Rozwiń
       </b-button>
+      <b-button @click="downloadInvoice(invoice)">
+        Pobierz
+      </b-button>
     </div>
     <b-collapse :id="invoice.number">
       <b-card>
@@ -55,6 +58,11 @@
 <script>
 import { DateTime } from 'luxon'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
+
+import {prepareInvoice} from './invoice'
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 export default {
   name: 'O-Invoices-Display',
@@ -86,6 +94,11 @@ export default {
         })
       })
       return arr
+    },
+
+    downloadInvoice (invoice) {
+      prepareInvoice(invoice)
+      pdfMake.createPdf(prepareInvoice(invoice)).open()
     }
   }
 }
