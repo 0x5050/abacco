@@ -35,6 +35,11 @@ export default {
         name: 'Godziny',
         path: '/hours',
         icon: 'calendar'
+      },
+      {
+        name: 'Kontrahenci',
+        path: '/contacts',
+        icon: 'people'
       }
     ]
   })
