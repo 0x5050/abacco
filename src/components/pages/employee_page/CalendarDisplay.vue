@@ -40,7 +40,6 @@ export default {
   data: () => ({
     uid: '',
     months: [],
-    options: [],
     fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'opis']
   }),
   async created () {
@@ -48,13 +47,6 @@ export default {
       this.uid = user.uid
     })
     this.fetchData()
-  },
-  mounted () {
-    const minYear = 2020
-    let _year = new Date().getFullYear()
-    for (_year; _year >= minYear; _year--) {
-      this.options.push({value: _year.toString(), text: _year.toString()})
-    }
   },
   methods: {
     prepareDate (days) {
@@ -69,7 +61,6 @@ export default {
       const previousMonth = DateTime.local().minus({month: 1}).monthLong
       const actualMonth = DateTime.local().monthLong
       const _monthsArr = [actualMonth, previousMonth]
-      console.log()
       this.months = []
       await _monthsArr.forEach(month => {
         firebase.firestore()
