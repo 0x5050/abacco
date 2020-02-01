@@ -14,6 +14,7 @@
           :title="input.title"
           :minute-step="10"
           :min-datetime="minDate"
+          :max-datetime="todayDate"
           @input="setField({fieldName: input.fieldName, value: $event})"
           :value="addDate[input.fieldName].toString()"
         />
@@ -50,7 +51,7 @@ export default {
   },
   data: () => ({
     todayDate: new Date().toISOString(),
-    minDate: '2020-01-01T00:00:00.000Z',
+    minDate: DateTime.local().minus({days: 1}).toString(),
     inputs: [
       {
         type: 'date',
