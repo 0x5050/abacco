@@ -122,6 +122,18 @@ export default {
           cena_brutto: (item.price * (1 + (item.vat_rate / 100))) * item.count
         })
       })
+      let itemsSum = 0
+      arr.map(item => {
+        itemsSum += item.cena_brutto
+      })
+      arr.push({
+        lp: '',
+        nazwa: '',
+        ilość: '',
+        cena_netto: '',
+        vat: 'Suma',
+        cena_brutto: itemsSum
+      })
       return arr
     },
 
