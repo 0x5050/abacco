@@ -14,12 +14,26 @@
       >
         Usuń
       </b-button>
-      <b-button
-        class="float-right"
-        v-b-toggle="invoice.number"
-      >
-        Rozwiń
-      </b-button>
+      <b-button-group class="float-right">
+        <b-button
+          variant="primary"
+          v-b-toggle="invoice.number"
+        >
+          Rozwiń
+        </b-button>
+        <b-button
+          variant="info"
+          @click="openInvoice(invoice)"
+        >
+          Otwórz
+        </b-button>
+        <b-button
+          variant="success"
+          @click="downloadInvoice(invoice)"
+        >
+          Pobierz
+        </b-button>
+      </b-button-group>
     </div>
     <b-collapse :id="invoice.number">
       <b-card>
@@ -56,6 +70,11 @@
 import { DateTime } from 'luxon'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 
+import {prepareInvoice} from '@/backend/invoicePDFGenerator'
+import pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
+pdfMake.vfs = pdfFonts.pdfMake.vfs
+
 export default {
   name: 'O-Invoices-Display',
   computed: {
@@ -86,6 +105,15 @@ export default {
         })
       })
       return arr
+    },
+
+    downloadInvoice (invoice) {
+      const Date = DateTime.fromISO(invoice.date).toFormat('D')
+      pdfMake.createPdf(prepareInvoice(invoice)).download(`${invoice.number}_${Date}.pdf`)
+    },
+
+    openInvoice (invoice) {
+      pdfMake.createPdf(prepareInvoice(invoice)).open()
     }
   }
 }
