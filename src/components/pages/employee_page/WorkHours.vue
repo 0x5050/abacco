@@ -12,7 +12,7 @@
           input-class="form-control"
           :type="input.type"
           :title="input.title"
-          :minute-step="10"
+          :minute-step="30"
           :min-datetime="minDate"
           :max-datetime="todayDate"
           @input="setField({fieldName: input.fieldName, value: $event})"

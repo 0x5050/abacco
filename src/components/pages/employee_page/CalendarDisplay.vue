@@ -40,7 +40,7 @@ export default {
   data: () => ({
     uid: '',
     months: [],
-    fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'opis']
+    fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'suma', 'opis']
   }),
   async created () {
     await firebase.auth().onAuthStateChanged(user => {
@@ -53,14 +53,21 @@ export default {
       const _arr = []
       const _objectKeys = Object.keys(days)
       for (let objectKey of _objectKeys) {
+        const startHour = this.hourConverter(days[objectKey].godzina_rozpoczęcia)
+        const stopHour = this.hourConverter(days[objectKey].godzina_zakończenia)
+        const hourSum = stopHour.diff(startHour, 'hours').hours
+        days[objectKey]['suma'] = hourSum
         _arr.push(days[objectKey])
       }
       return _arr
     },
+    hourConverter (hour) {
+      return DateTime.fromISO('2020-02-01T' + hour + ':00.775+01:00')
+    },
     async fetchData () {
       const previousMonth = DateTime.local().minus({month: 1}).monthLong
       const actualMonth = DateTime.local().monthLong
-      const _monthsArr = [actualMonth, previousMonth]
+      const _monthsArr = [ previousMonth, actualMonth ]
       this.months = []
       await _monthsArr.forEach(month => {
         firebase.firestore()
