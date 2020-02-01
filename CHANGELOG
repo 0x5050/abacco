@@ -1,8 +1,9 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
-## [0.0.6 - 0.0.8] - 1.02.2020
+## [0.0.6 - 0.0.9] - 1.02.2020
 ### Added
+- Shorted hour input range to 1 day ago and calendar display to 1 month ago
 - Issue #13
 - Sender and recipient display and items price sum
 - PDF support for invoices

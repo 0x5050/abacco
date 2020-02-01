@@ -1,8 +1,5 @@
 <template>
   <b-container class="pt-5">
-    <b-input-group prepend="Rok" size="lg">
-      <b-select @change="fetchData" :options="options" v-model="year"/>
-    </b-input-group>
     <b-card
       v-for="month in months"
       :key="Object.keys(month).toString()"
@@ -36,14 +33,13 @@
 
 <script>
 import firebase from 'firebase'
+import { DateTime } from 'luxon'
 
 export default {
   name: 'P-E-Calendar-Display',
   data: () => ({
     uid: '',
     months: [],
-    year: new Date().getFullYear().toString(),
-    options: [],
     fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'opis']
   }),
   async created () {
@@ -51,13 +47,6 @@ export default {
       this.uid = user.uid
     })
     this.fetchData()
-  },
-  mounted () {
-    const minYear = 2020
-    let _year = new Date().getFullYear()
-    for (_year; _year >= minYear; _year--) {
-      this.options.push({value: _year.toString(), text: _year.toString()})
-    }
   },
   methods: {
     prepareDate (days) {
@@ -69,17 +58,19 @@ export default {
       return _arr
     },
     async fetchData () {
+      const previousMonth = DateTime.local().minus({month: 1}).monthLong
+      const actualMonth = DateTime.local().monthLong
+      const _monthsArr = [actualMonth, previousMonth]
       this.months = []
-      await firebase.firestore()
-        .collection('employee-hours')
-        .doc(this.uid)
-        .collection(this.year.toString())
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            this.months.push({[doc.id]: doc.data()})
-          })
-        })
+      await _monthsArr.forEach(month => {
+        firebase.firestore()
+          .collection('employee-hours')
+          .doc(this.uid)
+          .collection(DateTime.local().year.toString())
+          .doc(month)
+          .get()
+          .then(doc => this.months.push({[doc.id]: doc.data()}))
+      })
     }
   }
 }
