@@ -45,23 +45,19 @@
     <b-collapse :id="invoice.number">
       <b-card>
         <b-row>
-          <b-col class="mb-1" md>
+          <b-col
+            v-for="adress in adresses"
+            :key="adress.title"
+            class="mb-1"
+            md
+          >
             <h2>
-              Sprzedawca
+              {{ adress.title }}
             </h2>
-            {{ invoice.sender.name }} <br>
-            {{ invoice.sender.street }} <br>
-            {{ invoice.sender.zip }} {{ invoice.sender.city }} <br>
-            NIP: {{ invoice.sender.nip }}
-          </b-col>
-          <b-col class="mb-1" md>
-            <h2>
-              Nabywca
-            </h2>
-            {{ invoice.recipient.name }} <br>
-            {{ invoice.recipient.street }} <br>
-            {{ invoice.recipient.zip }} {{ invoice.recipient.city }} <br>
-            NIP: {{ invoice.recipient.nip }}
+            {{ invoice[adress.fieldName].name }} <br>
+            {{ invoice[adress.fieldName].street }} <br>
+            {{ invoice[adress.fieldName].zip }} {{ invoice[adress.fieldName].city }} <br>
+            NIP: {{ invoice[adress.fieldName].nip }}
           </b-col>
         </b-row>
           <b-row>
@@ -93,7 +89,17 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 export default {
   name: 'O-Invoices-Display',
   data: () => ({
-    expandButton: true
+    expandButton: true,
+    adresses: [
+      {
+        title: 'Sprzedawca',
+        fieldName: 'sender'
+      },
+      {
+        title: 'nabywca',
+        fieldName: 'recipient'
+      }
+    ]
   }),
   computed: {
     ...mapGetters('invoices', ['invoices'])

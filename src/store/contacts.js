@@ -67,7 +67,6 @@ export default {
         )
     },
     deleteContat: ({commit}, {id}) => {
-      console.log(id)
       firebase.firestore()
         .collection('contacts')
         .doc(id)
