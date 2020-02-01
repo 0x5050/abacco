@@ -16,10 +16,17 @@
       </b-button>
       <b-button-group class="float-right">
         <b-button
+          v-model="expandButton"
           variant="primary"
           v-b-toggle="invoice.number"
+          @click="expandButton = !expandButton"
         >
-          Rozwiń
+          <span v-if="expandButton">
+            Rozwiń
+          </span>
+          <span v-else>
+            Zwiń
+          </span>
         </b-button>
         <b-button
           variant="info"
@@ -38,15 +45,23 @@
     <b-collapse :id="invoice.number">
       <b-card>
         <b-row>
-          <b-col>
-            <h1>
+          <b-col class="mb-1" md>
+            <h2>
               Sprzedawca
-            </h1>
+            </h2>
+            {{ invoice.sender.name }} <br>
+            {{ invoice.sender.street }} <br>
+            {{ invoice.sender.zip }} {{ invoice.sender.city }} <br>
+            NIP: {{ invoice.sender.nip }}
           </b-col>
-          <b-col>
-            <h1>
+          <b-col class="mb-1" md>
+            <h2>
               Nabywca
-            </h1>
+            </h2>
+            {{ invoice.recipient.name }} <br>
+            {{ invoice.recipient.street }} <br>
+            {{ invoice.recipient.zip }} {{ invoice.recipient.city }} <br>
+            NIP: {{ invoice.recipient.nip }}
           </b-col>
         </b-row>
           <b-row>
@@ -77,6 +92,9 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 export default {
   name: 'O-Invoices-Display',
+  data: () => ({
+    expandButton: true
+  }),
   computed: {
     ...mapGetters('invoices', ['invoices'])
   },
