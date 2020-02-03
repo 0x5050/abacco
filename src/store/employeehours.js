@@ -47,8 +47,8 @@ export default {
           }, { root: true })
         ).catch(err => {
           commit('alert/setAlert', {
-            message: err,
-            variant: 'success',
+            message: `Błąd ${err}`,
+            variant: 'danger',
             duration: 2
           }, { root: true })
         })
