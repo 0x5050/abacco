@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import firebase from 'firebase'
 
 export default {
   namespaced: true,
@@ -20,5 +21,37 @@ export default {
     setField: (state, {fieldName, value}) => { state.add[fieldName] = value }
   },
   actions: {
+    sendData: ({state, commit}, uid) => {
+      const fullDate = DateTime.fromISO(state.add.data)
+      const result = {}
+
+      result[state.add.data] = {
+        data: DateTime.fromISO(state.add.data).toFormat('D'),
+        godzina_rozpoczęcia: DateTime.fromISO(state.add.godzina_rozpoczęcia).toFormat('T'),
+        godzina_zakończenia: DateTime.fromISO(state.add.godzina_zakończenia).toFormat('T'),
+        przerwa: state.add.przerwa,
+        opis: state.add.opis,
+        _rowVariant: ''
+      }
+      firebase.firestore()
+        .collection('employee-hours')
+        .doc(uid)
+        .collection(fullDate.year.toString())
+        .doc(fullDate.monthLong)
+        .set(state.add, {merge: true})
+        .then(
+          commit('alert/setAlert', {
+            message: `Zapisano datę ${DateTime.fromISO(state.add.data).toFormat('D')}`,
+            variant: 'success',
+            duration: 2
+          }, { root: true })
+        ).catch(err => {
+          commit('alert/setAlert', {
+            message: err,
+            variant: 'success',
+            duration: 2
+          }, { root: true })
+        })
+    }
   }
 }

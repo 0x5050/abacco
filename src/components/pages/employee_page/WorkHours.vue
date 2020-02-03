@@ -38,7 +38,7 @@
           class="mt-3"
           variant="success"
           size="md"
-          @click="sendData()"
+          @click="sendData(uid)"
         >
           Zapisz
         </b-button>
@@ -50,7 +50,7 @@
 <script>
 import { Datetime } from 'vue-datetime'
 import { DateTime } from 'luxon'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import firebase from 'firebase'
 
 export default {
@@ -59,6 +59,7 @@ export default {
     Datetime
   },
   data: () => ({
+    uid: '',
     todayDate: new Date().toISOString(),
     minDate: DateTime.local().minus({days: 1}).toString(),
     inputs: [
@@ -95,39 +96,15 @@ export default {
   computed: {
     ...mapGetters('employeehours', ['addDate'])
   },
+  mounted () {
+    firebase.auth().onAuthStateChanged((user) => {
+      this.uid = user.uid
+    })
+  },
   methods: {
     ...mapMutations('employeehours', ['setField']),
     ...mapMutations('alert', ['setAlert']),
-    async sendData () {
-      let uid
-      await firebase.auth().onAuthStateChanged((user) => {
-        uid = user.uid
-      })
-
-      const fullDate = DateTime.fromISO(this.addDate.data)
-      const result = {}
-
-      result[this.addDate.data] = {
-        data: DateTime.fromISO(this.addDate.data).toFormat('D'),
-        godzina_rozpoczęcia: DateTime.fromISO(this.addDate.godzina_rozpoczęcia).toFormat('T'),
-        godzina_zakończenia: DateTime.fromISO(this.addDate.godzina_zakończenia).toFormat('T'),
-        przerwa: this.addDate.przerwa,
-        opis: this.addDate.opis,
-        _rowVariant: ''
-      }
-
-      await firebase.firestore()
-        .collection('employee-hours')
-        .doc(uid)
-        .collection(fullDate.year.toString())
-        .doc(fullDate.monthLong)
-        .set(result, {merge: true})
-      this.setAlert({
-        message: 'Zapisano',
-        variant: 'success',
-        duration: 2
-      })
-    }
+    ...mapActions('employeehours', ['sendData'])
   }
 }
 </script>
