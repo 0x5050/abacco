@@ -38,7 +38,7 @@ export default {
         .doc(uid)
         .collection(fullDate.year.toString())
         .doc(fullDate.monthLong)
-        .set(state.add, {merge: true})
+        .set(result, {merge: true})
         .then(
           commit('alert/setAlert', {
             message: `Zapisano datę ${DateTime.fromISO(state.add.data).toFormat('D')}`,
