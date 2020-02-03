@@ -19,6 +19,15 @@
           :value="addDate[input.fieldName].toString()"
         />
       </b-form-group >
+      <b-form-group
+        label="Łączny czas przerw"
+        class="mt-2 b-row w-75 ml-auto mr-auto"
+      >
+        <b-select
+          :options="options"
+          v-model="addDate['przerwa']"
+        />
+      </b-form-group>
       <b-form-group label="Opis" class="w-75 ml-auto mr-auto">
         <b-form-textarea
           rows="3"
@@ -70,6 +79,17 @@ export default {
         title: 'Godzina zakończenia',
         fieldName: 'godzina_zakończenia'
       }
+    ],
+    options: [
+      {text: '0 min', value: 0},
+      {text: '15 min', value: 15},
+      {text: '30 min', value: 30},
+      {text: '45 min', value: 45},
+      {text: '60 min', value: 60},
+      {text: '75 min', value: 75},
+      {text: '90 min', value: 90},
+      {text: '105 min', value: 105},
+      {text: '120 min', value: 120}
     ]
   }),
   computed: {
@@ -91,8 +111,9 @@ export default {
         data: DateTime.fromISO(this.addDate.data).toFormat('D'),
         godzina_rozpoczęcia: DateTime.fromISO(this.addDate.godzina_rozpoczęcia).toFormat('T'),
         godzina_zakończenia: DateTime.fromISO(this.addDate.godzina_zakończenia).toFormat('T'),
+        przerwa: this.addDate.przerwa,
         opis: this.addDate.opis,
-        zweryfikowane: false
+        _rowVariant: ''
       }
 
       await firebase.firestore()

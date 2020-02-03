@@ -7,8 +7,10 @@ export default {
       data: DateTime.local(),
       godzina_rozpoczęcia: DateTime.fromObject({hour: 7}),
       godzina_zakończenia: DateTime.fromObject({hour: 15}),
+      przerwa: 45,
+      suma: '',
       opis: '',
-      zweryfikowane: false
+      _rowVariant: ''
     }
   },
   getters: {
