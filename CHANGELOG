@@ -1,6 +1,10 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
+## [0.0.12] - 3.02.2020
+### Added
+- Adde time break field in employee hours (with sum calculation)
+
 ## [0.0.6 - 0.0.11] - 1.02.2020
 ### Added
 - Hour verification options
