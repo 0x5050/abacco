@@ -2,7 +2,7 @@
   <b-container class="pt-5">
     <b-card class="text-left font-weight-bolder ml-auto mr-auto">
       <b-form-group
-        v-for="(input, index) in inputs"
+        v-for="(input, index) in employeeInputs"
         :key="input.prepend"
         :label="input.prepend"
         class="mt-2 b-row w-75 ml-auto mr-auto"
@@ -24,7 +24,7 @@
         class="mt-2 b-row w-75 ml-auto mr-auto"
       >
         <b-select
-          :options="options"
+          :options="breakOptions"
           v-model="addDate['przerwa']"
         />
       </b-form-group>
@@ -62,7 +62,7 @@ export default {
     uid: '',
     todayDate: new Date().toISOString(),
     minDate: DateTime.local().minus({days: 1}).toString(),
-    inputs: [
+    employeeInputs: [
       {
         type: 'date',
         prepend: 'Data',
@@ -81,7 +81,7 @@ export default {
         fieldName: 'godzina_zakończenia'
       }
     ],
-    options: [
+    breakOptions: [
       {text: '0 min', value: 0},
       {text: '15 min', value: 15},
       {text: '30 min', value: 30},
@@ -97,7 +97,7 @@ export default {
     ...mapGetters('employeehours', ['addDate'])
   },
   mounted () {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       this.uid = user.uid
     })
   },
