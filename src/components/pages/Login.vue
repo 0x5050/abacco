@@ -86,9 +86,10 @@ export default {
   computed: {
     ...mapGetters('user', ['getUserData'])
   },
-  mounted () {
+  async mounted () {
+    await this.setUserData()
     if (this.getUserData.role !== '') {
-      this.$router.push({path: `/${this.getUserData.role}`})
+      this.$router.replace({path: `/${this.getUserData.role}`})
     }
   },
   methods: {
@@ -96,7 +97,8 @@ export default {
       'getUserUID',
       'getUserRole',
       'userLogin',
-      'userRegister'
+      'userRegister',
+      'setUserData'
     ]),
     LoginUser () {
       this.userLogin({

@@ -24,7 +24,7 @@ export default {
 
   },
   actions: {
-    getUserData: ({commit}) => {
+    setUserData: ({commit}) => {
       const _userDataFields = ['role', 'email', 'user_id']
       firebase.auth().onAuthStateChanged(userAuth => {
         if (userAuth) {
@@ -43,7 +43,7 @@ export default {
     userLogin: ({dispatch}, {email, password}) => {
       firebase.auth()
         .signInWithEmailAndPassword(email, password)
-        .then(dispatch('getUserData'))
+        .then(dispatch('setUserData'))
     },
     userLogOut: ({commit}) => {
       firebase.auth().signOut()
