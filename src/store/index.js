@@ -7,6 +7,7 @@ import alert from './alert'
 import employeehours from './employeehours'
 import personaldata from './personaldata'
 import contacts from './contacts'
+import user from './user'
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export const store = new Vuex.Store({
     alert,
     employeehours,
     personaldata,
-    contacts
+    contacts,
+    user
   }
 })

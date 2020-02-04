@@ -1,5 +1,6 @@
 <template>
 <b-container fluid class="bg-dark h-100 position-fixed">
+  <span class="text-white">{{ getUserData }}</span>
   <b-form
     class="ml-auto mr-auto center"
     @submit="LoginUser"
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'P-Login',
@@ -83,27 +84,27 @@ export default {
       }
     ]
   }),
-  created () {
-    firebase.auth().onAuthStateChanged(userAuth => {
-      if (userAuth) {
-        firebase.auth().currentUser.getIdTokenResult()
-          .then(tokenResult => {
-            console.log('Zalogowano:', tokenResult.claims.email)
-            this.$router.push('/employee')
-          })
-      }
-    })
+  computed: {
+    ...mapGetters('user', ['getUserData'])
   },
   methods: {
+    ...mapActions('user', [
+      'getUserUID',
+      'getUserRole',
+      'userLogin',
+      'userRegister'
+    ]),
     LoginUser () {
-      firebase.auth()
-        .signInWithEmailAndPassword(this.login_form.email, this.login_form.password)
-        .then(this.$router.push('/employee'))
+      this.userLogin({
+        email: this.login_form.email,
+        password: this.login_form.password
+      })
     },
     RegisterUser () {
-      firebase.auth()
-        .createUserWithEmailAndPassword(this.register_form.email, this.register_form.password)
-        .then(console.log('Utworzono konto'))
+      this.userRegister({
+        email: this.register_form.email,
+        password: this.register_form.password
+      })
     }
   }
 }

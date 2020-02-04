@@ -15,7 +15,7 @@
         <b-container>
           <b-row>
             <b-col md class="d-flex">
-              <p class="m-auto align-middle font-weight-bolder align-self-center">{{ user }} </p>
+              <p class="m-auto align-middle font-weight-bolder align-self-center">{{ getUserData.email }} </p>
             </b-col>
             <b-col md class="d-flex">
               <b-button :class="buttonClass" variant="info" :to="`/${rootPath}/settings`">
@@ -34,8 +34,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'O-Navbar',
@@ -46,19 +45,15 @@ export default {
     user: '',
     buttonClass: 'w-100 mr-auto ml-auto align-middle mr-5'
   }),
-  created () {
-    firebase.auth().currentUser.getIdTokenResult()
-      .then(tokenResult => {
-        this.user = tokenResult.claims.email
-      })
+  computed: {
+    ...mapGetters('user', ['getUserData'])
   },
   methods: {
     ...mapMutations('sidebar', ['setSidebarStatus']),
+    ...mapActions('user', ['userLogOut']),
     LogOut () {
-      firebase.auth().signOut()
-        .then(user => {
-          this.$router.push('/login')
-        })
+      this.userLogOut()
+      this.$router.push({path: '/login'})
     }
   }
 }
