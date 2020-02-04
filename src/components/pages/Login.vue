@@ -98,7 +98,9 @@ export default {
       this.userLogin({
         email: this.login_form.email,
         password: this.login_form.password
-      })
+      }).then(setTimeout(() => {
+        this.$router.push({path: `/${this.getUserData.role}`})
+      }, 2000))
     },
     RegisterUser () {
       this.userRegister({

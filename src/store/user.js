@@ -30,8 +30,8 @@ export default {
         if (userAuth) {
           firebase.auth().currentUser.getIdTokenResult()
             .then(({claims}) => {
-              _userDataFields.forEach(field => {
-                commit('setUser', {
+              _userDataFields.forEach(async field => {
+                await commit('setUser', {
                   fieldName: field,
                   value: claims[field]
                 })
@@ -50,7 +50,6 @@ export default {
         .then(commit('clerUserData'))
     },
     userRegister: ({commit}, {email, password}) => {
-      console.log(email, password)
       firebase.auth()
         .createUserWithEmailAndPassword(email, password)
         .then(

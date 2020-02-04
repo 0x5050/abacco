@@ -15,8 +15,6 @@ import PAContacts from '@/components/pages/admin_page/Contacts'
 import PECalendarDisplay from '@/components/pages/employee_page/CalendarDisplay'
 import PEWorkHours from '@/components/pages/employee_page/WorkHours'
 
-// import firebase from 'firebase'
-
 Vue.use(Router)
 
 const router = new Router({
