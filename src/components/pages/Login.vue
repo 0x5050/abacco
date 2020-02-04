@@ -1,6 +1,5 @@
 <template>
 <b-container fluid class="bg-dark h-100 position-fixed">
-  <span class="text-white">{{ getUserData }}</span>
   <b-form
     class="ml-auto mr-auto center"
     @submit="LoginUser"
@@ -86,6 +85,11 @@ export default {
   }),
   computed: {
     ...mapGetters('user', ['getUserData'])
+  },
+  mounted () {
+    if (this.getUserData.role !== '') {
+      this.$router.push({path: `/${this.getUserData.role}`})
+    }
   },
   methods: {
     ...mapActions('user', [
