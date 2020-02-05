@@ -94,7 +94,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters('employeehours', ['addDate'])
+    ...mapGetters('employee/employeeHours', ['addDate'])
   },
   mounted () {
     firebase.auth().onAuthStateChanged(user => {
@@ -102,9 +102,9 @@ export default {
     })
   },
   methods: {
-    ...mapMutations('employeehours', ['setField']),
+    ...mapMutations('employee/employeeHours', ['setField']),
     ...mapMutations('alert', ['setAlert']),
-    ...mapActions('employeehours', ['sendData'])
+    ...mapActions('employee/employeeHours', ['sendData'])
   }
 }
 </script>

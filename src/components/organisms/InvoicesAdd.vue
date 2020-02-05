@@ -154,14 +154,14 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters('invoices', ['invoice'])
+    ...mapGetters('admin/invoices', ['invoice'])
   },
   created () {
     this.getContacts()
   },
   methods: {
-    ...mapActions('invoices', ['sendInvoice', 'getInvoices']),
-    ...mapMutations('invoices', ['set_invoice_value']),
+    ...mapActions('admin/invoices', ['sendInvoice', 'getInvoices']),
+    ...mapMutations('admin/invoices', ['set_invoice_value']),
     swapSenderRecipment () {
       const _recipients = this.recipients
       const _senders = this.senders

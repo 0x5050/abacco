@@ -1,32 +1,14 @@
-import firebase from 'firebase'
+import changPassword from './settings/change_password'
+import personalData from './settings/personal_data'
 
 export default {
   namespaced: true,
-  state: {
-    settings: {
-      change_password: {
-        old_password: '',
-        password: '',
-        retyped_password: ''
-      }
-    }
-  },
-  getters: {
-  },
-  mutations: {
-    setPasswordField: (state, {fieldName, value}) => { state.settings.change_password[fieldName] = value }
-  },
-  actions: {
-    changePassword: ({state, rootState}) => {
-      const user = firebase.auth().currentUser
-      const credential = firebase.auth.EmailAuthProvider.credential(
-        rootState.user.user.email,
-        state.settings.change_password.old_password
-      )
-
-      user.reauthenticateWithCredential(credential).then(() => {
-        user.updatePassword(state.settings.change_password.password)
-      })
-    }
+  state: {},
+  getters: {},
+  mutations: {},
+  actions: {},
+  modules: {
+    changPassword,
+    personalData
   }
 }

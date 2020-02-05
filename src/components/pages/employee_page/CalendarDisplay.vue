@@ -43,13 +43,13 @@ export default {
   }),
   computed: {
     ...mapGetters('user', ['getUserData']),
-    ...mapGetters('calendardisplay', ['getCalendar'])
+    ...mapGetters('employee/calendarDisplay', ['getCalendar'])
   },
   async created () {
     this.fetchData()
   },
   methods: {
-    ...mapActions('calendardisplay', ['fetchData']),
+    ...mapActions('employee/calendarDisplay', ['fetchData']),
     prepareDate (days) {
       const _arr = []
       const _objectKeys = Object.keys(days)

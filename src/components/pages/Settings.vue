@@ -109,13 +109,13 @@ export default {
     this.fetchData()
   },
   computed: {
-    ...mapGetters('personaldata', ['getPersonalData'])
+    ...mapGetters('settings/personalData', ['getPersonalData'])
   },
   methods: {
-    ...mapMutations('personaldata', ['setPersonalData', 'savePersonalData']),
-    ...mapMutations('settings', ['setPasswordField']),
-    ...mapActions('personaldata', ['sendPersonalData', 'fetchData']),
-    ...mapActions('settings', ['changePassword'])
+    ...mapMutations('settings/personaData', ['setPersonalData', 'savePersonalData']),
+    ...mapMutations('settings/changPassword', ['setPasswordField']),
+    ...mapActions('settings/personalData', ['sendPersonalData', 'fetchData']),
+    ...mapActions('settings/changPassword', ['changePassword'])
   }
 }
 </script>
