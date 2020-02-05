@@ -16,7 +16,8 @@ const prepareDates = (days) => {
       godzina_rozpoczęcia: startHour,
       godzina_zakończenia: endHour,
       przerwa: `${breakTime} min.`,
-      suma: `${workedHours} godz.`
+      suma: `${workedHours} godz.`,
+      opis: days[monthDay].opis
     })
   }
   return _arr
