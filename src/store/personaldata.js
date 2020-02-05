@@ -29,6 +29,19 @@ export default {
         variant: 'success',
         duration: 2
       }, { root: true })
+    },
+    fetchData: ({commit, rootState}) => {
+      firebase.firestore()
+        .collection('users')
+        .doc(rootState.user.user.user_id)
+        .get()
+        .then(documentSnapshot => {
+          const data = documentSnapshot.data()
+          const fieldsNames = Object.keys(documentSnapshot.data())
+          for (const fieldName of fieldsNames) {
+            commit('setPersonalData', {fieldName: fieldName, value: data[fieldName]})
+          }
+        })
     }
   }
 }

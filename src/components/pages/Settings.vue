@@ -106,19 +106,7 @@ export default {
     ]
   }),
   mounted () {
-    // Personal Data
-    firebase.firestore()
-      .collection('users')
-      .doc(this.uid)
-      .get()
-      .then(documentSnapshot => {
-        const data = documentSnapshot.data()
-        console.log(data)
-        const fieldsNames = Object.keys(documentSnapshot.data())
-        for (const fieldName of fieldsNames) {
-          this.setPersonalData({fieldName: fieldName, value: data[fieldName]})
-        }
-      })
+    this.fetchData()
   },
   computed: {
     ...mapGetters('personaldata', ['getPersonalData'])
@@ -126,7 +114,7 @@ export default {
   methods: {
     ...mapMutations('personaldata', ['setPersonalData', 'savePersonalData']),
     ...mapMutations('settings', ['setPasswordField']),
-    ...mapActions('personaldata', ['sendPersonalData']),
+    ...mapActions('personaldata', ['sendPersonalData', 'fetchData']),
     ...mapActions('settings', ['changePassword'])
   }
 }
