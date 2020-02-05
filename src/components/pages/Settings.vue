@@ -12,18 +12,13 @@
         class="mt-2"
       >
         <b-input
-          :state="validation(input.value)"
           type="password"
-          v-model="$v[input.value].$model"
+          @input="setPasswordField({fieldName: input.value, value: $event})"
         />
-        <b-form-invalid-feedback>
-          {{ input.error }}
-        </b-form-invalid-feedback>
       </b-input-group>
 
       <b-button
         slot="button"
-        :disabled="!validated"
         variant="success"
         @click="changePassword()"
         >
@@ -64,7 +59,6 @@
 import MInputCard from '@/components/molecules/InputCard'
 import firebase from 'firebase'
 import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
 import { mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -92,10 +86,6 @@ export default {
         error: 'Hasła muszą być identyczne'
       }
     ],
-    old_password: null,
-    password: null,
-    retyped_password: null,
-    validated: false,
 
     personalDataFields: [
       {
@@ -116,94 +106,16 @@ export default {
     ]
   }),
   mounted () {
-    firebase.firestore()
-      .collection('users')
-      .doc(this.uid)
-      .get()
-      .then(documentSnapshot => {
-        const data = documentSnapshot.data()
-        const fieldsNames = Object.keys(documentSnapshot.data())
-        for (const fieldName of fieldsNames) {
-          this.setPersonalData({fieldName: fieldName, value: data[fieldName]})
-        }
-      })
+    this.fetchData()
   },
   computed: {
-    ...mapGetters('personaldata', ['getPersonalData'])
-  },
-  validations: {
-    old_password: {
-      required,
-      minLength: minLength(6),
-      validate (value) {
-        return new Promise((resolve, reject) => {
-          if (typeof value === 'string' && value.length >= 6) {
-            this.validated = true
-            resolve(typeof value === 'string' && value.length >= 6)
-          } else {
-            this.validated = false
-            reject(Error('Validation'))
-          }
-        })
-      }
-    },
-    password: {
-      required,
-      minLength: minLength(6)
-    },
-    retyped_password: {
-      required,
-      minLength: minLength(6),
-      isSame (value) {
-        return new Promise((resolve, reject) => {
-          if (value === this.password && value.length >= 6) {
-            this.validated = true
-            resolve(value === this.password && typeof value === 'string')
-          } else {
-            this.validated = false
-            reject(new Error('Passwords do not match'))
-          }
-        })
-      }
-    }
+    ...mapGetters('settings/personalData', ['getPersonalData'])
   },
   methods: {
-    ...mapMutations('alert', ['setAlert']),
-    ...mapMutations('personaldata', ['setPersonalData', 'savePersonalData']),
-    ...mapActions('personaldata', ['sendPersonalData']),
-    validation (name) {
-      const { $dirty, $error } = this.$v[name]
-      return $dirty ? !$error : null
-    },
-    changePassword () {
-      const user = firebase.auth().currentUser
-      const credential = firebase.auth.EmailAuthProvider.credential(
-        user.email,
-        this.old_password
-      )
-
-      user.reauthenticateWithCredential(credential).then(() => {
-        user.updatePassword(this.password).then(() => {
-          this.setAlert({
-            message: 'Zmieniono Haso',
-            variant: 'success',
-            duration: 2
-          })
-        }).catch(error => {
-          this.setAlert({
-            message: 'Błąd przy zmianie hasła ' + error,
-            variant: 'danger',
-            duration: 2
-          })
-        })
-      }).catch(error => {
-        this.setAlert({
-          message: 'Błąd przy zmianie hasła ' + error,
-          variant: 'danger',
-          duration: 2
-        })
-      })
-    }
+    ...mapMutations('settings/personaData', ['setPersonalData', 'savePersonalData']),
+    ...mapMutations('settings/changPassword', ['setPasswordField']),
+    ...mapActions('settings/personalData', ['sendPersonalData', 'fetchData']),
+    ...mapActions('settings/changPassword', ['changePassword'])
   }
 }
 </script>

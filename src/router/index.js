@@ -15,7 +15,7 @@ import PAContacts from '@/components/pages/admin_page/Contacts'
 import PECalendarDisplay from '@/components/pages/employee_page/CalendarDisplay'
 import PEWorkHours from '@/components/pages/employee_page/WorkHours'
 
-import firebase from 'firebase'
+import userStore from '@/store/user.js'
 
 Vue.use(Router)
 
@@ -42,10 +42,6 @@ const router = new Router({
       path: '/employee',
       name: 'Employee',
       component: Employee,
-      meta: {
-        requiresAuth: true,
-        guest: true
-      },
       children: [
         {
           name: 'Kalendarz',
@@ -62,16 +58,19 @@ const router = new Router({
           path: 'settings',
           component: Settings
         }
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        const userRole = userStore.state.user.role
+        if (userRole === 'employee') return next()
+        else {
+          return next({path: '/login'})
+        }
+      }
     },
     {
       path: '/admin',
       name: 'Panel',
       component: Admin,
-      meta: {
-        requiresAuth: true,
-        admin: true
-      },
       children: [
         {
           name: 'Użytkownicy',
@@ -98,40 +97,16 @@ const router = new Router({
           path: 'contacts',
           component: PAContacts
         }
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        const userRole = userStore.state.user.role
+        if (userRole === 'admin') return next()
+        else {
+          return next({path: '/login'})
+        }
+      }
     }
   ]
-})
-
-router.beforeEach((to, from, next) => {
-  const currentPath = router.currentRoute.path
-
-  firebase.auth().onAuthStateChanged(userAuth => {
-    if (userAuth) {
-      firebase.auth().currentUser.getIdTokenResult()
-        .then(({claims}) => {
-          if (claims.employee && currentPath !== '/') {
-            if (to.path.slice(0, 9) !== '/employee') {
-              return next({path: '/employee'})
-            }
-          } else if (claims.admin && currentPath !== '/') {
-            if (to.path.slice(0, 6) !== '/admin') {
-              return next({path: '/admin'})
-            }
-          } else if (!claims.admin && !claims.employee) {
-            alert('Błąd z kontem')
-            firebase.auth().signOut()
-            return next({path: '/login'})
-          }
-        })
-    } else {
-      const currentUser = firebase.auth().currentUser
-      const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-
-      if (requiresAuth && !currentUser && currentPath !== '/') next('login')
-    }
-  })
-  next()
 })
 
 export default router

@@ -120,14 +120,14 @@ export default {
     _editContact: {}
   }),
   computed: {
-    ...mapGetters('contacts', ['getAllContacts', 'getContact'])
+    ...mapGetters('admin/contacts', ['getAllContacts', 'getContact'])
   },
   created () {
     this.getContacts()
   },
   methods: {
-    ...mapMutations('contacts', ['setContact', 'getContacts']),
-    ...mapActions('contacts', ['sendContact', 'sendEditedContact', 'deleteContat']),
+    ...mapMutations('admin/contacts', ['setContact', 'getContacts']),
+    ...mapActions('admin/contacts', ['sendContact', 'sendEditedContact', 'deleteContat']),
     editContact (id) {
       this.$data._editContact = this.getContact(id)
       this.$refs['editContactModal'].show()

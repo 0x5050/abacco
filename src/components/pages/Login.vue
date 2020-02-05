@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'P-Login',
@@ -83,27 +83,36 @@ export default {
       }
     ]
   }),
-  created () {
-    firebase.auth().onAuthStateChanged(userAuth => {
-      if (userAuth) {
-        firebase.auth().currentUser.getIdTokenResult()
-          .then(tokenResult => {
-            console.log('Zalogowano:', tokenResult.claims.email)
-            this.$router.push('/employee')
-          })
-      }
-    })
+  computed: {
+    ...mapGetters('user', ['getUserData'])
+  },
+  async mounted () {
+    await this.setUserData()
+    if (this.getUserData.role !== '') {
+      this.$router.replace({path: `/${this.getUserData.role}`})
+    }
   },
   methods: {
+    ...mapActions('user', [
+      'getUserUID',
+      'getUserRole',
+      'userLogin',
+      'userRegister',
+      'setUserData'
+    ]),
     LoginUser () {
-      firebase.auth()
-        .signInWithEmailAndPassword(this.login_form.email, this.login_form.password)
-        .then(this.$router.push('/employee'))
+      this.userLogin({
+        email: this.login_form.email,
+        password: this.login_form.password
+      }).then(setTimeout(() => {
+        this.$router.push({path: `/${this.getUserData.role}`})
+      }, 2000))
     },
     RegisterUser () {
-      firebase.auth()
-        .createUserWithEmailAndPassword(this.register_form.email, this.register_form.password)
-        .then(console.log('Utworzono konto'))
+      this.userRegister({
+        email: this.register_form.email,
+        password: this.register_form.password
+      })
     }
   }
 }

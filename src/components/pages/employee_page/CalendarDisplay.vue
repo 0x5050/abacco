@@ -1,7 +1,7 @@
 <template>
   <b-container class="pt-5">
     <b-card
-      v-for="month in months"
+      v-for="month in getCalendar.months"
       :key="Object.keys(month).toString()"
       :title="Object.keys(month).join()"
       class="text-left mt-1"
@@ -32,23 +32,24 @@
 </template>
 
 <script>
-import firebase from 'firebase'
 import { DateTime } from 'luxon'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'P-E-Calendar-Display',
   data: () => ({
-    uid: '',
     months: [],
     fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'przerwa', 'suma', 'opis']
   }),
+  computed: {
+    ...mapGetters('user', ['getUserData']),
+    ...mapGetters('employee/calendarDisplay', ['getCalendar'])
+  },
   async created () {
-    await firebase.auth().onAuthStateChanged(user => {
-      this.uid = user.uid
-    })
     this.fetchData()
   },
   methods: {
+    ...mapActions('employee/calendarDisplay', ['fetchData']),
     prepareDate (days) {
       const _arr = []
       const _objectKeys = Object.keys(days)
@@ -63,21 +64,6 @@ export default {
     },
     hourConverter (hour) {
       return DateTime.fromISO('2020-02-01T' + hour + ':00.775+01:00')
-    },
-    async fetchData () {
-      const previousMonth = DateTime.local().minus({month: 1}).monthLong
-      const actualMonth = DateTime.local().monthLong
-      const _monthsArr = [ previousMonth, actualMonth ]
-      this.months = []
-      await _monthsArr.forEach(month => {
-        firebase.firestore()
-          .collection('employee-hours')
-          .doc(this.uid)
-          .collection(DateTime.local().year.toString())
-          .doc(month)
-          .get()
-          .then(doc => this.months.push({[doc.id]: doc.data()}))
-      })
     }
   }
 }

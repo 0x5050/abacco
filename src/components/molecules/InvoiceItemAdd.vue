@@ -75,10 +75,10 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters('invoices', ['invoice'])
+    ...mapGetters('admin/invoices', ['invoice'])
   },
   methods: {
-    ...mapMutations('invoices', ['set_invoice_item_value', 'remove_item'])
+    ...mapMutations('admin/invoices', ['set_invoice_item_value', 'remove_item'])
   }
 }
 </script>

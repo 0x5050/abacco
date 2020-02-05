@@ -102,14 +102,14 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters('invoices', ['invoices'])
+    ...mapGetters('admin/invoices', ['invoices'])
   },
   mounted () {
     this.getInvoices()
   },
   methods: {
-    ...mapMutations('invoices', ['set_invoice_value']),
-    ...mapActions('invoices', ['getInvoices', 'deleteInvoice']),
+    ...mapMutations('admin/invoices', ['set_invoice_value']),
+    ...mapActions('admin/invoices', ['getInvoices', 'deleteInvoice']),
     invoiceDate (date) {
       return DateTime.fromISO(date).toFormat('D').toString()
     },
