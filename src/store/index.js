@@ -9,6 +9,7 @@ import personaldata from './personaldata'
 import contacts from './contacts'
 import user from './user'
 import calendardisplay from './calendardisplay'
+import settings from './settings'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export const store = new Vuex.Store({
     personaldata,
     contacts,
     user,
-    calendardisplay
+    calendardisplay,
+    settings
   }
 })
