@@ -14,7 +14,6 @@
           :title="input.title"
           :minute-step="30"
           :min-datetime="minDate"
-          :max-datetime="todayDate"
           @input="setField({fieldName: input.fieldName, value: $event})"
           :value="addDate[input.fieldName].toString()"
         />

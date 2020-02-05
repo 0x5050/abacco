@@ -34,6 +34,7 @@
 <script>
 import { DateTime } from 'luxon'
 import { mapGetters, mapActions } from 'vuex'
+import { prepareDates } from '@/backend/monthTableConverter'
 
 export default {
   name: 'P-E-Calendar-Display',
@@ -51,16 +52,7 @@ export default {
   methods: {
     ...mapActions('employee/calendarDisplay', ['fetchData']),
     prepareDate (days) {
-      const _arr = []
-      const _objectKeys = Object.keys(days)
-      for (let objectKey of _objectKeys) {
-        const startHour = this.hourConverter(days[objectKey].godzina_rozpoczęcia)
-        const stopHour = this.hourConverter(days[objectKey].godzina_zakończenia).minus({minutes: days[objectKey]['przerwa']})
-        const hourSum = stopHour.diff(startHour, ['minutes', 'hours'])
-        days[objectKey]['suma'] = `${hourSum.hours}:${hourSum.minutes}`
-        _arr.push(days[objectKey])
-      }
-      return _arr
+      return prepareDates(days)
     },
     hourConverter (hour) {
       return DateTime.fromISO('2020-02-01T' + hour + ':00.775+01:00')

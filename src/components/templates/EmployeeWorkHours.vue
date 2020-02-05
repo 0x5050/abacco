@@ -35,7 +35,7 @@
             hover
             stacked="lg"
             :fields="fields"
-            :items="prepareDate(days)"
+            :items="prepareData(days)"
           >
             <template v-slot:cell(zweryfikowane)="row">
               <b-select
@@ -53,6 +53,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { prepareDates } from '@/backend/monthTableConverter'
 
 export default {
   name: 'T-Employee-Hours',
@@ -63,6 +64,8 @@ export default {
       'data',
       'godzina_rozpoczęcia',
       'godzina_zakończenia',
+      'przerwa',
+      'suma',
       'opis',
       'zweryfikowane'
     ],
@@ -116,13 +119,8 @@ export default {
       'fetchUserMonths',
       'setDayStatus'
     ]),
-    prepareDate (days) {
-      const _arr = []
-      const _objectKeys = Object.keys(days)
-      for (let objectKey of _objectKeys) {
-        _arr.push(days[objectKey])
-      }
-      return _arr
+    prepareData (days) {
+      return prepareDates(days)
     }
   }
 }
