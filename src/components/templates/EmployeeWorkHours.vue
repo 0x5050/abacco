@@ -35,7 +35,7 @@
             hover
             stacked="lg"
             :fields="fields"
-            :items="prepareDate(days)"
+            :items="prepareData(days)"
           >
             <template v-slot:cell(zweryfikowane)="row">
               <b-select
@@ -45,6 +45,9 @@
               />
             </template>
           </b-table>
+          <span class="ml-auto">
+            Suma przepracowanych godziń w miesiącu {{ Object.keys(month).shift() }} {{ monthlySum }}
+          </span>
         </span>
       </b-collapse>
     </b-card >
@@ -53,6 +56,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { prepareDates } from '@/backend/monthTableConverter'
 
 export default {
   name: 'T-Employee-Hours',
@@ -63,6 +67,8 @@ export default {
       'data',
       'godzina_rozpoczęcia',
       'godzina_zakończenia',
+      'przerwa',
+      'suma',
       'opis',
       'zweryfikowane'
     ],
@@ -83,7 +89,8 @@ export default {
         text: 'Uwaga',
         value: 'warning'
       }
-    ]
+    ],
+    monthlySum: ''
   }),
   computed: {
     ...mapGetters('admin/employeeWorkHours', [
@@ -116,13 +123,10 @@ export default {
       'fetchUserMonths',
       'setDayStatus'
     ]),
-    prepareDate (days) {
-      const _arr = []
-      const _objectKeys = Object.keys(days)
-      for (let objectKey of _objectKeys) {
-        _arr.push(days[objectKey])
-      }
-      return _arr
+    prepareData (days) {
+      const monthlyHoursSum = prepareDates(days).monthlyHoursSum
+      this.monthlySum = `${monthlyHoursSum.hours}:${monthlyHoursSum.minutes}`
+      return prepareDates(days).monthArr
     }
   }
 }

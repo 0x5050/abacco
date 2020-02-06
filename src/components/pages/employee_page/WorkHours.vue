@@ -14,7 +14,7 @@
           :title="input.title"
           :minute-step="30"
           :min-datetime="minDate"
-          :max-datetime="todayDate"
+          :max-datetime="input.maxDate"
           @input="setField({fieldName: input.fieldName, value: $event})"
           :value="addDate[input.fieldName].toString()"
         />
@@ -38,7 +38,7 @@
           class="mt-3"
           variant="success"
           size="md"
-          @click="sendData(uid)"
+          @click="sendData(getUserData.user_id)"
         >
           Zapisz
         </b-button>
@@ -51,7 +51,6 @@
 import { Datetime } from 'vue-datetime'
 import { DateTime } from 'luxon'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import firebase from 'firebase'
 
 export default {
   name: 'P-E-Work-Hours',
@@ -59,26 +58,27 @@ export default {
     Datetime
   },
   data: () => ({
-    uid: '',
-    todayDate: new Date().toISOString(),
     minDate: DateTime.local().minus({days: 1}).toString(),
     employeeInputs: [
       {
         type: 'date',
         prepend: 'Data',
-        fieldName: 'data'
+        fieldName: 'data',
+        maxDate: new Date().toISOString()
       },
       {
         type: 'time',
         prepend: 'Godzna rozpoczęcia pracy',
         title: 'Godzina rozpoczęcia',
-        fieldName: 'godzina_rozpoczęcia'
+        fieldName: 'godzina_rozpoczęcia',
+        maxDate: ''
       },
       {
         type: 'time',
         prepend: 'Godzina zakończenia pracy',
         title: 'Godzina zakończenia',
-        fieldName: 'godzina_zakończenia'
+        fieldName: 'godzina_zakończenia',
+        maxDate: ''
       }
     ],
     breakOptions: [
@@ -94,12 +94,8 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters('employee/employeeHours', ['addDate'])
-  },
-  mounted () {
-    firebase.auth().onAuthStateChanged(user => {
-      this.uid = user.uid
-    })
+    ...mapGetters('employee/employeeHours', ['addDate']),
+    ...mapGetters('user', ['getUserData'])
   },
   methods: {
     ...mapMutations('employee/employeeHours', ['setField']),

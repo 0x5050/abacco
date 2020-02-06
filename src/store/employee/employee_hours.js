@@ -22,14 +22,21 @@ export default {
   },
   actions: {
     sendData: ({state, commit}, uid) => {
-      const fullDate = DateTime.fromISO(state.add.data)
       const result = {}
 
+      const fullDate = DateTime.fromISO(state.add.data)
+      const startHour = DateTime.fromISO(state.add.godzina_rozpoczęcia)
+      const endHour = DateTime.fromISO(state.add.godzina_zakończenia)
+        .minus({minutes: state.add.przerwa})
+
+      const workedHours = endHour.diff(startHour, ['minutes', 'hours'])
+
       result[state.add.data] = {
-        data: DateTime.fromISO(state.add.data).toFormat('D'),
-        godzina_rozpoczęcia: DateTime.fromISO(state.add.godzina_rozpoczęcia).toFormat('T'),
-        godzina_zakończenia: DateTime.fromISO(state.add.godzina_zakończenia).toFormat('T'),
+        data: state.add.data,
+        godzina_rozpoczęcia: state.add.godzina_rozpoczęcia,
+        godzina_zakończenia: state.add.godzina_zakończenia,
         przerwa: state.add.przerwa,
+        suma: `${workedHours.hours}:${workedHours.minutes}`,
         opis: state.add.opis,
         _rowVariant: ''
       }
