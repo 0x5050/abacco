@@ -25,6 +25,9 @@
           :fields="fields"
           :items="prepareDate(days)"
         />
+          <span class="ml-auto">
+            Suma przepracowanych godziń w miesiącu {{ Object.keys(month).shift() }} {{ monthlySum }}
+          </span>
         </span>
       </b-collapse>
     </b-card >
@@ -32,7 +35,6 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon'
 import { mapGetters, mapActions } from 'vuex'
 import { prepareDates } from '@/backend/monthTableConverter'
 
@@ -40,6 +42,7 @@ export default {
   name: 'P-E-Calendar-Display',
   data: () => ({
     months: [],
+    monthlySum: '',
     fields: ['data', 'godzina_rozpoczęcia', 'godzina_zakończenia', 'przerwa', 'suma', 'opis']
   }),
   computed: {
@@ -52,10 +55,9 @@ export default {
   methods: {
     ...mapActions('employee/calendarDisplay', ['fetchData']),
     prepareDate (days) {
-      return prepareDates(days)
-    },
-    hourConverter (hour) {
-      return DateTime.fromISO('2020-02-01T' + hour + ':00.775+01:00')
+      const monthlyHoursSum = prepareDates(days).monthlyHoursSum
+      this.monthlySum = `${monthlyHoursSum.hours}:${monthlyHoursSum.minutes}`
+      return prepareDates(days).monthArr
     }
   }
 }

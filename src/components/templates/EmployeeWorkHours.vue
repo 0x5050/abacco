@@ -45,6 +45,9 @@
               />
             </template>
           </b-table>
+          <span class="ml-auto">
+            Suma przepracowanych godziń w miesiącu {{ Object.keys(month).shift() }} {{ monthlySum }}
+          </span>
         </span>
       </b-collapse>
     </b-card >
@@ -86,7 +89,8 @@ export default {
         text: 'Uwaga',
         value: 'warning'
       }
-    ]
+    ],
+    monthlySum: ''
   }),
   computed: {
     ...mapGetters('admin/employeeWorkHours', [
@@ -120,7 +124,9 @@ export default {
       'setDayStatus'
     ]),
     prepareData (days) {
-      return prepareDates(days)
+      const monthlyHoursSum = prepareDates(days).monthlyHoursSum
+      this.monthlySum = `${monthlyHoursSum.hours}:${monthlyHoursSum.minutes}`
+      return prepareDates(days).monthArr
     }
   }
 }
