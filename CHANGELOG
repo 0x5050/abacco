@@ -1,7 +1,7 @@
 # CHANGELOG
 All notable changes to this project will be documented in this file.
 
-## [0.0.13 - 0.0.14] - 5.02.2020
+## [0.0.13 - 0.0.14] - 6.02.2020 - 5.02.2020
 ### Refactored
 - Employees hours
 - Communication with Firestore (thru vuex)
