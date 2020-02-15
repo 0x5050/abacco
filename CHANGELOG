@@ -1,0 +1,30 @@
+# CHANGELOG
+All notable changes to this project will be documented in this file.
+
+## [0.0.13 - 0.0.14] - 6.02.2020 - 5.02.2020
+### Refactored
+- Employees hours
+- Communication with Firestore (thru vuex)
+
+## [0.0.12] - 3.02.2020
+### Added
+- Adde time break field in employee hours (with sum calculation)
+
+## [0.0.6 - 0.0.11] - 1.02.2020
+### Added
+- Hour verification options
+- Sum og hours per day
+- Shorted hour input range to 1 day ago and calendar display to 1 month ago
+- Issue #13
+- Sender and recipient display and items price sum
+- PDF support for invoices
+
+## [0.0.3 - 0.0.5] - 31.01.2020
+### Added
+- Sender and recipient data in invoice
+- Refactored communication with firebase in invoices
+- Added contacts
+
+## [0.0.2] - 26.1.2020
+### Added
+- Added router push when user is logged in
