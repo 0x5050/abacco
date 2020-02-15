@@ -4,6 +4,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  head () {
+    return {
+      titleTemplate: `${this.$nuxt.$route.name} | %s`
+    }
+  }
+}
+</script>
+
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
