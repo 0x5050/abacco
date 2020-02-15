@@ -1,68 +1,68 @@
 <template>
-<b-container fluid class="bg-dark h-100 position-fixed">
-  <b-form
-    class="ml-auto mr-auto center"
-    @submit="LoginUser"
-  >
-  <b-row>
-    <b-input-group
-      v-for="input in inputs"
-      :key="input.name"
-      :prepend="input.name"
-      class="mt-3"
-      size="lg"
+  <b-container fluid class="bg-dark h-100 position-fixed">
+    <b-form
+      class="ml-auto mr-auto center"
+      @submit="LoginUser"
     >
-      <b-input
-        v-model="login_form[input.type]"
-        :type="input.type"
-      />
-    </b-input-group>
-  </b-row>
-    <b-row>
-      <b-button
-        class="mt-3 d-block mr-auto"
-        variant="info"
-        v-b-modal="'register-modal'"
+      <b-row>
+        <b-input-group
+          v-for="input in inputs"
+          :key="input.name"
+          :prepend="input.name"
+          class="mt-3"
+          size="lg"
+        >
+          <b-input
+            v-model="login_form[input.type]"
+            :type="input.type"
+          />
+        </b-input-group>
+      </b-row>
+      <b-row>
+        <b-button
+          v-b-modal="'register-modal'"
+          class="mt-3 d-block mr-auto"
+          variant="info"
+        >
+          Zarejestruj
+        </b-button>
+        <b-button
+          class="mt-3 d-block ml-auto"
+          variant="success"
+          type="submit"
+        >
+          Zaloguj
+        </b-button>
+      </b-row>
+    </b-form>
+    <b-modal id="register-modal" hide-footer title="Zarejestruj się">
+      <b-input-group
+        v-for="input in inputs"
+        :key="input.name"
+        :prepend="input.name"
+        class="mt-3"
       >
-        Zarejestruj
-      </b-button>
+        <b-input
+          v-model="register_form[input.type]"
+          :type="input.type"
+        />
+      </b-input-group>
       <b-button
-        class="mt-3 d-block ml-auto"
-        variant="success"
-        type="submit"
-      >
-        Zaloguj
-      </b-button>
-    </b-row>
-  </b-form>
-  <b-modal id="register-modal" hide-footer title="Zarejestruj się">
-    <b-input-group
-      v-for="input in inputs"
-      :key="input.name"
-      :prepend="input.name"
-      class="mt-3"
-    >
-      <b-input
-        v-model="register_form[input.type]"
-        :type="input.type"
-      />
-    </b-input-group>
-    <b-button
         class="mt-3 d-block ml-auto"
         variant="success"
         @click="RegisterUser"
-    >
+      >
         Zarejestruj
-    </b-button>
-  </b-modal>
-</b-container>
+      </b-button>
+    </b-modal>
+  </b-container>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'P-Login',
+  name: 'PLogin',
   data: () => ({
     login_form: {
       email: '',

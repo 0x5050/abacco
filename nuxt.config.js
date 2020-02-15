@@ -62,7 +62,12 @@ module.exports = {
           measurementId: ''
         },
         services: {
-          auth: true // Just as example. Can be any other service.
+          auth: {
+            initialize: {
+              onSuccessAction: 'firebase/auth/handleSuccessfulAuthentication',
+              ssr: true
+            }
+          }
         }
       }
     ]

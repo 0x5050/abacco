@@ -32,37 +32,3 @@
   }
 }
 </style>
-
-<script>
-// AUTH METHODS
-// ...mapActions({
-//   logoutUser: 'firebase/auth/logoutUser'
-// }),
-// async createUser () {
-//   try {
-//     await this.$fireAuth.createUserWithEmailAndPassword(
-//       this.formData.email,
-//       this.formData.password
-//     )
-//   } catch (e) {
-//     alert(e)
-//   }
-// },
-// async signInUser () {
-//   try {
-//     await this.$fireAuth.signInWithEmailAndPassword(
-//       this.formData.email,
-//       this.formData.password
-//     )
-//   } catch (e) {
-//     alert(e)
-//   }
-// },
-// async logout () {
-//   try {
-//     await this.logoutUser()
-//   } catch (e) {
-//     alert(e)
-//   }
-// }
-</script>
