@@ -23,6 +23,9 @@
         >
           GitHub
         </a>
+        <router-link to="Login">
+          Login
+        </router-link>
       </div>
     </div>
   </div>
