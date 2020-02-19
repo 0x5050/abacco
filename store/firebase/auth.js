@@ -27,25 +27,6 @@ export const mutations = {
 }
 
 export const actions = {
-  nuxtServerInit ({ commit }, ctx) {
-    if (this.$fireAuth === null) {
-      throw new Error('this.$fireAuth cannot be accessed.')
-    }
-
-    if (ctx.$fireAuth === null || ctx.app.$fireAuth === null) {
-      throw new Error('ctx.$fireAuth cannot be accessed.')
-    }
-    /** Get the VERIFIED authUser from the server */
-
-    const ssrVerifiedAuthUser = ctx.res.verifiedFireAuthUser
-    const ssrVerifiedAuthUserClaims = ctx.res.verifiedFireAuthUserClaims
-
-    if (ssrVerifiedAuthUserClaims) {
-      commit('SET_AUTH_USER', {
-        authUser: ssrVerifiedAuthUser
-      })
-    }
-  },
 
   handleSuccessfulAuthentication ({ commit }, { authUser, claims }) {
     // Install servicerWorker if supported on sign-in/sign-up page.
@@ -57,12 +38,6 @@ export const actions = {
 
   handleError ({ commit }) {
     throw new Error('Error auth')
-  },
-
-  checkVuexStore (ctx) {
-    if (this.$fireAuth === null) {
-      throw new Error('Vuex Store example not working - this.$fireAuth cannot be accessed.')
-    }
   },
 
   async logoutUser ({ commit, dispatch }) {
